@@ -3,24 +3,24 @@ package BiblioTech;
 import java.util.ArrayList;
 
 public class SalaPublica extends Sala {
-	private ArrayList<Cliente> supervisores;
-
+	private ArrayList<Admin> supervisores;
+	
 	public SalaPublica(int capacidad, int iD, int piso, ArrayList<Cliente> listaClientes,
-			ArrayList<Cliente> supervisores) {
+			ArrayList<Admin> supervisores) {
 		super(capacidad, iD, piso, listaClientes);
 		this.supervisores = supervisores;
 	}
 	
 	public SalaPublica() {
 		super();
-		this.supervisores = new ArrayList<Cliente>();
+		this.supervisores = new ArrayList<Admin>();
 	}
 
-	public ArrayList<Cliente> getSupervisores() {
+	public ArrayList<Admin> getSupervisores() {
 		return supervisores;
 	}
 
-	public void setSupervisores(ArrayList<Cliente> supervisores) {
+	public void setSupervisores(ArrayList<Admin> supervisores) {
 		this.supervisores = supervisores;
 	}
 
