@@ -13,6 +13,12 @@ public class LibroAcademico extends Libro {
 		this.asignatura = asignatura;
 		this.disciplina = disciplina;
 	}
+	
+	public LibroAcademico() {
+		super();
+		this.asignatura = "";
+		this.disciplina = "";
+	}
 
 	public String getAsignatura() {
 		return asignatura;
