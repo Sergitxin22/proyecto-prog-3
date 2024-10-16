@@ -17,6 +17,14 @@ public class LibroLectura extends Libro {
 		this.rating = rating;
 	}
 	
+	public LibroLectura() {
+		super();
+		this.sinopsis = "";
+		this.review = "";
+		this.genero = Genero.CIENCIA_FICCION;
+		this.rating = 0;
+	}
+	
 
 	public String getSinopsis() {
 		return sinopsis;
