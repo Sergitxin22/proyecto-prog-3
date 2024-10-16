@@ -17,6 +17,15 @@ public abstract class Libro implements Reservable {
 		this.foto = foto;
 		this.id = id;
 	}
+	
+	public Libro() {
+		super();
+		this.titulo = "";
+		this.autor = "";
+		this.numeroDePaginas = 0;
+		this.foto = null;
+		this.id = 0;
+	}
 
 	public String getTitulo() {
 		return titulo;
