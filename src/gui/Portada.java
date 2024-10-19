@@ -37,8 +37,8 @@ public class Portada extends JFrame {
 		
 		
 		// PROCESO DE ABRIR LAS IMAGENES Y ASIGNARLAS A SUS LABELS:
-		// Imagen del usuario
 		
+		// Imagen del usuario
 		BufferedImage biUsuario = null;
 		try {
 			biUsuario = ImageIO.read(new File("resources/images/usuario.png"));
@@ -51,7 +51,6 @@ public class Portada extends JFrame {
 		usuarioLabel.setIcon(usuarioIcon);
 	
 		// Imagen del libro
-		
 		BufferedImage biLibro = null;
 		try {
 			biLibro = ImageIO.read(new File("resources/images/libro.png"));
@@ -63,6 +62,7 @@ public class Portada extends JFrame {
 		JLabel libroLabel = new JLabel();
 		libroLabel.setIcon(libroIcon);
 		
+		// Imagen de las salas
 		BufferedImage biSalas = null;
 		try {
 			biSalas = ImageIO.read(new File("resources/images/salas.png"));
@@ -74,7 +74,7 @@ public class Portada extends JFrame {
 		JLabel salasLabel = new JLabel();
 		salasLabel.setIcon(salasIcon);
 		
-		
+		// Imagen de los eventos
 		BufferedImage biEventos = null;
 		try {
 			biEventos = ImageIO.read(new File("resources/images/eventos.png"));
@@ -88,7 +88,6 @@ public class Portada extends JFrame {
 		
 		
 		// PANEL SUPERIOR
-		
 		bibliotechLabel.setFont(new Font("Verdana", Font.PLAIN, 72));
 		
 		topUsuario.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -102,7 +101,6 @@ public class Portada extends JFrame {
 		
 		
 		// PANEL CENTRAL
-		
 		Font buttonFont = new Font("Verdana", Font.BOLD, 15);
 		
 		JPanel mid = new JPanel();
