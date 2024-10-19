@@ -10,6 +10,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import BiblioTech.Admin;
+import BiblioTech.Cliente;
+import BiblioTech.Seccion;
+import BiblioTech.Usuario;
+
 public class Header extends JPanel {
 
 	/**
@@ -17,7 +22,7 @@ public class Header extends JPanel {
 	 */
 	private static final long serialVersionUID = -1102784202811827191L;
 
-	public Header() {
+	public Header(Seccion seccion, Usuario usuario) {
 		setLayout(new BorderLayout());
         setBackground(Color.GRAY);
         
@@ -26,7 +31,26 @@ public class Header extends JPanel {
         panelIzquierdo.setBackground(Color.LIGHT_GRAY);
         
         // Crear el icono
-        ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("images/libros.png"));
+        String nombreIconoSeccion = "";
+        
+        switch (seccion) {
+		case BIBLIOTECA:
+			nombreIconoSeccion = "biblioteca.png";
+			break;
+		case EVENTOS:
+			nombreIconoSeccion = "eventos.png";
+			break;
+		case SALAS_DE_ESTUDIO:
+			nombreIconoSeccion = "salasDeEstudio.png";
+			break;
+		default:
+			nombreIconoSeccion = "libros.png";
+			break;
+		}
+        
+        nombreIconoSeccion = "libros.png"; // TODO: quitar cuando tenga los iconos
+        
+        ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("images/" + nombreIconoSeccion));
 
         JLabel iconLabel = new JLabel(icon);
         JLabel textLabel = new JLabel("BiblioTech"); // Texto al lado del icono
@@ -56,7 +80,19 @@ public class Header extends JPanel {
         JPanel panelDerecho = new JPanel();
         panelDerecho.setBackground(Color.DARK_GRAY);
         
-        ImageIcon icon2 = new ImageIcon(getClass().getClassLoader().getResource("images/user.png"));
+        String nombreIconoUsuario = "";
+        
+        if (usuario instanceof Cliente) {
+        	nombreIconoUsuario = "user.png";
+		} else if (usuario instanceof Admin) {
+			nombreIconoUsuario = "adminUser.png";
+		} else {
+			nombreIconoUsuario = "noUser.png";
+		}
+        
+        nombreIconoUsuario = "user.png"; // TODO: quitar cuando tenga los iconos
+        
+        ImageIcon icon2 = new ImageIcon(getClass().getClassLoader().getResource("images/" + nombreIconoUsuario));
 
         JLabel iconLabel2 = new JLabel(icon2);
         panelDerecho.add(iconLabel2);

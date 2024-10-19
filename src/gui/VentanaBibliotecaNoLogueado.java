@@ -2,23 +2,15 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -26,6 +18,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import BiblioTech.MetodosDeOrdenamiento;
+import BiblioTech.Seccion;
 
 public class VentanaBibliotecaNoLogueado extends JFrame {
 	
@@ -40,7 +33,7 @@ public class VentanaBibliotecaNoLogueado extends JFrame {
 		setSize(640,480);
 		
 		// Panel superior que contendrá el Header
-        JPanel panelSuperior = new Header();
+        JPanel panelSuperior = new Header(Seccion.BIBLIOTECA, null);
         
         // Agregar panel superior al marco principal
         add(panelSuperior, BorderLayout.NORTH);
@@ -68,7 +61,6 @@ public class VentanaBibliotecaNoLogueado extends JFrame {
 		subPanelContenido1.add(ordenar, BorderLayout.EAST);
 		ordenar.setBackground(Color.pink);
 		ordenar.addPopupMenuListener(new PopupMenuListener() {
-			
 			
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
