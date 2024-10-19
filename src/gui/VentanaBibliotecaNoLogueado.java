@@ -40,7 +40,6 @@ public class VentanaBibliotecaNoLogueado extends JFrame {
 		
 		// Panel inferior
 		JPanel panelContenido = new JPanel(new BorderLayout());
-		add(panelContenido, BorderLayout.CENTER);
 		panelContenido.setBackground(Color.green);
 		
 		JPanel subPanelContenido1 = new JPanel(new BorderLayout());
@@ -103,10 +102,8 @@ public class VentanaBibliotecaNoLogueado extends JFrame {
 		subPanelContenido1.add(buscador, BorderLayout.CENTER);
 		buscador.setBackground(Color.red);
 		
-		JPanel subPanelContenido2 = new JPanel(new GridLayout(2,4));
-		panelContenido.add(subPanelContenido2, BorderLayout.CENTER);
+		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 4));
 		subPanelContenido2.setBackground(Color.orange);
-//		subPanelContenido2.setLayout(GridLayout(2,4));
 		subPanelContenido2.add(new JButton("Libro 1"));
 		subPanelContenido2.add(new JButton("Libro 2"));
 		subPanelContenido2.add(new JButton("Libro 3"));
@@ -115,14 +112,74 @@ public class VentanaBibliotecaNoLogueado extends JFrame {
 		subPanelContenido2.add(new JButton("Libro 6"));
 		subPanelContenido2.add(new JButton("Libro 7"));
 		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 9"));
+		subPanelContenido2.add(new JButton("Libro 10"));
+		subPanelContenido2.add(new JButton("Libro 11"));
+		subPanelContenido2.add(new JButton("Libro 6"));
+		subPanelContenido2.add(new JButton("Libro 7"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 6"));
+		subPanelContenido2.add(new JButton("Libro 7"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 6"));
+		subPanelContenido2.add(new JButton("Libro 7"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 6"));
+		subPanelContenido2.add(new JButton("Libro 7"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 6"));
+		subPanelContenido2.add(new JButton("Libro 7"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 1"));
+		subPanelContenido2.add(new JButton("Libro 2"));
+		subPanelContenido2.add(new JButton("Libro 3"));
+		subPanelContenido2.add(new JButton("Libro 4"));
+		subPanelContenido2.add(new JButton("Libro 5"));
+		subPanelContenido2.add(new JButton("Libro 6"));
+		subPanelContenido2.add(new JButton("Libro 7"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 9"));
+		subPanelContenido2.add(new JButton("Libro 10"));
+		subPanelContenido2.add(new JButton("Libro 11"));
+		subPanelContenido2.add(new JButton("Libro 6"));
+		subPanelContenido2.add(new JButton("Libro 7"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 6"));
+		subPanelContenido2.add(new JButton("Libro 7"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 6"));
+		subPanelContenido2.add(new JButton("Libro 7"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 6"));
+		subPanelContenido2.add(new JButton("Libro 7"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 6"));
+		subPanelContenido2.add(new JButton("Libro 7"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 1"));
+		subPanelContenido2.add(new JButton("Libro 2"));
+		subPanelContenido2.add(new JButton("Libro 3"));
+		subPanelContenido2.add(new JButton("Libro 4"));
+		subPanelContenido2.add(new JButton("Libro 5"));
+		subPanelContenido2.add(new JButton("Libro 6"));
+		subPanelContenido2.add(new JButton("Libro 7"));
+		subPanelContenido2.add(new JButton("Libro 8"));
+		subPanelContenido2.add(new JButton("Libro 9"));
+		subPanelContenido2.add(new JButton("Libro 10"));
+		subPanelContenido2.add(new JButton("Libro 11"));
 		
-		
-		JScrollPane scrollBar = new JScrollPane();
-		subPanelContenido2.add(scrollBar, BorderLayout.EAST);
+		JScrollPane scrollBar = new JScrollPane(subPanelContenido2);
+		panelContenido.add(scrollBar, BorderLayout.CENTER);
 		
 		scrollBar.setBackground(Color.magenta);
 
-				
+		add(panelContenido, BorderLayout.CENTER);
 		
 		setVisible(true);
 	}
