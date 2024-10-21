@@ -22,7 +22,23 @@ public class Portada extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
+		
+	public ImageIcon loadImage(String path, int length, int height) {
+		ImageIcon result;
+		BufferedImage bi = null; // Inicialización del buffer
+		try {
+			bi = ImageIO.read(new File(path)); // Abre la imagen
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		result = new ImageIcon(bi.getScaledInstance(length, height, Image.SCALE_DEFAULT)); // La convierte en ImageIcon con un tamaño
+		
+		return result;
+	}
+	
+	
 	public Portada() {
 		
 		setTitle("BiblioTech - Portada");
@@ -37,52 +53,23 @@ public class Portada extends JFrame {
 		
 		
 		// PROCESO DE ABRIR LAS IMAGENES Y ASIGNARLAS A SUS LABELS:
-		
 		// Imagen del usuario
-		BufferedImage biUsuario = null;
-		try {
-			biUsuario = ImageIO.read(new File("resources/images/usuario.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		ImageIcon usuarioIcon = new ImageIcon(biUsuario.getScaledInstance(80, 80, Image.SCALE_DEFAULT)); // Cambia el tamaño
+		ImageIcon usuarioIcon = loadImage("resources/images/usuario.png", 80, 80);
 		JLabel usuarioLabel = new JLabel();
 		usuarioLabel.setIcon(usuarioIcon);
 	
 		// Imagen del libro
-		BufferedImage biLibro = null;
-		try {
-			biLibro = ImageIO.read(new File("resources/images/libro.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		ImageIcon libroIcon = new ImageIcon(biLibro.getScaledInstance(150, 150, Image.SCALE_DEFAULT)); // Cambia el tamaño
+		ImageIcon libroIcon = loadImage("resources/images/libro.png", 150, 150);
 		JLabel libroLabel = new JLabel();
 		libroLabel.setIcon(libroIcon);
 		
 		// Imagen de las salas
-		BufferedImage biSalas = null;
-		try {
-			biSalas = ImageIO.read(new File("resources/images/salas.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		ImageIcon salasIcon = new ImageIcon(biSalas.getScaledInstance(150, 150, Image.SCALE_DEFAULT)); // Cambia el tamaño
+		ImageIcon salasIcon = loadImage("resources/images/salas.png", 150, 150);
 		JLabel salasLabel = new JLabel();
 		salasLabel.setIcon(salasIcon);
 		
 		// Imagen de los eventos
-		BufferedImage biEventos = null;
-		try {
-			biEventos = ImageIO.read(new File("resources/images/eventos.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		ImageIcon eventosIcon = new ImageIcon(biEventos.getScaledInstance(150, 150, Image.SCALE_DEFAULT)); // Cambia el tamaño
+		ImageIcon eventosIcon = loadImage("resources/images/eventos.png", 150, 150);
 		JLabel eventosLabel = new JLabel();
 		eventosLabel.setIcon(eventosIcon);	
 		
