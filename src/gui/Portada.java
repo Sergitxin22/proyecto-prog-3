@@ -2,19 +2,15 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import utils.Utils;
 
 public class Portada extends JFrame {
 
@@ -22,21 +18,6 @@ public class Portada extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-		
-	public ImageIcon loadImage(String path, int length, int height) {
-		ImageIcon result;
-		BufferedImage bi = null; // Inicialización del buffer
-		try {
-			bi = ImageIO.read(new File(path)); // Abre la imagen
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		result = new ImageIcon(bi.getScaledInstance(length, height, Image.SCALE_DEFAULT)); // La convierte en ImageIcon con un tamaño
-		
-		return result;
-	}
 	
 	
 	public Portada() {
@@ -54,22 +35,22 @@ public class Portada extends JFrame {
 		
 		// PROCESO DE ABRIR LAS IMAGENES Y ASIGNARLAS A SUS LABELS:
 		// Imagen del usuario
-		ImageIcon usuarioIcon = loadImage("resources/images/usuario.png", 80, 80);
+		ImageIcon usuarioIcon = Utils.loadImage("usuario.png", 80, 80);
 		JLabel usuarioLabel = new JLabel();
 		usuarioLabel.setIcon(usuarioIcon);
 	
 		// Imagen del libro
-		ImageIcon libroIcon = loadImage("resources/images/libro.png", 150, 150);
+		ImageIcon libroIcon = Utils.loadImage("libro.png", 150, 150);
 		JLabel libroLabel = new JLabel();
 		libroLabel.setIcon(libroIcon);
 		
 		// Imagen de las salas
-		ImageIcon salasIcon = loadImage("resources/images/salas.png", 150, 150);
+		ImageIcon salasIcon = Utils.loadImage("salas.png", 150, 150);
 		JLabel salasLabel = new JLabel();
 		salasLabel.setIcon(salasIcon);
 		
 		// Imagen de los eventos
-		ImageIcon eventosIcon = loadImage("resources/images/eventos.png", 150, 150);
+		ImageIcon eventosIcon = Utils.loadImage("eventos.png", 150, 150);
 		JLabel eventosLabel = new JLabel();
 		eventosLabel.setIcon(eventosIcon);	
 		
@@ -145,5 +126,4 @@ public class Portada extends JFrame {
 		
 		setVisible(true);
 	}
-
 }
