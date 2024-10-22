@@ -30,7 +30,9 @@ public class VentanaBibliotecaNoLogueado extends JFrame {
 	public VentanaBibliotecaNoLogueado() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("Bibliotech - No logueado");
+		setExtendedState(MAXIMIZED_BOTH);
 		setSize(640,480);
+		setLocationRelativeTo(null);
 		
 		// Panel superior que contendrá el Header
         JPanel panelSuperior = new Header(Seccion.BIBLIOTECA, null);
