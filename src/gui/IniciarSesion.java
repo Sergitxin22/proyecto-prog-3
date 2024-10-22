@@ -92,5 +92,11 @@ public class IniciarSesion extends JFrame {
 		
 		setVisible(true);
 	}
+	
+	public static void main(String[] args) {
+		IniciarSesion ventanaIniciarSesion= new IniciarSesion();
+		
+		
+	}
 
 }
