@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 public class Utils {
-	public static ImageIcon loadImage(String imageName, int length, int height) {
+	public static ImageIcon loadImage(String imageName, int width, int height) {
 		
 		/*
 		 * Método que recibe una dirección de una imagen dentro de resources/images/
@@ -24,7 +24,7 @@ public class Utils {
 			e.printStackTrace();
 		}
 		
-		result = new ImageIcon(bi.getScaledInstance(length, height, Image.SCALE_DEFAULT)); // La convierte en ImageIcon con un tamaño
+		result = new ImageIcon(bi.getScaledInstance(width, height, Image.SCALE_DEFAULT)); // La convierte en ImageIcon con un tamaño
 		
 		return result;
 	}	
