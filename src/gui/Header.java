@@ -10,10 +10,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+
 import BiblioTech.Admin;
 import BiblioTech.Cliente;
 import BiblioTech.Seccion;
 import BiblioTech.Usuario;
+import utils.Utils;
 
 public class Header extends JPanel {
 
@@ -50,7 +52,8 @@ public class Header extends JPanel {
         
         nombreIconoSeccion = "libros.png"; // TODO: quitar cuando tenga los iconos
         
-        ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("images/" + nombreIconoSeccion));
+        ImageIcon icon = Utils.loadImage(nombreIconoSeccion,48,48);
+        
 
         JLabel iconLabel = new JLabel(icon);
         JLabel textLabel = new JLabel("BiblioTech"); // Texto al lado del icono
@@ -92,7 +95,7 @@ public class Header extends JPanel {
         
         nombreIconoUsuario = "user.png"; // TODO: quitar cuando tenga los iconos
         
-        ImageIcon icon2 = new ImageIcon(getClass().getClassLoader().getResource("images/" + nombreIconoUsuario));
+        ImageIcon icon2 = Utils.loadImage(nombreIconoUsuario, 48, 48);
 
         JLabel iconLabel2 = new JLabel(icon2);
         panelDerecho.add(iconLabel2);
