@@ -23,6 +23,7 @@ public class Header extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -1102784202811827191L;
+	private static boolean tieneImagen = true; 
 
 	public Header(Seccion seccion, Usuario usuario) {
 		setLayout(new BorderLayout());
@@ -35,25 +36,14 @@ public class Header extends JPanel {
         // Crear el icono
         String nombreIconoSeccion = "";
         
-        switch (seccion) {
-		case BIBLIOTECA:
-			nombreIconoSeccion = "biblioteca.png";
-			break;
-		case EVENTOS:
-			nombreIconoSeccion = "eventos.png";
-			break;
-		case SALAS_DE_ESTUDIO:
-			nombreIconoSeccion = "salasDeEstudio.png";
-			break;
-		default:
-			nombreIconoSeccion = "libros.png";
-			break;
-		}
-        
+
+        // Icono de la sección        
+        String nombreIconoSeccion = obtenerNombreImagenSeccion(seccion);
         nombreIconoSeccion = "libros.png"; // TODO: quitar cuando tenga los iconos
+        System.out.println(nombreIconoSeccion);
         
-        ImageIcon icon = Utils.loadImage(nombreIconoSeccion,48,48);
-        
+        ImageIcon iconoSeccion = tieneImagen ? Utils.loadImage(nombreIconoSeccion,48,48) : new ImageIcon();
+        JLabel iconLabel = new JLabel(iconoSeccion);
 
         JLabel iconLabel = new JLabel(icon);
         JLabel textLabel = new JLabel("BiblioTech"); // Texto al lado del icono
@@ -66,6 +56,9 @@ public class Header extends JPanel {
                 // Aquí puedes agregar la lógica que necesites
             }
         });
+        
+        // Texto al lado del icono
+        JLabel textLabel = new JLabel("BiblioTech");
         
         // Añadir mouse listener para el texto
         textLabel.addMouseListener(new MouseAdapter() {
@@ -83,26 +76,44 @@ public class Header extends JPanel {
         JPanel panelDerecho = new JPanel();
         panelDerecho.setBackground(Color.DARK_GRAY);
         
-        String nombreIconoUsuario = "";
-        
-        if (usuario instanceof Cliente) {
-        	nombreIconoUsuario = "user.png";
-		} else if (usuario instanceof Admin) {
-			nombreIconoUsuario = "adminUser.png";
-		} else {
-			nombreIconoUsuario = "noUser.png";
-		}
-        
+        String nombreIconoUsuario = obtenerNombreImagenUsuario(usuario);        
         nombreIconoUsuario = "user.png"; // TODO: quitar cuando tenga los iconos
         
         ImageIcon icon2 = Utils.loadImage(nombreIconoUsuario, 48, 48);
-
         JLabel iconLabel2 = new JLabel(icon2);
         panelDerecho.add(iconLabel2);
         
         // Agregar los paneles izquierdo y derecho al Header
         add(panelIzquierdo, BorderLayout.WEST);
         add(panelDerecho, BorderLayout.EAST);
+	}
+	
+	private String obtenerNombreImagenSeccion(Seccion seccion) {
+		if (seccion == null) {
+			tieneImagen = false;
+			return "";
+		};
+		
+		switch (seccion) {
+		case BIBLIOTECA:
+			return "libro.png";
+		case EVENTOS:
+			return "eventos.png";
+		case SALAS_DE_ESTUDIO:
+			return "salasDeEstudio.png";
+		default:
+			return "salas.png";
+		}
+	}
+	
+	private String obtenerNombreImagenUsuario(Usuario usuario) {
+		if (usuario instanceof Cliente) {
+        	return "user.png";
+		} else if (usuario instanceof Admin) {
+			return "adminUser.png";
+		} else {
+			return "noUser.png";
+		}
 	}
 
 }
