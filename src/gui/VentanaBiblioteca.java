@@ -28,14 +28,14 @@ import BiblioTech.Seccion;
 import BiblioTech.Usuario;
 import utils.Utils;
 
-public class VentanaBibliotecaNoLogueado extends JFrame {
+public class VentanaBiblioteca extends JFrame {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public VentanaBibliotecaNoLogueado(Usuario usuario) {
+	public VentanaBiblioteca(Usuario usuario) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		if (usuario == null) {
 			setTitle("Bibliotech - No logueado");			
@@ -166,7 +166,7 @@ public class VentanaBibliotecaNoLogueado extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		VentanaBibliotecaNoLogueado ventana = new VentanaBibliotecaNoLogueado(null);
+		VentanaBiblioteca ventana = new VentanaBiblioteca(null);
 //		VentanaBibliotecaNoLogueado ventana2 = new VentanaBibliotecaNoLogueado(new Cliente());
 //		VentanaBibliotecaNoLogueado ventana3 = new VentanaBibliotecaNoLogueado(new Admin());
 	}
