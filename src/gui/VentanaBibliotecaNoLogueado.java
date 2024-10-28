@@ -19,6 +19,7 @@ import javax.swing.event.PopupMenuListener;
 
 import BiblioTech.MetodosDeOrdenamiento;
 import BiblioTech.Seccion;
+import BiblioTech.Usuario;
 
 public class VentanaBibliotecaNoLogueado extends JFrame {
 	
@@ -27,15 +28,20 @@ public class VentanaBibliotecaNoLogueado extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public VentanaBibliotecaNoLogueado() {
+	public VentanaBibliotecaNoLogueado(Usuario usuario) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setTitle("Bibliotech - No logueado");
+		if (usuario == null) {
+			setTitle("Bibliotech - No logueado");			
+		} else {			
+			setTitle("Bibliotech - logueado" + usuario.getClass().toString());
+		}
+
 		setExtendedState(MAXIMIZED_BOTH);
 		setSize(640,480);
 		setLocationRelativeTo(null);
 		
 		// Panel superior que contendrá el Header
-        JPanel panelSuperior = new Header(Seccion.BIBLIOTECA, null);
+        JPanel panelSuperior = new Header(Seccion.BIBLIOTECA, usuario);
         
         // Agregar panel superior al marco principal
         add(panelSuperior, BorderLayout.NORTH);
@@ -121,7 +127,9 @@ public class VentanaBibliotecaNoLogueado extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		VentanaBibliotecaNoLogueado ventana = new VentanaBibliotecaNoLogueado();
+		VentanaBibliotecaNoLogueado ventana = new VentanaBibliotecaNoLogueado(null);
+//		VentanaBibliotecaNoLogueado ventana2 = new VentanaBibliotecaNoLogueado(new Cliente());
+//		VentanaBibliotecaNoLogueado ventana3 = new VentanaBibliotecaNoLogueado(new Admin());
 	}
 
 }
