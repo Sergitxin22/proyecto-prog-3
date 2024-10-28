@@ -2,14 +2,15 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 
 import BiblioTech.Admin;
 import BiblioTech.Cliente;
@@ -27,15 +28,16 @@ public class Header extends JPanel {
 
 	public Header(Seccion seccion, Usuario usuario) {
 		setLayout(new BorderLayout());
-        setBackground(Color.GRAY);
+//        setBackground(Color.GRAY);
+//        setBorder(new EmptyBorder(new Insets(0, 20, 0, 20)));
         
         // Primer panel (izquierdo)
-        JPanel panelIzquierdo = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panelIzquierdo.setBackground(Color.LIGHT_GRAY);
+        JPanel panelIzquierdo = new JPanel(new GridBagLayout());
+        panelIzquierdo.setBackground(Color.PINK);
         
-        // Crear el icono
-        String nombreIconoSeccion = "";
-        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(0, 0, 0, 15); // Margen entre componentes (icono y texto)
+        gbc.anchor = GridBagConstraints.CENTER; // Centrar verticalmente y horizontalmente        
 
         // Icono de la sección        
         String nombreIconoSeccion = obtenerNombreImagenSeccion(seccion);
@@ -44,9 +46,6 @@ public class Header extends JPanel {
         
         ImageIcon iconoSeccion = tieneImagen ? Utils.loadImage(nombreIconoSeccion,48,48) : new ImageIcon();
         JLabel iconLabel = new JLabel(iconoSeccion);
-
-        JLabel iconLabel = new JLabel(icon);
-        JLabel textLabel = new JLabel("BiblioTech"); // Texto al lado del icono
         
         // Añadir mouse listener para el ícono
         iconLabel.addMouseListener(new MouseAdapter() {
@@ -68,9 +67,14 @@ public class Header extends JPanel {
                 // Aquí puedes agregar la lógica que necesites
             }
         });
-
-        panelIzquierdo.add(iconLabel);
-        panelIzquierdo.add(textLabel);
+        
+        if (tieneImagen) {
+            panelIzquierdo.add(iconLabel, gbc);
+        } else {
+        	gbc.insets = new Insets(0, 15, 0, 15);
+        }
+        gbc.gridx = 1; // Segunda columna
+        panelIzquierdo.add(textLabel, gbc);
         
         // Segundo panel (derecho)
         JPanel panelDerecho = new JPanel();
