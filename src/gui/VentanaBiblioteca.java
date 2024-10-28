@@ -23,6 +23,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import BiblioTech.Admin;
+import BiblioTech.Cliente;
 import BiblioTech.MetodosDeOrdenamiento;
 import BiblioTech.Seccion;
 import BiblioTech.Usuario;
@@ -167,8 +168,8 @@ public class VentanaBiblioteca extends JFrame {
 
 	public static void main(String[] args) {
 		VentanaBiblioteca ventana = new VentanaBiblioteca(null);
-//		VentanaBibliotecaNoLogueado ventana2 = new VentanaBibliotecaNoLogueado(new Cliente());
-//		VentanaBibliotecaNoLogueado ventana3 = new VentanaBibliotecaNoLogueado(new Admin());
+//		VentanaBiblioteca ventana2 = new VentanaBiblioteca(new Cliente());
+//		VentanaBiblioteca ventana3 = new VentanaBiblioteca(new Admin());
 	}
 
 }
