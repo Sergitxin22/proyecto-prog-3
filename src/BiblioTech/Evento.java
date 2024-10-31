@@ -5,9 +5,18 @@ import java.util.Objects;
 
 public class Evento {
 
+	private String titulo;
 	private TipoEvento tipoEvento;
 	private ArrayList<Cliente> asistentes;
 	private SalaEventos sala;
+	
+	public String getTitulo() {
+		return titulo;	
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
 	
 	public TipoEvento getTipoEvento() {
 		return tipoEvento;	
@@ -33,8 +42,9 @@ public class Evento {
 		this.sala = sala;
 	}
 	
-	public Evento(TipoEvento tipoEvento, ArrayList<Cliente> asistentes, SalaEventos sala) {
+	public Evento(String titulo, TipoEvento tipoEvento, ArrayList<Cliente> asistentes, SalaEventos sala) {
 		super();
+		this.titulo = titulo;
 		this.tipoEvento = tipoEvento;
 		this.asistentes = asistentes;
 		this.sala = sala;
@@ -42,6 +52,7 @@ public class Evento {
 	
 	public Evento() {
 		super();
+		this.titulo = "";
 		this.tipoEvento = null;
 		this.asistentes = new ArrayList<>();
 		this.sala = new SalaEventos();

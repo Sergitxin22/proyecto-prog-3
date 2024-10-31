@@ -2,14 +2,21 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
 import java.awt.Font;
 import java.awt.GridLayout;
+
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import BiblioTech.Admin;
+import BiblioTech.Cliente;
+import BiblioTech.Usuario;
 import utils.Utils;
 
 public class Portada extends JFrame {
@@ -20,9 +27,10 @@ public class Portada extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	
-	public Portada() {
+	public Portada(Usuario usuario) {
 		
 		setTitle("BiblioTech - Portada");
+		setSize(640, 480);
 		setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiza la ventana
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
@@ -35,12 +43,20 @@ public class Portada extends JFrame {
 		
 		// PROCESO DE ABRIR LAS IMAGENES Y ASIGNARLAS A SUS LABELS:
 		// Imagen del usuario
-		ImageIcon usuarioIcon = Utils.loadImage("usuario.png", 80, 80);
+		ImageIcon usuarioIcon = null;
+		if (usuario instanceof Admin) {
+			usuarioIcon = Utils.loadImage("adminUser.png", 80, 80);
+		} else if (usuario instanceof Cliente) {
+			usuarioIcon = Utils.loadImage("user.png", 80, 80);
+		} else {
+			usuarioIcon = Utils.loadImage("noUser.png", 80, 80);
+		}
+		
 		JLabel usuarioLabel = new JLabel();
 		usuarioLabel.setIcon(usuarioIcon);
 	
 		// Imagen del libro
-		ImageIcon libroIcon = Utils.loadImage("libro.png", 150, 150);
+		ImageIcon libroIcon = Utils.loadImage("libros.png", 150, 150);
 		JLabel libroLabel = new JLabel();
 		libroLabel.setIcon(libroIcon);
 		
@@ -123,7 +139,10 @@ public class Portada extends JFrame {
 		mid.setBorder(new EmptyBorder(250, 0, 0, 0));
 		add(mid, BorderLayout.CENTER);
 		
-		
 		setVisible(true);
+	}
+	
+	public static void main(String[] args) {
+		new Portada(null);
 	}
 }
