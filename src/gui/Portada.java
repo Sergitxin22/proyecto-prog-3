@@ -30,8 +30,8 @@ public class Portada extends JFrame {
 	public Portada(Usuario usuario) {
 		
 		setTitle("BiblioTech - Portada");
-		setSize(640, 480);
-		setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiza la ventana
+		setSize(1280, 720);
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		
@@ -74,10 +74,10 @@ public class Portada extends JFrame {
 		// PANEL SUPERIOR
 		bibliotechLabel.setFont(new Font("Verdana", Font.PLAIN, 72));
 		
-		topUsuario.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		topUsuario.setLayout(new BorderLayout());
 		topUsuario.add(usuarioLabel);
 		topTitulo.add(bibliotechLabel);
-		topTitulo.setBorder(new EmptyBorder(0, 500, 0, 450));
+		topTitulo.setBorder(new EmptyBorder(0, 300, 0, 300));
 		
 		top.add(topTitulo);
 		top.add(topUsuario, BorderLayout.EAST);
@@ -144,5 +144,6 @@ public class Portada extends JFrame {
 	
 	public static void main(String[] args) {
 		new Portada(null);
+		
 	}
 }
