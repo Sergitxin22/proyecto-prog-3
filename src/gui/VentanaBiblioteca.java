@@ -56,11 +56,9 @@ public class VentanaBiblioteca extends JFrame {
 		
 		// Panel inferior
 		JPanel panelContenido = new JPanel(new BorderLayout());
-		panelContenido.setBackground(Color.green);
 		
 		JPanel subPanelContenido1 = new JPanel(new BorderLayout());
 		panelContenido.add(subPanelContenido1, BorderLayout.NORTH);
-		subPanelContenido1.setBackground(Color.blue);
 		
 		MetodosDeOrdenamiento[] array = new MetodosDeOrdenamiento[3];
 		int contador = 0;
@@ -74,7 +72,6 @@ public class VentanaBiblioteca extends JFrame {
 		ordenar.insertItemAt("Ordenar", 0);
 		ordenar.setSelectedIndex(0);
 		subPanelContenido1.add(ordenar, BorderLayout.EAST);
-		ordenar.setBackground(Color.pink);
 		ordenar.addPopupMenuListener(new PopupMenuListener() {
 			
 			@Override
@@ -116,7 +113,6 @@ public class VentanaBiblioteca extends JFrame {
 			}
 		});
 		subPanelContenido1.add(buscador, BorderLayout.CENTER);
-		buscador.setBackground(Color.red);
 		
 		// Añadir libro
 		if (usuario instanceof Admin) {
@@ -132,8 +128,6 @@ public class VentanaBiblioteca extends JFrame {
 		
 		JScrollPane scrollBar = new JScrollPane(subPanelContenido2);
 		panelContenido.add(scrollBar, BorderLayout.CENTER);
-		
-		scrollBar.setBackground(Color.magenta);
 
 		add(panelContenido, BorderLayout.CENTER);
 		
