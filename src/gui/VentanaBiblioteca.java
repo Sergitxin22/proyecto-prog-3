@@ -121,8 +121,9 @@ public class VentanaBiblioteca extends JFrame {
 		
 		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 4));
 		//subPanelContenido2.setBackground(Color.orange);
-		for (int i = 1; i < 501; i++) {
-			subPanelContenido2.add(new JButton("Libro " + i));
+		for (int i = 1; i < 200; i++) {
+			JPanel panelCentrarLibro = crearPanelLibroCentrado(i);
+			subPanelContenido2.add(panelCentrarLibro);
 		}
 		
 		JScrollPane scrollBar = new JScrollPane(subPanelContenido2);
@@ -133,7 +134,42 @@ public class VentanaBiblioteca extends JFrame {
 		setVisible(true);
 	}
 	
+	private JPanel crearPanelLibroCentrado(int i) {
+		JPanel panelCentrarLibro = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		
+		JPanel panelLibro = new JPanel();
+		panelLibro.setLayout(new BoxLayout(panelLibro,BoxLayout.Y_AXIS));
+		ImageIcon imagenLibro = null;
+		try {
+			imagenLibro = Utils.loadImage("books/big/" + i + ".jpg",98,151);
+		} catch (Exception e) {
+			imagenLibro = Utils.loadImage("books/noImagen.jpg",98,151);
+		}
+        JLabel iconLabel = new JLabel(imagenLibro);
+		panelLibro.add(iconLabel);
+		
+		
+		JLabel tituloLibro = new JLabel("Título "+ i);
+		panelLibro.add(tituloLibro);
+		
+		panelCentrarLibro.add(panelLibro);
+		
+		panelLibro.addMouseListener(new MouseAdapter(){
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JLabel labelTitulo = (JLabel) panelLibro.getComponent(1);
+				String titulo = labelTitulo.getText();
+				System.out.println(titulo);
+				super.mouseClicked(e);
+			}
+			
+		});
+		return panelCentrarLibro;
+	}
+
 	private JPanel createPanelAddLibro() {
+		JPanel panelCentrarLibro = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		JPanel panelAddLibro = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(0, -5, 0, 5); // Margen entre componentes (icono y texto)
