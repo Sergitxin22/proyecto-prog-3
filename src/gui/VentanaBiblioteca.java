@@ -1,7 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -11,8 +11,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,8 +43,7 @@ public class VentanaBiblioteca extends JFrame {
 		} else {			
 			setTitle("Bibliotech - logueado" + usuario.getClass().toString());
 		}
-
-		setExtendedState(MAXIMIZED_BOTH);
+		
 		setSize(640,480);
 		setLocationRelativeTo(null);
 		
@@ -56,11 +55,9 @@ public class VentanaBiblioteca extends JFrame {
 		
 		// Panel inferior
 		JPanel panelContenido = new JPanel(new BorderLayout());
-		panelContenido.setBackground(Color.green);
 		
 		JPanel subPanelContenido1 = new JPanel(new BorderLayout());
 		panelContenido.add(subPanelContenido1, BorderLayout.NORTH);
-		subPanelContenido1.setBackground(Color.blue);
 		
 		MetodosDeOrdenamiento[] array = new MetodosDeOrdenamiento[3];
 		int contador = 0;
@@ -74,7 +71,6 @@ public class VentanaBiblioteca extends JFrame {
 		ordenar.insertItemAt("Ordenar", 0);
 		ordenar.setSelectedIndex(0);
 		subPanelContenido1.add(ordenar, BorderLayout.EAST);
-		ordenar.setBackground(Color.pink);
 		ordenar.addPopupMenuListener(new PopupMenuListener() {
 			
 			@Override
@@ -116,7 +112,6 @@ public class VentanaBiblioteca extends JFrame {
 			}
 		});
 		subPanelContenido1.add(buscador, BorderLayout.CENTER);
-		buscador.setBackground(Color.red);
 		
 		// Añadir libro
 		if (usuario instanceof Admin) {
@@ -126,21 +121,55 @@ public class VentanaBiblioteca extends JFrame {
 		
 		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 4));
 		//subPanelContenido2.setBackground(Color.orange);
-		for (int i = 1; i < 501; i++) {
-			subPanelContenido2.add(new JButton("Libro " + i));
+		for (int i = 1; i < 200; i++) {
+			JPanel panelCentrarLibro = crearPanelLibroCentrado(i);
+			subPanelContenido2.add(panelCentrarLibro);
 		}
 		
 		JScrollPane scrollBar = new JScrollPane(subPanelContenido2);
 		panelContenido.add(scrollBar, BorderLayout.CENTER);
-		
-		scrollBar.setBackground(Color.magenta);
 
 		add(panelContenido, BorderLayout.CENTER);
 		
 		setVisible(true);
 	}
 	
+	private JPanel crearPanelLibroCentrado(int i) {
+		JPanel panelCentrarLibro = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		
+		JPanel panelLibro = new JPanel();
+		panelLibro.setLayout(new BoxLayout(panelLibro,BoxLayout.Y_AXIS));
+		ImageIcon imagenLibro = null;
+		try {
+			imagenLibro = Utils.loadImage("books/big/" + i + ".jpg",98,151);
+		} catch (Exception e) {
+			imagenLibro = Utils.loadImage("books/noImagen.jpg",98,151);
+		}
+        JLabel iconLabel = new JLabel(imagenLibro);
+		panelLibro.add(iconLabel);
+		
+		
+		JLabel tituloLibro = new JLabel("Título "+ i);
+		panelLibro.add(tituloLibro);
+		
+		panelCentrarLibro.add(panelLibro);
+		
+		panelLibro.addMouseListener(new MouseAdapter(){
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JLabel labelTitulo = (JLabel) panelLibro.getComponent(1);
+				String titulo = labelTitulo.getText();
+				System.out.println(titulo);
+				super.mouseClicked(e);
+			}
+			
+		});
+		return panelCentrarLibro;
+	}
+
 	private JPanel createPanelAddLibro() {
+		JPanel panelCentrarLibro = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		JPanel panelAddLibro = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(0, -5, 0, 5); // Margen entre componentes (icono y texto)
