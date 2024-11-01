@@ -43,8 +43,7 @@ public class VentanaBiblioteca extends JFrame {
 		} else {			
 			setTitle("Bibliotech - logueado" + usuario.getClass().toString());
 		}
-
-		setExtendedState(MAXIMIZED_BOTH);
+		
 		setSize(640,480);
 		setLocationRelativeTo(null);
 		
