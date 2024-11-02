@@ -356,7 +356,7 @@ public class InformacionRecurso extends JFrame {
 		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
 		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
 				
-		new InformacionRecurso(libro);
+		new InformacionRecurso(evento);
 		
 	}
 
