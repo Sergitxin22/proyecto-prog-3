@@ -8,6 +8,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import BiblioTech.Admin;
 import BiblioTech.Cliente;
 import BiblioTech.Seccion;
 import BiblioTech.Usuario;
@@ -21,14 +22,17 @@ public class VentanaHistorialUsuario extends JFrame{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public VentanaHistorialUsuario() {
+	public VentanaHistorialUsuario(Usuario usuario) {
+		if (!(usuario instanceof Cliente)) {
+			return ;
+		}
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(640,480);
 		setTitle("BiblioTech - Historial");
 		setLocationRelativeTo(null);
 		
 		//panel arriba
-		JPanel header = new Header(Seccion.BIBLIOTECA, new Cliente());
+		JPanel header = new Header(Seccion.BIBLIOTECA, usuario);
 		add(header,BorderLayout.NORTH);
 		
 		//Panel contenedor
@@ -64,7 +68,7 @@ public class VentanaHistorialUsuario extends JFrame{
 	}
 	
 	public static void main(String[] args) {
-		VentanaHistorialUsuario ventana = new VentanaHistorialUsuario();
+		VentanaHistorialUsuario ventana = new VentanaHistorialUsuario(new Cliente());
 	}
 
 }
