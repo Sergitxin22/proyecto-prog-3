@@ -136,7 +136,7 @@ public class Portada extends JFrame {
 		salasButtonPanel.setBorder(new EmptyBorder(0, 50, 0, 50));
 		eventosButtonPanel.setBorder(new EmptyBorder(0, 50, 0, 50));
 		top.setBorder(new EmptyBorder(50, 50, 0, 0));
-		mid.setBorder(new EmptyBorder(250, 0, 0, 0));
+		mid.setBorder(new EmptyBorder(150, 0, 100, 0));
 		add(mid, BorderLayout.CENTER);
 		
 		setVisible(true);
