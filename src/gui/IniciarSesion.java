@@ -1,4 +1,4 @@
-package gui;
+ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,13 +34,13 @@ public class IniciarSesion extends JFrame {
 		// Texto superior
 		JLabel topText = new JLabel("Iniciar sesión", SwingConstants.CENTER); // Label con texto centrado
 		topText.setFont(new Font("Verdana", Font.BOLD, 32));
-		topText.setBorder(new EmptyBorder(20, 0, 20, 0));
+
 		
 		// Cuerpo de la ventana
-		JPanel body = new JPanel(new GridLayout(4, 1, 0, 0));
-		body.setBorder(new EmptyBorder(50, 100, 0, 100));
+		JPanel body = new JPanel();
+		body.setLayout(new BoxLayout(body, BoxLayout.Y_AXIS));
 		
-		
+			
 		JLabel textUsuarioEmail = new JLabel("Usuario/Email");
 		textUsuarioEmail.setFont(topText.getFont().deriveFont(Font.PLAIN, 20));
 		JLabel textContrasena = new JLabel("Contraseña");
@@ -51,30 +53,29 @@ public class IniciarSesion extends JFrame {
 		tfContrasena.setPreferredSize(new Dimension(125, 25));
 		
 		JPanel tfUsuarioEmailPanel = new JPanel();
-		tfUsuarioEmailPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JPanel tfContrasenaPanel = new JPanel();
-		tfContrasenaPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 	
 		tfUsuarioEmailPanel.add(tfUsuarioEmail);
 		tfContrasenaPanel.add(tfContrasena);
+
 		
-		textContrasena.setForeground(Color.black);
+		textUsuarioEmail.setAlignmentX(CENTER_ALIGNMENT);
+		textContrasena.setAlignmentX(CENTER_ALIGNMENT);
+		tfUsuarioEmail.setAlignmentX(CENTER_ALIGNMENT);
+		tfContrasena.setAlignmentX(CENTER_ALIGNMENT);
 		
 		body.add(textUsuarioEmail);
 		body.add(tfUsuarioEmailPanel);
 		body.add(textContrasena);
 		body.add(tfContrasenaPanel);
 		
-		body.setPreferredSize(new Dimension(20, 20));
-		
-		
 		// Parte baja de la pantalla
 		JButton iniciarSesionButton = new JButton("Iniciar sesión");
-		JLabel noCuentaLabel = new JLabel("¿No tienes cuenta?");
+		JLabel noCuentaLabel = new JLabel("¿No tienes cuenta?", SwingConstants.CENTER);
 		noCuentaLabel.setForeground(Color.blue);
 		
 		JPanel tail = new JPanel(new GridLayout(2, 1, 0, 0));
-		tail.setBorder(new EmptyBorder(50, 0, 0, 0));
+		
 		
 		JPanel iniciarSesionButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		iniciarSesionButtonPanel.add(iniciarSesionButton);
@@ -85,6 +86,9 @@ public class IniciarSesion extends JFrame {
 		tail.add(iniciarSesionButtonPanel);
 		tail.add(noCuentaLabelPanel);
 		
+		topText.setBorder(new EmptyBorder(20, 0, 20, 0));
+		body.setBorder(new EmptyBorder(50, 100, 0, 100));
+		tail.setBorder(new EmptyBorder(50, 0, 0, 0));
 		
 		add(topText, BorderLayout.NORTH);
 		add(body, BorderLayout.CENTER);
@@ -94,9 +98,7 @@ public class IniciarSesion extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		IniciarSesion ventanaIniciarSesion= new IniciarSesion();
-		
-		
+		new IniciarSesion();	
 	}
 
 }
