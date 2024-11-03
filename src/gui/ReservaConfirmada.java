@@ -2,8 +2,6 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.Image;
-import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -12,16 +10,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import BiblioTech.Evento;
-import BiblioTech.Genero;
+//import BiblioTech.Genero;
 import BiblioTech.Libro;
-import BiblioTech.LibroLectura;
+//import BiblioTech.LibroLectura;
 import BiblioTech.SalaPrivada;
-import BiblioTech.TipoEvento;
-import utils.Utils;
+//import BiblioTech.TipoEvento;
+//import utils.Utils;
 
 public class ReservaConfirmada extends JFrame {
 
@@ -164,9 +161,9 @@ public class ReservaConfirmada extends JFrame {
 		
 		// RECURSOS DE PRUEBA
 		
-		Libro libro = new LibroLectura("Harry Potter I", "J.K. Rowling", 443, Utils.loadImage("ejemploLibro.jpg", 112, 182).getImage(), 1, "Harry va a Hogwarts y tal",
-				null, Genero.FANTASIA, 2);
-		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
+//		Libro libro = new LibroLectura("Harry Potter I", "J.K. Rowling", 443, Utils.loadImage("ejemploLibro.jpg", 112, 182).getImage(), 1, "Harry va a Hogwarts y tal",
+//				null, Genero.FANTASIA, 2);
+//		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
 		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
 				
 		new ReservaConfirmada(sala);

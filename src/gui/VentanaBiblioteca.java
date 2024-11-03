@@ -23,7 +23,6 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import BiblioTech.Admin;
-import BiblioTech.Cliente;
 import BiblioTech.MetodosDeOrdenamiento;
 import BiblioTech.Seccion;
 import BiblioTech.Usuario;
@@ -107,7 +106,6 @@ public class VentanaBiblioteca extends JFrame {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					System.out.println(buscador.getText());
 					//recargar pagina con la lista filtrada
-					
 				}
 			}
 		});
@@ -169,7 +167,6 @@ public class VentanaBiblioteca extends JFrame {
 	}
 
 	private JPanel createPanelAddLibro() {
-		JPanel panelCentrarLibro = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		JPanel panelAddLibro = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(0, -5, 0, 5); // Margen entre componentes (icono y texto)
@@ -196,7 +193,7 @@ public class VentanaBiblioteca extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		VentanaBiblioteca ventana = new VentanaBiblioteca(null);
+		new VentanaBiblioteca(null);
 //		VentanaBiblioteca ventana2 = new VentanaBiblioteca(new Cliente());
 //		VentanaBiblioteca ventana3 = new VentanaBiblioteca(new Admin());
 	}

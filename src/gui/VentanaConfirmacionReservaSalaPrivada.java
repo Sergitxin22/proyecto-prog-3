@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -126,7 +125,12 @@ public class VentanaConfirmacionReservaSalaPrivada extends JFrame{
 	        try {
 	           formateadorMascara = new MaskFormatter("##/##/####") {
 
-	                // este método convierte la cadena de texto que introduce el usuario
+	                /**
+				 * 
+				 */
+				private static final long serialVersionUID = 4241922993006748419L;
+
+					// este método convierte la cadena de texto que introduce el usuario
 	                // en un objeto Date que será devuelto por el campo de texto cuando
 	                // se llame al método getValue
 	                @Override
@@ -178,7 +182,7 @@ public class VentanaConfirmacionReservaSalaPrivada extends JFrame{
 	}
 	
 	public static void main(String[] args) {
-		VentanaConfirmacionReservaSalaPrivada ventana = new VentanaConfirmacionReservaSalaPrivada();
+		new VentanaConfirmacionReservaSalaPrivada();
 	}
 
 }

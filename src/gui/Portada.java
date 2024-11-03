@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,14 +18,13 @@ import BiblioTech.Cliente;
 import BiblioTech.Usuario;
 import utils.Utils;
 
-public class Portada extends JFrame {
-
+public class Portada extends JFrame {	
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	
-	
+	private static final long serialVersionUID = -7861052196761464371L;
+
 	public Portada(Usuario usuario) {
 		
 		setTitle("BiblioTech - Portada");
