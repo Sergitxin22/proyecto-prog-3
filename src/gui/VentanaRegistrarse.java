@@ -50,7 +50,7 @@ public class VentanaRegistrarse extends JFrame {
 		JLabel textContrasena = new JLabel("Contraseña", SwingConstants.CENTER);
 		textContrasena.setFont(topText.getFont().deriveFont(Font.PLAIN, 20));
 		
-		JLabel textRepetirContrasenia = new JLabel("Contraseña", SwingConstants.CENTER);
+		JLabel textRepetirContrasenia = new JLabel("Repetir contraseña", SwingConstants.CENTER);
 		textRepetirContrasenia.setFont(topText.getFont().deriveFont(Font.PLAIN, 20));
 		
 			
