@@ -25,7 +25,16 @@ import utils.Utils;
 
 public class ReservaConfirmada extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
 	public void setMainWindowProperties() {
+		
+		// Método que recoge las propiedades en común de los constructores de esta ventana
+		
 		setTitle("Reserva confirmada");
 		setSize(600, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -43,46 +52,52 @@ public class ReservaConfirmada extends JFrame {
 		
 		setMainWindowProperties();
 		
+		// Panel donde se muestra la información del libro
 		JPanel bookPanel = new JPanel();
 		bookPanel.setLayout(new BoxLayout(bookPanel, BoxLayout.Y_AXIS));
+		
 		JLabel bookImageLabel = new JLabel();
 		bookImageLabel.setIcon(new ImageIcon(libro.getFoto()));
-		JLabel bookLabel = new JLabel(libro.getTitulo(), SwingConstants.CENTER);
-		JPanel titleCenterLabel = new JPanel();
-		bookLabel.setFont(new Font("Verdana", Font.PLAIN, 16));
-		titleCenterLabel.add(bookLabel);
 		
-		int codigo = (int) (Math.random() * 1000) + 1;
+		JLabel bookTitleLabel = new JLabel(libro.getTitulo());
+		bookTitleLabel.setFont(new Font("Verdana", Font.PLAIN, 16));
+		
+		// Panel donde se muestra la información de la reserva
 		JPanel reservaPanel = new JPanel();
 		reservaPanel.setLayout(new BoxLayout(reservaPanel, BoxLayout.Y_AXIS));
+		
+		int codigo = (int) (Math.random() * 1000) + 1;
+		
 		JLabel codigoReservaLabel = new JLabel("Código de reserva");
-		codigoReservaLabel.setBorder(new EmptyBorder(0, 0, 50, 0));
-		JLabel codigoLabel = new JLabel(Integer.toString(codigo), SwingConstants.CENTER);
-		
-		JPanel codigoCenterLabel = new JPanel();
-		codigoCenterLabel.add(codigoLabel);
-		
+		JLabel codigoLabel = new JLabel(Integer.toString(codigo));
 		
 		reservaPanel.add(codigoReservaLabel);
-		reservaPanel.add(codigoCenterLabel);
+		reservaPanel.add(codigoLabel);
+		
+		// Alineación al centro de los labels
+		bookImageLabel.setAlignmentX(CENTER_ALIGNMENT);
+		bookTitleLabel.setAlignmentX(CENTER_ALIGNMENT);
+		codigoReservaLabel.setAlignmentX(CENTER_ALIGNMENT);
+		codigoLabel.setAlignmentX(CENTER_ALIGNMENT);
 		
 		bookPanel.add(bookImageLabel);
-		bookPanel.add(titleCenterLabel);
+		bookPanel.add(bookTitleLabel);
 		
-		reservaPanel.setBorder(new EmptyBorder(100, 30, 30, 30));
-		
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.add(new JButton("Volver"));
+		// Espaciado entre paneles
+		codigoReservaLabel.setBorder(new EmptyBorder(0, 0, 70, 0));
+		reservaPanel.setBorder(new EmptyBorder(70, 0, 0, 0));
+		bookPanel.setBorder(new EmptyBorder(30, 100, 0, 0));
 		
 		add(bookPanel, BorderLayout.WEST);
 		add(reservaPanel, BorderLayout.CENTER);
-		add(buttonPanel, BorderLayout.SOUTH);
-		pack();
+		add(new JButton("Volver"), BorderLayout.SOUTH);
 		setVisible(true);
 	}
 	
 	public ReservaConfirmada(Evento evento) {
+		
 		setMainWindowProperties();
+		
 		JPanel reservaPanel = new JPanel();
 		reservaPanel.setLayout(new BoxLayout(reservaPanel, BoxLayout.Y_AXIS));
 		
@@ -99,6 +114,7 @@ public class ReservaConfirmada extends JFrame {
 		
 		codigoLabel.setFont(eventTitleLabel.getFont());
 		eventTitleLabel.setBorder(new EmptyBorder(10, 0, 10, 0));
+
 		
 		reservaPanel.add(eventTitleLabelCenterPanel);
 		reservaPanel.add(codigoLabelCenterPanel);
@@ -145,8 +161,11 @@ public class ReservaConfirmada extends JFrame {
 
 	
 	public static void main(String[] args) {
-		Libro libro = new LibroLectura("Harry Potter I", "J.K. Rowling", 443, Utils.loadImage("ejemploLibro.jpg", 225, 364).getImage(), 1, "Harry va a Hogwarts y tal",
-				"Esto está mal", Genero.FANTASIA, 2);
+		
+		// RECURSOS DE PRUEBA
+		
+		Libro libro = new LibroLectura("Harry Potter I", "J.K. Rowling", 443, Utils.loadImage("ejemploLibro.jpg", 112, 182).getImage(), 1, "Harry va a Hogwarts y tal",
+				null, Genero.FANTASIA, 2);
 		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
 		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
 				
