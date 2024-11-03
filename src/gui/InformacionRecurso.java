@@ -43,8 +43,7 @@ public class InformacionRecurso extends JFrame {
 		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setSize(640,480);
+
 		getContentPane().setBackground(Color.WHITE);
 		
 		pCentro = new JPanel();
@@ -71,6 +70,7 @@ public class InformacionRecurso extends JFrame {
 		
 	public InformacionRecurso(Libro libro) {
 		setMainWindowProperties();
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setTitle ("BiblioTech - Harry Potter 1 (No Logueado)");
 		//PANEL OESTE
 		pOeste.setLayout(new BoxLayout(pOeste, BoxLayout.Y_AXIS));
@@ -216,6 +216,7 @@ public class InformacionRecurso extends JFrame {
 	
 	public InformacionRecurso(Sala sala) {
 		setMainWindowProperties();
+		setSize(640,480);
 	    setTitle("Sala " + Integer.toString(sala.getId()) );
 	    
 	    JPanel panelPrincipal = new JPanel();
@@ -279,7 +280,7 @@ public class InformacionRecurso extends JFrame {
     public InformacionRecurso(Evento evento) {
         
     	setMainWindowProperties();
-    	
+		setSize(1280,720);
     	setTitle("Evento " + evento.getTitulo() );
 	    
 	    JPanel panelPrincipal = new JPanel();
@@ -352,7 +353,7 @@ public class InformacionRecurso extends JFrame {
 	
 	public static void main(String[] args) {
 		Libro libro = new LibroLectura("Harry Potter I", "J.K. Rowling", 443, Utils.loadImage("ejemploLibro.jpg", 225, 364).getImage(), 1, "Harry va a Hogwarts y tal",
-				"Esto está mal", Genero.FANTASIA, 2);
+				null, Genero.FANTASIA, 2);
 		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
 		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
 				
