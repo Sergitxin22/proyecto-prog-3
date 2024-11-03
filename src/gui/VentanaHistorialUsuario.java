@@ -36,11 +36,11 @@ public class VentanaHistorialUsuario extends JFrame{
 		add(header,BorderLayout.NORTH);
 		
 		//Panel contenedor
-		String [][] tablaHistorial = new String [200][2];
+		String [][] tablaHistorial = new String [3013][3];
 				
-		for (int i = 0; i < 200; i++) {
+		for (int i = 0; i < 3013; i++) {
 			int numLibro = i+1;
-			String[] libro = {numLibro + ".jpg" , "Descripcion libro " +numLibro};
+			String[] libro = {numLibro + ".jpg" , "Descripcion libro " + numLibro,"Review Libro " + numLibro};
 			tablaHistorial[i] = libro;
 		};
 		
