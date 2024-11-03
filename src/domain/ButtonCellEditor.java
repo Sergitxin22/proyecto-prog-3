@@ -8,6 +8,11 @@ import javax.swing.table.TableCellEditor;
 
 public class ButtonCellEditor extends AbstractCellEditor implements TableCellEditor {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4057221556591726671L;
+
 	@Override
 	public Object getCellEditorValue() {
 		// TODO Auto-generated method stub

@@ -2,17 +2,12 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -20,25 +15,23 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import BiblioTech.Evento;
-import BiblioTech.Genero;
 import BiblioTech.Libro;
-import BiblioTech.LibroLectura;
 import BiblioTech.Sala;
-import BiblioTech.SalaPrivada;
-import BiblioTech.Seccion;
 import BiblioTech.TipoEvento;
-import utils.Utils;
 
 
 public class InformacionRecurso extends JFrame {
-	private JPanel pOeste, pNorte, pEste, pSur, pCentro, pHeader;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1647556562163809896L;
+	private JPanel pOeste, pEste, pSur, pCentro, pHeader;
 	public void setMainWindowProperties() {
 		
 		
@@ -323,19 +316,19 @@ public class InformacionRecurso extends JFrame {
 	    
 		setVisible (true);
 	}
-    private void addTextBlock(JPanel panel) {
-    	
-    	
-    	JPanel blockPanel = new JPanel();
-        blockPanel.setLayout(new BoxLayout(blockPanel, BoxLayout.Y_AXIS));
-
-        // Primera línea de texto
-        JLabel parrafoLabel = new JLabel();
-        parrafoLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        blockPanel.add(parrafoLabel);
-		
-	}
+//    private void addTextBlock(JPanel panel) {
+//    	
+//    	
+//    	JPanel blockPanel = new JPanel();
+//        blockPanel.setLayout(new BoxLayout(blockPanel, BoxLayout.Y_AXIS));
+//
+//        // Primera línea de texto
+//        JLabel parrafoLabel = new JLabel();
+//        parrafoLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+//        
+//        blockPanel.add(parrafoLabel);
+//		
+//	}
     
     private void BotonReservar() {
     	
@@ -352,10 +345,10 @@ public class InformacionRecurso extends JFrame {
     }
 	
 	public static void main(String[] args) {
-		Libro libro = new LibroLectura("Harry Potter I", "J.K. Rowling", 443, Utils.loadImage("ejemploLibro.jpg", 225, 364).getImage(), 1, "Harry va a Hogwarts y tal",
-				null, Genero.FANTASIA, 2);
+//		Libro libro = new LibroLectura("Harry Potter I", "J.K. Rowling", 443, Utils.loadImage("ejemploLibro.jpg", 225, 364).getImage(), 1, "Harry va a Hogwarts y tal",
+//				null, Genero.FANTASIA, 2);
 		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
-		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
+//		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
 				
 		new InformacionRecurso(evento);
 		

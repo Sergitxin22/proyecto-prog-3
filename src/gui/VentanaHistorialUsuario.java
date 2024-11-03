@@ -8,7 +8,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import BiblioTech.Admin;
 import BiblioTech.Cliente;
 import BiblioTech.Seccion;
 import BiblioTech.Usuario;
@@ -70,7 +69,7 @@ public class VentanaHistorialUsuario extends JFrame{
 	}
 	
 	public static void main(String[] args) {
-		VentanaHistorialUsuario ventana = new VentanaHistorialUsuario(new Cliente());
+		new VentanaHistorialUsuario(new Cliente());
 	}
 
 }

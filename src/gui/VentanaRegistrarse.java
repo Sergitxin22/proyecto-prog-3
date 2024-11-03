@@ -5,27 +5,22 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 public class VentanaRegistrarse extends JFrame {
-	private JPanel pCentro, pSur, pNorte, pEste, pOeste;
-	private JLabel lblTitulo, lblEmail, lblContraseniaUsuario, lblUsuario;
-	private JTextField txtEmail, txtUsuario;
-	private JPasswordField txtContraseniaUsuario;
-	private JButton btnCierreSesion;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2621741612069651140L;
+	
 	public VentanaRegistrarse() {
 		setTitle("Regístrate");
 		setSize (600, 600);
@@ -120,7 +115,7 @@ public class VentanaRegistrarse extends JFrame {
 		setVisible(true);
 	}
 	public static void main(String[] args) {
-		VentanaRegistrarse v= new VentanaRegistrarse();
+		new VentanaRegistrarse();
 	}
 }
 
