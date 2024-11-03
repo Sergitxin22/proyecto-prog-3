@@ -12,6 +12,7 @@ import BiblioTech.Admin;
 import BiblioTech.Cliente;
 import BiblioTech.Seccion;
 import BiblioTech.Usuario;
+import domain.ButtonCellEditor;
 import domain.ButtonCellRenderer;
 import domain.ImageCellEditor;
 import domain.ImageCellRenderer;
