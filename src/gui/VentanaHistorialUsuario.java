@@ -56,6 +56,7 @@ public class VentanaHistorialUsuario extends JFrame{
 		
 		JTable historial = new JTable(modeloTablaHistorial);
 		historial.setRowHeight(76);
+		historial.setRowSelectionAllowed(false);
 		JScrollPane scrollPane = new JScrollPane(historial);
 		add(scrollPane);
 		
