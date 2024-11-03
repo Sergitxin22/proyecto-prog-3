@@ -33,7 +33,7 @@ public class Header extends JPanel {
         
         // Primer panel (izquierdo)
         JPanel panelIzquierdo = new JPanel(new GridBagLayout());
-        panelIzquierdo.setBackground(Color.PINK);
+//        panelIzquierdo.setBackground(Color.PINK);
         
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 0, 0, 15); // Margen entre componentes (icono y texto)
@@ -77,7 +77,7 @@ public class Header extends JPanel {
         
         // Segundo panel (derecho)
         JPanel panelDerecho = new JPanel();
-        panelDerecho.setBackground(Color.DARK_GRAY);
+//        panelDerecho.setBackground(Color.DARK_GRAY);
         
         String nombreIconoUsuario = obtenerNombreImagenUsuario(usuario);        
         
