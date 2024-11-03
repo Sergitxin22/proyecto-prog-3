@@ -19,11 +19,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 import BiblioTech.Evento;
+//import BiblioTech.Genero;
 import BiblioTech.Libro;
+//import BiblioTech.LibroLectura;
+//import BiblioTech.LibroLectura;
 import BiblioTech.Sala;
+//import BiblioTech.SalaPrivada;
 import BiblioTech.TipoEvento;
+//import utils.Utils;
 
 
 public class InformacionRecurso extends JFrame {
@@ -34,7 +40,8 @@ public class InformacionRecurso extends JFrame {
 	private JPanel pOeste, pEste, pSur, pCentro, pHeader;
 	public void setMainWindowProperties() {
 		
-		
+		setSize(1280, 720);
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		getContentPane().setBackground(Color.WHITE);
@@ -209,7 +216,6 @@ public class InformacionRecurso extends JFrame {
 	
 	public InformacionRecurso(Sala sala) {
 		setMainWindowProperties();
-		setSize(640,480);
 	    setTitle("Sala " + Integer.toString(sala.getId()) );
 	    
 	    JPanel panelPrincipal = new JPanel();
@@ -255,11 +261,16 @@ public class InformacionRecurso extends JFrame {
         
 	    pOeste.add(panelPrincipal);
 	    
+	    
 	    pEste.setLayout(new BorderLayout());
 	    
 	    JButton reservarButton = new JButton("Reservar");
 	    reservarButton.setFont(new Font("Arial", Font.BOLD, 20));
         reservarButton.setPreferredSize(new Dimension(200, 50));
+        
+        pEste.setBorder(new EmptyBorder(0, 0, 10, 15));
+        pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
+
 
 	    pEste.add(reservarButton, BorderLayout.SOUTH);
 
@@ -273,7 +284,6 @@ public class InformacionRecurso extends JFrame {
     public InformacionRecurso(Evento evento) {
         
     	setMainWindowProperties();
-		setSize(1280,720);
     	setTitle("Evento " + evento.getTitulo() );
 	    
 	    JPanel panelPrincipal = new JPanel();
@@ -309,6 +319,7 @@ public class InformacionRecurso extends JFrame {
         // Añadir el panel principal al JFrame
         getContentPane().add(panelPrincipal, BorderLayout.CENTER);
         
+        pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
 	    pOeste.add(panelPrincipal);
     	
     	
@@ -336,9 +347,10 @@ public class InformacionRecurso extends JFrame {
  	    
  	    JButton reservarButton = new JButton("Reservar");
  	    reservarButton.setFont(new Font("Arial", Font.BOLD, 20));
-         reservarButton.setPreferredSize(new Dimension(200, 50));
+        reservarButton.setPreferredSize(new Dimension(200, 50));
 
  	    pEste.add(reservarButton, BorderLayout.SOUTH);
+ 	    pEste.setBorder(new EmptyBorder(0, 0, 10, 15));
 
  	    // Asegúrate de que pEste esté agregado al JFrame
  	    getContentPane().add(pEste, BorderLayout.EAST);
