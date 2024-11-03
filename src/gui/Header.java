@@ -41,7 +41,6 @@ public class Header extends JPanel {
 
         // Icono de la sección        
         String nombreIconoSeccion = obtenerNombreImagenSeccion(seccion);
-        nombreIconoSeccion = "libros.png"; // TODO: quitar cuando tenga los iconos
         System.out.println(nombreIconoSeccion);
         
         ImageIcon iconoSeccion = tieneImagen ? Utils.loadImage(nombreIconoSeccion,48,48) : new ImageIcon();
@@ -81,7 +80,6 @@ public class Header extends JPanel {
         panelDerecho.setBackground(Color.DARK_GRAY);
         
         String nombreIconoUsuario = obtenerNombreImagenUsuario(usuario);        
-        nombreIconoUsuario = "user.png"; // TODO: quitar cuando tenga los iconos
         
         ImageIcon icon2 = Utils.loadImage(nombreIconoUsuario, 48, 48);
         JLabel iconLabel2 = new JLabel(icon2);
@@ -100,7 +98,7 @@ public class Header extends JPanel {
 		
 		switch (seccion) {
 		case BIBLIOTECA:
-			return "libro.png";
+			return "libros.png";
 		case EVENTOS:
 			return "eventos.png";
 		case SALAS_DE_ESTUDIO:
