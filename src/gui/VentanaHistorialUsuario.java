@@ -55,6 +55,9 @@ public class VentanaHistorialUsuario extends JFrame{
 		JScrollPane scrollPane = new JScrollPane(historial);
 		add(scrollPane);
 		
+		historial.getColumnModel().getColumn(0).setCellRenderer(new ImageCellRenderer());
+		historial.getColumnModel().getColumn(0).setCellEditor(new ImageCellEditor());
+		
 		setVisible(true);
 	}
 	
