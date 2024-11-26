@@ -117,7 +117,7 @@ public class VentanaBiblioteca extends JFrame {
 	        subPanelContenido1.add(panelAddLibro, BorderLayout.WEST);
 		}		
 		
-		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 4));
+		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 8));
 		//subPanelContenido2.setBackground(Color.orange);
 		for (int i = 1; i < 200; i++) {
 			JPanel panelCentrarLibro = crearPanelLibroCentrado(i);
