@@ -1,16 +1,17 @@
 package BiblioTech;
 
-import java.awt.Image;
 import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
 
 public class LibroLectura extends Libro {
 	private String sinopsis;
 	private ArrayList<Review> reviews;
-	private Genero genero;
+	private String genero;
 	private int rating;
 	
-	public LibroLectura(String titulo, String autor, int numeroDePaginas, Image foto, int id, String sinopsis,
-			ArrayList<Review> reviews, Genero genero, int rating) {
+	public LibroLectura(String titulo, String autor, int numeroDePaginas, ImageIcon foto, int id, String sinopsis,
+			ArrayList<Review> reviews, String genero, int rating) {
 		super(titulo, autor, numeroDePaginas, foto, id);
 		this.sinopsis = sinopsis;
 		this.reviews = reviews;
@@ -22,7 +23,7 @@ public class LibroLectura extends Libro {
 		super();
 		this.sinopsis = "";
 		this.reviews = new ArrayList<>();
-		this.genero = Genero.CIENCIA_FICCION;
+		this.genero = "";
 		this.rating = 0;
 	}
 	
@@ -43,11 +44,11 @@ public class LibroLectura extends Libro {
 		this.reviews = reviews;
 	}
 
-	public Genero getGenero() {
+	public String getGenero() {
 		return genero;
 	}
 
-	public void setGenero(Genero genero) {
+	public void setGenero(String genero) {
 		this.genero = genero;
 	}
 

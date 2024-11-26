@@ -89,7 +89,7 @@ public class InformacionRecurso extends JFrame {
 		panelimagenLibro.setBackground(Color.WHITE);
 		JLabel imagenDelLibro = new JLabel();
 		imagenDelLibro.setPreferredSize(new Dimension(350,500));
-		ImageIcon imagen = new ImageIcon(libro.getFoto()); 
+		ImageIcon imagen = libro.getFoto(); 
 		
 		//Esacalar imagen 
 		Image img = imagen.getImage();

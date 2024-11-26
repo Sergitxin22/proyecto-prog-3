@@ -10,6 +10,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -23,6 +24,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import BiblioTech.Admin;
+import BiblioTech.Libro;
 import BiblioTech.MetodosDeOrdenamiento;
 import BiblioTech.Seccion;
 import BiblioTech.Usuario;
@@ -43,7 +45,7 @@ public class VentanaBiblioteca extends JFrame {
 			setTitle("Bibliotech - logueado" + usuario.getClass().toString());
 		}
 		
-		setSize(640,480);
+		setSize(1280,720);
 		setLocationRelativeTo(null);
 		
 		// Panel superior que contendrá el Header
@@ -117,11 +119,17 @@ public class VentanaBiblioteca extends JFrame {
 	        subPanelContenido1.add(panelAddLibro, BorderLayout.WEST);
 		}		
 		
-		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 4));
+		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 8));
 		//subPanelContenido2.setBackground(Color.orange);
-		for (int i = 1; i < 200; i++) {
-			JPanel panelCentrarLibro = crearPanelLibroCentrado(i);
+		ArrayList<Libro> listaLibros = Utils.cargarLibros();
+		System.out.println(listaLibros.toString());
+		
+		int contadorLibros = 0;
+		for (Libro libro : listaLibros) {
+			JPanel panelCentrarLibro = crearPanelLibroCentrado(libro);
 			subPanelContenido2.add(panelCentrarLibro);
+			if (contadorLibros >= 30) break;
+			contadorLibros++;
 		}
 		
 		JScrollPane scrollBar = new JScrollPane(subPanelContenido2);
@@ -132,22 +140,28 @@ public class VentanaBiblioteca extends JFrame {
 		setVisible(true);
 	}
 	
-	private JPanel crearPanelLibroCentrado(int i) {
+	private JPanel crearPanelLibroCentrado(Libro libro) {
 		JPanel panelCentrarLibro = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		JPanel panelLibro = new JPanel();
 		panelLibro.setLayout(new BoxLayout(panelLibro,BoxLayout.Y_AXIS));
-		ImageIcon imagenLibro = null;
-		try {
-			imagenLibro = Utils.loadImage("books/big/" + i + ".jpg",98,151);
-		} catch (Exception e) {
-			imagenLibro = Utils.loadImage("books/noImagen.jpg",98,151);
-		}
+		ImageIcon imagenLibro = libro.getFoto();
+//		try {
+//			imagenLibro = Utils.loadImage("books/big/" + libro + ".jpg",98,151);
+//		} catch (Exception e) {
+//			imagenLibro = Utils.loadImage("books/noImagen.jpg",98,151);
+//		}
         JLabel iconLabel = new JLabel(imagenLibro);
 		panelLibro.add(iconLabel);
 		
+		String titulo = libro.getTitulo();
 		
-		JLabel tituloLibro = new JLabel("Título "+ i);
+		if (titulo.length() >= 14) {
+			titulo = libro.getTitulo().substring(0, 14) + "...";
+		}
+		JLabel tituloLibro = new JLabel(titulo);
+
+		panelLibro.setToolTipText(libro.getTitulo());
 		panelLibro.add(tituloLibro);
 		
 		panelCentrarLibro.add(panelLibro);
@@ -157,8 +171,8 @@ public class VentanaBiblioteca extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				JLabel labelTitulo = (JLabel) panelLibro.getComponent(1);
-				String titulo = labelTitulo.getText();
-				System.out.println(titulo);
+				String titulo = labelTitulo.getToolTipText();
+				System.out.println(panelLibro.getToolTipText());
 				super.mouseClicked(e);
 			}
 			
