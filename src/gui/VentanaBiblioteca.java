@@ -11,6 +11,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -37,6 +41,7 @@ public class VentanaBiblioteca extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final ArrayList<Libro> listaLibros = Utils.cargarLibros();
+	private ArrayList<Libro> listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
 	
 	public VentanaBiblioteca(Usuario usuario) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -109,6 +114,11 @@ public class VentanaBiblioteca extends JFrame {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					System.out.println(buscador.getText());
 					//recargar pagina con la lista filtrada
+					List<Libro> listaFiltrada = listaLibrosRenderizada.stream().filter(libro -> libro.getTitulo().contains(buscador.getText())).toList();
+					listaLibrosRenderizada = new ArrayList<Libro>(listaFiltrada);
+					
+					 // Llamar a recargar el panel
+		            recargarPanelContenido(subPanelContenido2, scrollBar);
 				}
 			}
 		});
@@ -123,10 +133,10 @@ public class VentanaBiblioteca extends JFrame {
 		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 8));
 		//subPanelContenido2.setBackground(Color.orange);
 //		ArrayList<Libro> listaLibros = Utils.cargarLibros();
-		System.out.println(listaLibros.toString());
+		System.out.println(listaLibrosRenderizada.toString());
 		
 		int contadorLibros = 0;
-		for (Libro libro : listaLibros) {
+		for (Libro libro : listaLibrosRenderizada) {
 			JPanel panelCentrarLibro = crearPanelLibroCentrado(libro);
 			subPanelContenido2.add(panelCentrarLibro);
 			if (contadorLibros >= 30) break;
@@ -205,6 +215,20 @@ public class VentanaBiblioteca extends JFrame {
 	    gbc.gridx = 1; // Segunda columna
 	    panelAddLibro.add(textLabel, gbc);
 	    return panelAddLibro;
+	}
+	private void recargarPanelContenido(JPanel subPanelContenido2, JScrollPane scrollBar) {
+	    subPanelContenido2.removeAll(); // Eliminar todos los componentes actuales.
+
+	    int contadorLibros = 0;
+	    for (Libro libro : listaLibrosRenderizada) {
+	        JPanel panelCentrarLibro = crearPanelLibroCentrado(libro);
+	        subPanelContenido2.add(panelCentrarLibro);
+	        if (contadorLibros >= 30) break;
+	        contadorLibros++;
+	    }
+
+	    subPanelContenido2.revalidate(); // Informar al layout que actualice la UI.
+	    subPanelContenido2.repaint();   // Redibujar el panel.
 	}
 
 	public static void main(String[] args) {
