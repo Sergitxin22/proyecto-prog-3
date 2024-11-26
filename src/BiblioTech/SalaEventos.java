@@ -10,9 +10,9 @@ public class SalaEventos extends Sala {
 		this.evento = evento;
 	}
 	
-	public SalaEventos() {
+	public SalaEventos(Evento evento) {
 		super();
-		this.evento = new Evento();
+		this.evento = evento;
 	}
 
 	public Evento getEvento() {
