@@ -138,17 +138,17 @@ public class VentanaBiblioteca extends JFrame {
 		setVisible(true);
 	}
 	
-	private JPanel crearPanelLibroCentrado(int i) {
+	private JPanel crearPanelLibroCentrado(Libro libro) {
 		JPanel panelCentrarLibro = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		JPanel panelLibro = new JPanel();
 		panelLibro.setLayout(new BoxLayout(panelLibro,BoxLayout.Y_AXIS));
-		ImageIcon imagenLibro = null;
-		try {
-			imagenLibro = Utils.loadImage("books/big/" + i + ".jpg",98,151);
-		} catch (Exception e) {
-			imagenLibro = Utils.loadImage("books/noImagen.jpg",98,151);
-		}
+		ImageIcon imagenLibro = libro.getFoto();
+//		try {
+//			imagenLibro = Utils.loadImage("books/big/" + libro + ".jpg",98,151);
+//		} catch (Exception e) {
+//			imagenLibro = Utils.loadImage("books/noImagen.jpg",98,151);
+//		}
         JLabel iconLabel = new JLabel(imagenLibro);
 		panelLibro.add(iconLabel);
 		
