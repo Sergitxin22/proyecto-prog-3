@@ -13,7 +13,6 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import BiblioTech.Genero;
 import BiblioTech.Libro;
 import BiblioTech.LibroLectura;
 import utils.Utils;
@@ -39,7 +38,7 @@ public class AñadirReview extends JFrame {
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 		
 		JLabel bookIcon = new JLabel();
-		bookIcon.setIcon(new ImageIcon(libro.getFoto()));
+		bookIcon.setIcon(libro.getFoto());
 		JLabel bookTitle = new JLabel(libro.getTitulo());	
 		
 		bookIcon.setAlignmentX(CENTER_ALIGNMENT);
@@ -94,8 +93,8 @@ public class AñadirReview extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		Libro libro = new LibroLectura("Harry Potter I", "J.K. Rowling", 443, Utils.loadImage("ejemploLibro.jpg", 112, 182).getImage(), 1, "Harry va a Hogwarts y tal",
-				null, Genero.FANTASIA, 2);
+		Libro libro = new LibroLectura("Harry Potter I", "J.K. Rowling", 443, Utils.loadImage("ejemploLibro.jpg", 112, 182), 1, "Harry va a Hogwarts y tal",
+				null, "FANTASIA", 2);
 
 		new AñadirReview(libro);
 	}

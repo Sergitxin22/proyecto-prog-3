@@ -54,7 +54,7 @@ public class ReservaConfirmada extends JFrame {
 		bookPanel.setLayout(new BoxLayout(bookPanel, BoxLayout.Y_AXIS));
 		
 		JLabel bookImageLabel = new JLabel();
-		bookImageLabel.setIcon(new ImageIcon(libro.getFoto()));
+		bookImageLabel.setIcon(libro.getFoto());
 		
 		JLabel bookTitleLabel = new JLabel(libro.getTitulo());
 		bookTitleLabel.setFont(new Font("Verdana", Font.PLAIN, 16));
