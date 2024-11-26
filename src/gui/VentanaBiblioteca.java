@@ -152,8 +152,14 @@ public class VentanaBiblioteca extends JFrame {
         JLabel iconLabel = new JLabel(imagenLibro);
 		panelLibro.add(iconLabel);
 		
+		String titulo = libro.getTitulo();
 		
-		JLabel tituloLibro = new JLabel("Título "+ i);
+		if (titulo.length() >= 14) {
+			titulo = libro.getTitulo().substring(0, 14) + "...";
+		}
+		JLabel tituloLibro = new JLabel(titulo);
+
+		panelLibro.setToolTipText(libro.getTitulo());
 		panelLibro.add(tituloLibro);
 		
 		panelCentrarLibro.add(panelLibro);
