@@ -1,15 +1,15 @@
 package BiblioTech;
 
-import java.awt.Image;
+import javax.swing.ImageIcon;
 
 public abstract class Libro implements Reservable {
 	private String titulo;
 	private String autor;
 	private int numeroDePaginas;
-	private Image foto;
-	private int id;
+	private ImageIcon foto;
+	private long id;
 	
-	public Libro(String titulo, String autor, int numeroDePaginas, Image foto, int id) {
+	public Libro(String titulo, String autor, int numeroDePaginas, ImageIcon foto, long id) {
 		super();
 		this.titulo = titulo;
 		this.autor = autor;
@@ -24,7 +24,7 @@ public abstract class Libro implements Reservable {
 		this.autor = "";
 		this.numeroDePaginas = 0;
 		this.foto = null;
-		this.id = 0;
+		this.id = 0l;
 	}
 
 	public String getTitulo() {
@@ -51,19 +51,19 @@ public abstract class Libro implements Reservable {
 		this.numeroDePaginas = numeroDePaginas;
 	}
 
-	public Image getFoto() {
+	public ImageIcon getFoto() {
 		return foto;
 	}
 
-	public void setFoto(Image foto) {
+	public void setFoto(ImageIcon foto) {
 		this.foto = foto;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

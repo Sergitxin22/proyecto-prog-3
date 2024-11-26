@@ -1,13 +1,13 @@
 package BiblioTech;
 
-import java.awt.Image;
+import javax.swing.ImageIcon;
 
 public class LibroAcademico extends Libro {
 	
 	private String asignatura;
 	private String disciplina;
 	
-	public LibroAcademico(String titulo, String autor, int numeroDePaginas, Image foto, int id, String asignatura,
+	public LibroAcademico(String titulo, String autor, int numeroDePaginas, ImageIcon foto, int id, String asignatura,
 			String disciplina) {
 		super(titulo, autor, numeroDePaginas, foto, id);
 		this.asignatura = asignatura;
