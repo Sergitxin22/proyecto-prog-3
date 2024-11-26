@@ -36,7 +36,8 @@ public class VentanaBiblioteca extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	private final ArrayList<Libro> listaLibros = Utils.cargarLibros();
+	
 	public VentanaBiblioteca(Usuario usuario) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		if (usuario == null) {
@@ -121,7 +122,7 @@ public class VentanaBiblioteca extends JFrame {
 		
 		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 8));
 		//subPanelContenido2.setBackground(Color.orange);
-		ArrayList<Libro> listaLibros = Utils.cargarLibros();
+//		ArrayList<Libro> listaLibros = Utils.cargarLibros();
 		System.out.println(listaLibros.toString());
 		
 		int contadorLibros = 0;
