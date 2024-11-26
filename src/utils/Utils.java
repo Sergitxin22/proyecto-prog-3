@@ -45,7 +45,8 @@ public class Utils {
 		try {
 			sc = new Scanner(f);
 			
-			while (sc.hasNextLine()) {
+			int contador = 0;
+			while (sc.hasNextLine() && contador<35) {
 				String linea = sc.nextLine();
 				String[] datos = linea.split(";");
 				
@@ -67,6 +68,7 @@ public class Utils {
 
 	                LibroLectura libro = new LibroLectura(titulo, autor, numeroDePaginas, foto, numeroDePaginas, sinopsis, reviews, genero, rating);
 	                listaLibros.add(libro);
+	                contador++;
 
 				} catch (Exception e) {
 				    System.err.println("Error al convertir un número en la línea: " + linea);
