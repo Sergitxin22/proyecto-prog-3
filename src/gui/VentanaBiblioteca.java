@@ -10,6 +10,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -23,6 +24,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import BiblioTech.Admin;
+import BiblioTech.Libro;
 import BiblioTech.MetodosDeOrdenamiento;
 import BiblioTech.Seccion;
 import BiblioTech.Usuario;
@@ -169,8 +171,8 @@ public class VentanaBiblioteca extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				JLabel labelTitulo = (JLabel) panelLibro.getComponent(1);
-				String titulo = labelTitulo.getText();
-				System.out.println(titulo);
+				String titulo = labelTitulo.getToolTipText();
+				System.out.println(panelLibro.getToolTipText());
 				super.mouseClicked(e);
 			}
 			
