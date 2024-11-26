@@ -43,7 +43,7 @@ public class VentanaBiblioteca extends JFrame {
 			setTitle("Bibliotech - logueado" + usuario.getClass().toString());
 		}
 		
-		setSize(640,480);
+		setSize(1280,720);
 		setLocationRelativeTo(null);
 		
 		// Panel superior que contendrá el Header
