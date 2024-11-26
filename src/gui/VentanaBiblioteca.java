@@ -119,9 +119,15 @@ public class VentanaBiblioteca extends JFrame {
 		
 		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 8));
 		//subPanelContenido2.setBackground(Color.orange);
-		for (int i = 1; i < 200; i++) {
-			JPanel panelCentrarLibro = crearPanelLibroCentrado(i);
+		ArrayList<Libro> listaLibros = Utils.cargarLibros();
+		System.out.println(listaLibros.toString());
+		
+		int contadorLibros = 0;
+		for (Libro libro : listaLibros) {
+			JPanel panelCentrarLibro = crearPanelLibroCentrado(libro);
 			subPanelContenido2.add(panelCentrarLibro);
+			if (contadorLibros >= 30) break;
+			contadorLibros++;
 		}
 		
 		JScrollPane scrollBar = new JScrollPane(subPanelContenido2);
