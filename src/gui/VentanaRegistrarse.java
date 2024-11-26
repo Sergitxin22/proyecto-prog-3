@@ -6,11 +6,11 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -52,8 +52,8 @@ public class VentanaRegistrarse extends JFrame {
 		
 		JTextField tfNombre = new JTextField();
 		JTextField tfUsuarioEmail = new JTextField();
-		JTextField tfContrasena = new JTextField();
-		JTextField tfRepetirContrasenia = new JTextField();
+		JPasswordField tfContrasena = new JPasswordField();
+		JPasswordField tfRepetirContrasenia = new JPasswordField();
 		
 		tfNombre.setPreferredSize(new Dimension(125, 25));
 		tfUsuarioEmail.setPreferredSize(new Dimension(125, 25));

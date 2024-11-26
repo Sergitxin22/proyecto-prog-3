@@ -55,7 +55,7 @@ public class Evento {
 		this.titulo = "";
 		this.tipoEvento = null;
 		this.asistentes = new ArrayList<>();
-		this.sala = new SalaEventos();
+		this.sala = null;
 	}
 	
 	@Override

@@ -1,11 +1,16 @@
 package gui;
 
+import BiblioTech.Admin;
+import BiblioTech.Evento;
+import BiblioTech.SalaEventos;
+import BiblioTech.Seccion;
+import BiblioTech.TipoEvento;
+import BiblioTech.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,20 +18,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-
-import BiblioTech.Admin;
-import BiblioTech.Recurso;
-import BiblioTech.Sala;
-import BiblioTech.SalaPrivada;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
 import utils.AddPanel;
-
 
 // BASADO EN EL CÓDIGO DE VentanaBiblioteca
 
-
-public class VentanaSalasEstudio extends JFrame {
+public class VentanaEventos extends JFrame {
 
 	/**
 	 * 
@@ -34,7 +30,7 @@ public class VentanaSalasEstudio extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 
-	public VentanaSalasEstudio(Usuario usuario, List<Sala> salas) {
+	public VentanaEventos(Usuario usuario, List<Evento> eventos) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
@@ -46,7 +42,7 @@ public class VentanaSalasEstudio extends JFrame {
 		}
 		
 		// Header
-        JPanel panelSuperior = new Header(Seccion.SALAS_DE_ESTUDIO, usuario);
+        JPanel panelSuperior = new Header(Seccion.EVENTOS, usuario);
         add(panelSuperior, BorderLayout.NORTH);
 		
 		// Panel central
@@ -54,26 +50,24 @@ public class VentanaSalasEstudio extends JFrame {
 		JPanel subPanelContenido1 = new JPanel(new BorderLayout());
 		panelContenido.add(subPanelContenido1, BorderLayout.NORTH);
 	
-		// Añadir sala (solo para Admins)
+		// Añadir evento (solo para Admins)
 		if (usuario instanceof Admin) {
-			JPanel panelAddLibro = new AddPanel(Seccion.SALAS_DE_ESTUDIO);
+			JPanel panelAddLibro = new AddPanel(Seccion.EVENTOS);
 	        subPanelContenido1.add(panelAddLibro, BorderLayout.WEST);
 		}		
 		
 		Font buttonFont = new JButton().getFont();
 		
 		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 4, 5, 5));
-		for (int i = 0; i < salas.size(); i++) {
+		for (int i = 0; i < eventos.size(); i++) {
 			// Labels para el botón
 			JPanel buttonPanel = new JPanel();
 			buttonPanel.setLayout(new GridLayout(2, 1));
-			JLabel salaLabel = new JLabel("Sala privada " + salas.get(i).getId(), SwingConstants.CENTER);
-			salaLabel.setFont(buttonFont.deriveFont(Font.BOLD, 25));
-			JLabel recursosLabel = new JLabel("Recursos: " + ((SalaPrivada)salas.get(i)).getRecursos().toString(), SwingConstants.CENTER);
+			JLabel eventoLabel = new JLabel(eventos.get(i).getTitulo(), SwingConstants.CENTER);
+			eventoLabel.setFont(buttonFont.deriveFont(Font.BOLD, 25));
 		
 			
-			buttonPanel.add(salaLabel);
-			buttonPanel.add(recursosLabel);
+			buttonPanel.add(eventoLabel);
 			buttonPanel.setOpaque(false);
 			
 			JButton jButton = new JButton();
@@ -92,15 +86,29 @@ public class VentanaSalasEstudio extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		ArrayList<Recurso> recursos = new ArrayList<>();
-		recursos.add(Recurso.ORDENADORES);
-		recursos.add(Recurso.PROYECTOR);
-		recursos.add(Recurso.PIZARRA);
-		List<Sala> salasPrivadas = new ArrayList<>();
+
+		// Datos de prueba
 		
-		for (int i = 1; i <= 20; i++) {
-			salasPrivadas.add(new SalaPrivada(5, i, 2, null, recursos));
+		List<Evento> eventos = new ArrayList<>();
+		
+		for (int i = 1; i <= 10; i++) {
+			Evento evento = new Evento("Evento sobre literatura", TipoEvento.CHARLA, new ArrayList<>(), null);
+			SalaEventos sala = new SalaEventos(evento);
+
+			eventos.add(new Evento("Evento sobre IA", TipoEvento.CHARLA, new ArrayList<>(), sala));
 		}
-		new VentanaSalasEstudio(null, salasPrivadas);
+
+		for (int i = 1; i <= 20; i++) {
+			Evento evento = new Evento("Evento sobre literatura", TipoEvento.CHARLA, new ArrayList<>(), null);
+			SalaEventos sala = new SalaEventos(evento);
+
+			evento.setSala(sala);
+			
+
+			eventos.add(evento);
+			
+		}
+		new VentanaEventos(new Admin(), eventos);
 	}
 }
+
