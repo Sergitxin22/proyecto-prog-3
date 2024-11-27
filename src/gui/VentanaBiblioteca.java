@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Scrollbar;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -188,7 +189,8 @@ public class VentanaBiblioteca extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				JLabel labelTitulo = (JLabel) panelLibro.getComponent(1);
 				String titulo = labelTitulo.getToolTipText();
-				System.out.println(panelLibro.getToolTipText());
+				abrirVentanaInformacionLibro(libro);
+				System.out.println(libro);
 				super.mouseClicked(e);
 			}
 			
@@ -235,7 +237,17 @@ public class VentanaBiblioteca extends JFrame {
 	    subPanelContenido2.revalidate(); // Informar al layout que actualice la UI.
 	    subPanelContenido2.repaint();   // Redibujar el panel.
 	}
+	
 
+	private void abrirVentanaInformacionLibro(Libro libro) {
+		// TODO descomentar cuando se actualice el constructor de la ventana InformacionRecurso
+		//InformacionRecurso ventanaInformacionLibro = new InformacionRecurso(libro, this);
+		InformacionRecurso ventanaInformacionLibro = new InformacionRecurso(libro);
+		ventanaInformacionLibro.setVisible(true);
+		setVisible(false);
+		
+	}
+	
 	public static void main(String[] args) {
 		new VentanaBiblioteca(null);
 //		VentanaBiblioteca ventana2 = new VentanaBiblioteca(new Cliente());
