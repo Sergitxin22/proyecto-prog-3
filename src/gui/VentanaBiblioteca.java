@@ -108,20 +108,7 @@ public class VentanaBiblioteca extends JFrame {
 				buscador.setText("");
 			}
 		});
-		buscador.addKeyListener(new KeyAdapter() {
-			@Override
-			 public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					System.out.println(buscador.getText());
-					//recargar pagina con la lista filtrada
-					List<Libro> listaFiltrada = listaLibrosRenderizada.stream().filter(libro -> libro.getTitulo().contains(buscador.getText())).toList();
-					listaLibrosRenderizada = new ArrayList<Libro>(listaFiltrada);
-					
-					 // Llamar a recargar el panel
-		            recargarPanelContenido(subPanelContenido2, scrollBar);
-				}
-			}
-		});
+		
 		subPanelContenido1.add(buscador, BorderLayout.CENTER);
 		
 		// Añadir libro
@@ -148,8 +135,26 @@ public class VentanaBiblioteca extends JFrame {
 
 		add(panelContenido, BorderLayout.CENTER);
 		
+		buscador.addKeyListener(new KeyAdapter() {
+			@Override
+			 public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					System.out.println(buscador.getText());
+					//recargar pagina con la lista filtrada
+					List<Libro> listaFiltrada = listaLibros.stream()
+							.filter(libro -> libro.getTitulo().toLowerCase().contains(buscador.getText().toLowerCase()))
+							.toList();
+					listaLibrosRenderizada = new ArrayList<Libro>(listaFiltrada);
+					
+					 // Llamar a recargar el panel
+					recargarPanelContenido(subPanelContenido2, scrollBar);
+				}
+			}
+		});
+		
 		setVisible(true);
 	}
+	
 	
 	private JPanel crearPanelLibroCentrado(Libro libro) {
 		JPanel panelCentrarLibro = new JPanel(new FlowLayout(FlowLayout.CENTER));
