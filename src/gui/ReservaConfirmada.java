@@ -1,22 +1,20 @@
 package gui;
 
+import BiblioTech.Evento;
+import BiblioTech.Libro;
+import BiblioTech.LibroLectura;
+import BiblioTech.SalaPrivada;
+import BiblioTech.TipoEvento;
 import java.awt.BorderLayout;
 import java.awt.Font;
-
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-
-import BiblioTech.Evento;
-//import BiblioTech.Genero;
-import BiblioTech.Libro;
-//import BiblioTech.LibroLectura;
-import BiblioTech.SalaPrivada;
+import utils.Utils;
 //import BiblioTech.TipoEvento;
 //import utils.Utils;
 
@@ -85,9 +83,18 @@ public class ReservaConfirmada extends JFrame {
 		reservaPanel.setBorder(new EmptyBorder(70, 0, 0, 0));
 		bookPanel.setBorder(new EmptyBorder(30, 100, 0, 0));
 		
+		JButton volverButton = new JButton("Volver");
+		volverButton.addActionListener(e -> {
+			new InformacionRecurso(libro);
+			dispose();
+		});
+
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(volverButton);
+
 		add(bookPanel, BorderLayout.WEST);
 		add(reservaPanel, BorderLayout.CENTER);
-		add(new JButton("Volver"), BorderLayout.SOUTH);
+		add(buttonPanel, BorderLayout.SOUTH);
 		setVisible(true);
 	}
 	
@@ -117,8 +124,14 @@ public class ReservaConfirmada extends JFrame {
 		reservaPanel.add(codigoLabelCenterPanel);
 		
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.add(new JButton("Volver"));
+		JButton volverButton = new JButton("Volver");
+		volverButton.addActionListener(e -> {
+			new InformacionRecurso(evento);
+			dispose();
+		});
 		
+		buttonPanel.add(volverButton);
+
 		add(reservaPanel);
 		add(buttonPanel, BorderLayout.SOUTH);
 		
@@ -148,7 +161,13 @@ public class ReservaConfirmada extends JFrame {
 		reservaPanel.add(codigoLabelCenterPanel);
 		
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.add(new JButton("Volver"));
+		JButton volverButton = new JButton("Volver");
+		volverButton.addActionListener(e -> {
+			new InformacionRecurso(sala);
+			dispose();
+		});
+
+		buttonPanel.add(volverButton);
 		
 		add(reservaPanel);
 		add(buttonPanel, BorderLayout.SOUTH);
@@ -161,9 +180,9 @@ public class ReservaConfirmada extends JFrame {
 		
 		// RECURSOS DE PRUEBA
 		
-//		Libro libro = new LibroLectura("Harry Potter I", "J.K. Rowling", 443, Utils.loadImage("ejemploLibro.jpg", 112, 182).getImage(), 1, "Harry va a Hogwarts y tal",
-//				null, Genero.FANTASIA, 2);
-//		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
+		Libro libro = new LibroLectura("Harry Potter dos millones", "J.K. Rowling", 443, Utils.loadImage("ejemploLibro.jpg", 112, 182), 1, "Harry va a Hogwarts y tal", null, "Fantasia", 2);
+		
+		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
 		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
 				
 		new ReservaConfirmada(sala);
