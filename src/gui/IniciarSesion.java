@@ -6,7 +6,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,16 +17,14 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-public class IniciarSesion extends JFrame {
-	
-	// TODO: Añadir subrayado al texto de "¿No tienes cuenta?" cuando el cursor pase por el label	
+public class IniciarSesion extends JFrame {	
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public IniciarSesion() {
+	public IniciarSesion(JFrame previousWindow) {
 		setTitle("Iniciar Sesión");
 		setSize(650, 500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -73,9 +72,16 @@ public class IniciarSesion extends JFrame {
 		JButton iniciarSesionButton = new JButton("Iniciar sesión");
 		JLabel noCuentaLabel = new JLabel("¿No tienes cuenta?", SwingConstants.CENTER);
 		noCuentaLabel.setForeground(Color.blue);
+		noCuentaLabel.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        new VentanaRegistrarse();
+						dispose();
+                    }
+			
+		});
 		
 		JPanel tail = new JPanel(new GridLayout(2, 1, 0, 0));
-		
 		
 		JPanel iniciarSesionButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		iniciarSesionButtonPanel.add(iniciarSesionButton);
@@ -98,7 +104,7 @@ public class IniciarSesion extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		new IniciarSesion();	
+		new IniciarSesion(null);	
 	}
 
 }
