@@ -12,7 +12,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import BiblioTech.Libro;
-import BiblioTech.LibroLectura;
 import BiblioTech.Review;
 
 public class Utils {
@@ -54,19 +53,20 @@ public class Utils {
 				System.out.println(datos.length);
 				
 				try {
-					long id = Long.parseLong(datos[0]);
+					long isbn = Long.parseLong(datos[0]);
+					String titulo = datos[2];
 	                String autor = datos[4];
-	                String titulo = datos[2];
-	                int numeroDePaginas = Integer.parseInt(datos[10]);
-	                String sinopsis = datos[7];
 	                String genero = datos[5];
-	                System.out.println(id);
+	                String sinopsis = datos[7];
+	                int fecha_publicacion = Integer.parseInt(datos[8]);
 	                int rating = Integer.parseInt(datos[9]);
+	                int numeroDePaginas = Integer.parseInt(datos[10]);
+	                System.out.println(isbn);
 
-	                ImageIcon foto = Utils.loadImage("books/" + id + ".jpg", 98, 151);
+	                ImageIcon foto = Utils.loadImage("books/" + isbn + ".jpg", 98, 151);
 	                ArrayList<Review> reviews = new ArrayList<>();
 
-	                LibroLectura libro = new LibroLectura(titulo, autor, numeroDePaginas, foto, numeroDePaginas, sinopsis, reviews, genero, rating);
+	                Libro libro = new Libro(isbn, titulo, autor, numeroDePaginas, sinopsis, genero, rating, fecha_publicacion, foto, reviews);
 	                listaLibros.add(libro);
 	                contador++;
 
