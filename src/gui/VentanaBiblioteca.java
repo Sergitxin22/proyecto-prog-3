@@ -247,6 +247,10 @@ public class VentanaBiblioteca extends JFrame {
 		setVisible(false);
 		
 	}
+
+	private void ordenarLibros(MetodosDeOrdenamiento item) {
+		System.out.println(item);
+	}
 	
 	public static void main(String[] args) {
 		new VentanaBiblioteca(null);
