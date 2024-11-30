@@ -1,32 +1,59 @@
 package BiblioTech;
 
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 
-public abstract class Libro implements Reservable {
+public class Libro implements Reservable {
+	// campos de la bbdd
+	private long isbn;
 	private String titulo;
 	private String autor;
 	private int numeroDePaginas;
-	private ImageIcon foto;
-	private long id;
-
+	private String sinopsis;
+	private String genero;
+	private int rating;
+	private int fechaPublicacion;
 	
-	public Libro(String titulo, String autor, int numeroDePaginas, ImageIcon foto, long id) {
+	// campos no relacionados con la bbdd
+	private ImageIcon foto;
+	private ArrayList<Review> reviews;
+	
+	public Libro(long isbn, String titulo, String autor, int numeroDePaginas, String sinopsis, String genero,
+			int rating, int fechaPublicacion, ImageIcon foto, ArrayList<Review> reviews) {
 		super();
+		this.isbn = isbn;
 		this.titulo = titulo;
 		this.autor = autor;
 		this.numeroDePaginas = numeroDePaginas;
+		this.sinopsis = sinopsis;
+		this.genero = genero;
+		this.rating = rating;
+		this.fechaPublicacion = fechaPublicacion;
 		this.foto = foto;
-		this.id = id;
+		this.reviews = reviews;
 	}
-	
+
 	public Libro() {
 		super();
+		this.isbn = 0000000000000l;
 		this.titulo = "";
 		this.autor = "";
 		this.numeroDePaginas = 0;
+		this.sinopsis = "";
+		this.genero = "";
+		this.rating = 0;
+		this.fechaPublicacion = 0;
 		this.foto = null;
-		this.id = 0l;
+		this.reviews = new ArrayList<Review>();
+	}
 
+	public long getIsbn() {
+		return isbn;
+	}
+
+	public void setIsbn(long isbn) {
+		this.isbn = isbn;
 	}
 
 	public String getTitulo() {
@@ -53,6 +80,38 @@ public abstract class Libro implements Reservable {
 		this.numeroDePaginas = numeroDePaginas;
 	}
 
+	public String getSinopsis() {
+		return sinopsis;
+	}
+
+	public void setSinopsis(String sinopsis) {
+		this.sinopsis = sinopsis;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+
+	public int getFechaPublicacion() {
+		return fechaPublicacion;
+	}
+
+	public void setFechaPublicacion(int fechaPublicacion) {
+		this.fechaPublicacion = fechaPublicacion;
+	}
+
 	public ImageIcon getFoto() {
 		return foto;
 	}
@@ -61,25 +120,19 @@ public abstract class Libro implements Reservable {
 		this.foto = foto;
 	}
 
-	public long getId() {
-		return id;
+	public ArrayList<Review> getReviews() {
+		return reviews;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setReviews(ArrayList<Review> reviews) {
+		this.reviews = reviews;
 	}
 
 
 	@Override
 	public String toString() {
-		return "Libro [titulo=" + titulo + ", autor=" + autor + ", numeroDePaginas=" + numeroDePaginas + ", foto="
-				+ foto + ", id=" + id + "]";
+		return "Libro [isbn=" + isbn + ", titulo=" + titulo + ", autor=" + autor + ", numeroDePaginas="
+				+ numeroDePaginas + ", sinopsis=" + sinopsis + ", genero=" + genero + ", rating=" + rating
+				+ ", fechaPublicacion=" + fechaPublicacion + ", foto=" + foto + ", reviews=" + reviews + "]";
 	}
-	
-	
-	
-	
-	
-	
-	
 }
