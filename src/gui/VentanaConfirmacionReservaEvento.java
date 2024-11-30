@@ -91,7 +91,8 @@ public void setMainWindowProperties() {
 	    panelPrincipal.add(tituloEvento, BorderLayout.NORTH);
 
 	    
-	    String textoOriginal = "Las Jornadas de Innovación Educativa tienen como objetivo reunir a docentes, investigadores y profesionales del ámbito educativo para compartir experiencias y buenas prácticas en la enseñanza. Este evento es una oportunidad para reflexionar sobre las metodologías educativas contemporáneas y su aplicación en el aula.";
+	    String textoOriginal = "Las Jornadas de Innovación Educativa tienen como objetivo reunir a docentes, investigadores y profesionales del ámbito educativo para compartir experiencias y buenas prácticas en la enseñanza. "
+	    		+ "Este evento es una oportunidad para reflexionar sobre las metodologías educativas contemporáneas y su aplicación en el aula.";
 
         JTextArea descripcionEvento = new JTextArea(textoOriginal);
         descripcionEvento.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -99,7 +100,6 @@ public void setMainWindowProperties() {
         descripcionEvento.setWrapStyleWord(true); 
         descripcionEvento.setEditable(false); 
         descripcionEvento.setPreferredSize(new Dimension(700, 700));
-
 
         JScrollPane scrollPane = new JScrollPane(descripcionEvento);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -114,12 +114,8 @@ public void setMainWindowProperties() {
         
         pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
 	    pOeste.add(panelPrincipal);
-    	
-    	
 	    BotonConfirmarReservar();
-    	
     
-	    
 		setVisible (true);
 	}
 	private void BotonConfirmarReservar() {
@@ -145,15 +141,10 @@ public void setMainWindowProperties() {
 	        // Abrir Venatana de ConfirmacionReserva
 	        Evento evento = new Evento("Charla sobre la Innovación Educativa", TipoEvento.CHARLA, null, null); 
             new ReservaConfirmada(evento);
-			
-		}
- 		   
+		}   
  	   });
- 	    
- 
     }
-	public static void main(String[] args) {
-				
+	public static void main(String[] args) {	
 		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
 		
 		new VentanaConfirmacionReservaEvento(evento);
