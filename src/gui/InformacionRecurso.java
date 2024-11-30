@@ -8,6 +8,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -15,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -24,21 +28,30 @@ import javax.swing.border.EmptyBorder;
 import BiblioTech.Evento;
 //import BiblioTech.Genero;
 import BiblioTech.Libro;
+import BiblioTech.LibroLectura;
 //import BiblioTech.LibroLectura;
 //import BiblioTech.LibroLectura;
 import BiblioTech.Sala;
+import BiblioTech.SalaPrivada;
 //import BiblioTech.SalaPrivada;
 import BiblioTech.TipoEvento;
+import utils.Utils;
 //import utils.Utils;
 
 
+
 public class InformacionRecurso extends JFrame {
+	private JFrame vInformacionRecurso;
+	private JButton reservarButton;
+	private Evento evento;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1647556562163809896L;
 	private JPanel pOeste, pEste, pSur, pCentro, pHeader;
 	public void setMainWindowProperties() {
+		
+		vInformacionRecurso = this;
 		
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
@@ -209,6 +222,31 @@ public class InformacionRecurso extends JFrame {
         
         
 		pCentro.add(botonesPanel);
+		
+		reservarButton.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        // Cerrar la ventana actual
+		        vInformacionRecurso.dispose();
+		        // Abrir Venatana de ConfirmacionReserva
+		        new VentanaConfirmaciónDeReserva();
+		    }
+		});
+		
+		botonReview.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				 int respuesta = JOptionPane.showConfirmDialog(null, "¿Quieres añadir una review?","Confirmar review", JOptionPane.YES_NO_OPTION);
+                 
+	             if (respuesta == JOptionPane.YES_OPTION) {
+	            	 
+	             }
+				
+			}
+			
+		});
+		
 		setVisible(true);
 	}
 		
@@ -230,7 +268,7 @@ public class InformacionRecurso extends JFrame {
 	    panelPrincipal.add(tituloSala, BorderLayout.NORTH);
 
 	    
-	    String textoOriginal = "La sala de estudio privada es un espacio diseñado especialmente para el enfoque y la productividad en un ambiente tranquilo y cómodo. Con una superficie de aproximadamente 20 metros cuadrados, la sala cuenta con un amplio escritorio de madera que permite organizar libros, cuadernos, y dispositivos electrónicos sin generar distracciones. La iluminación natural proviene de una gran ventana ubicada en la pared norte, ofreciendo una vista agradable sin perturbar la concentración. Además, se han instalado persianas ajustables para regular la luz según las necesidades del usuario, creando un ambiente adaptable tanto para el trabajo diurno como nocturno.\r\n"
+	    String textoDescripcion = "La sala de estudio privada es un espacio diseñado especialmente para el enfoque y la productividad en un ambiente tranquilo y cómodo. Con una superficie de aproximadamente 20 metros cuadrados, la sala cuenta con un amplio escritorio de madera que permite organizar libros, cuadernos, y dispositivos electrónicos sin generar distracciones. La iluminación natural proviene de una gran ventana ubicada en la pared norte, ofreciendo una vista agradable sin perturbar la concentración. Además, se han instalado persianas ajustables para regular la luz según las necesidades del usuario, creando un ambiente adaptable tanto para el trabajo diurno como nocturno.\r\n"
                 + "\r\n"
                 + "El mobiliario incluye una silla ergonómica de alta calidad que proporciona soporte lumbar y ajustes en altura e inclinación, ideal para largas horas de estudio o trabajo. Para maximizar el confort y la salud postural, también cuenta con un reposapiés regulable. La sala está equipada con una pequeña estantería donde se pueden almacenar libros de referencia, material de oficina y objetos personales. Sobre el escritorio se encuentra una lámpara LED de bajo consumo con varios niveles de intensidad y modos de luz, pensada para reducir la fatiga visual.\r\n"
                 + "\r\n"
@@ -240,7 +278,7 @@ public class InformacionRecurso extends JFrame {
                 + "\r\n"
                 + "Por último, la sala de estudio cuenta con conexión Wi-Fi de alta velocidad, y dispone de múltiples enchufes y puertos USB alrededor del escritorio, facilitando la carga de dispositivos electrónicos. Este espacio privado ofrece todo lo necesario para maximizar la eficiencia y el confort, convirtiéndose en el lugar perfecto para realizar investigaciones, preparar exámenes o desarrollar proyectos personales sin interrupciones.";
 
-        JTextArea descripcionSala = new JTextArea(textoOriginal);
+        JTextArea descripcionSala = new JTextArea(textoDescripcion);
         descripcionSala.setFont(new Font("Arial", Font.PLAIN, 18));
         descripcionSala.setLineWrap(true); 
         descripcionSala.setWrapStyleWord(true); 
@@ -277,12 +315,20 @@ public class InformacionRecurso extends JFrame {
 	    // Asegúrate de que pEste esté agregado al JFrame
 	    getContentPane().add(pEste, BorderLayout.EAST);
 
-	    
+	    reservarButton.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        // Cerrar la ventana actual
+		        vInformacionRecurso.dispose();
+		        // Abrir Venatana de ConfirmacionReserva
+		        new VentanaConfirmacionReservaSalaPrivada();
+		    }
+		});
 	   
 	    setVisible(true);
 	}
     public InformacionRecurso(Evento evento) {
-        
+        this.evento= evento;
     	setMainWindowProperties();
     	setTitle("Evento " + evento.getTitulo() );
 	    
@@ -324,6 +370,8 @@ public class InformacionRecurso extends JFrame {
     	
     	
     	BotonReservar();
+    	
+    
 	    
 		setVisible (true);
 	}
@@ -354,15 +402,36 @@ public class InformacionRecurso extends JFrame {
 
  	    // Asegúrate de que pEste esté agregado al JFrame
  	    getContentPane().add(pEste, BorderLayout.EAST);
+ 	    
+ 	    reservarButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Cerrar la ventana actual
+		        vInformacionRecurso.dispose();
+		        // Abrir Venatana de ConfirmacionReserva
+		        new VentanaConfirmacionReservaEvento(evento);
+		    }
+				
+		
+ 	    	
+ 	    });
+ 
     }
 	
 	public static void main(String[] args) {
-//		Libro libro = new LibroLectura("Harry Potter I", "J.K. Rowling", 443, Utils.loadImage("ejemploLibro.jpg", 225, 364).getImage(), 1, "Harry va a Hogwarts y tal",
-//				null, Genero.FANTASIA, 2);
+		//LibroLectura libroLectura = new LibroLectura("HarryPotter1", "J.K.Rowling", 433,  Utils.loadImage("ejemploLibro.jpg", 225, 364).getImage(), 1, "", new ArrayList<Review>(), "FANTASIA", 4 );
+		
+
+		
 		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
-//		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
+		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
 				
+		//new InformacionRecurso(libroLectura);
+		//new InformacionRecurso(libroAcademico);
 		new InformacionRecurso(evento);
+	
+		new InformacionRecurso(sala);
 		
 	}
 
