@@ -9,6 +9,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
@@ -16,8 +17,8 @@ import utils.Utils;
 
 public class VentanaSalaPublica extends JFrame {
 
-    public VentanaSalaPublica(Usuario usuario)  {
-
+    public VentanaSalaPublica(Usuario usuario)  { // TODO: HashMap para la gestión de bloques
+        
         setTitle("Sala Pública");
         setSize(1280, 720);
         setLocationRelativeTo(null);
@@ -53,6 +54,11 @@ public class VentanaSalaPublica extends JFrame {
         JPanel buttonPanel = new JPanel();
 
         JButton masInformacionButton = new JButton("Más información y normas");
+        masInformacionButton.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "- Se recuerda a las personas usuarias que no está permitido comer dentro de ninguna sala de estudio.\n- Se ruega reducir al máximo el volumen de las actividades realizadas en la sala.\n- La asignación de bloque es obligatoria para evitar malentendidos y sobrecarga.\n- A la hora de abandonar la sala, asegúrese de desasignar su bloque para que pueda ser utilizado por otra persona.\n- Procurar dejar los bloques en el mismo estado en los que se han encontrado.", "Más información y normas", JOptionPane.INFORMATION_MESSAGE);
+
+        });
+
         JButton asignarBloqueButton = new JButton("Asignar bloque");
 
         buttonPanel.add(masInformacionButton);

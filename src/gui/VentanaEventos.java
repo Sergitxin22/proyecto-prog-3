@@ -22,7 +22,7 @@ import utils.AddPanel;
 
 // BASADO EN EL CÓDIGO DE VentanaBiblioteca
 
-public class VentanaEventos extends JFrame {
+public class VentanaEventos extends JFrame { // TODO: Falta la funcionalidad de añadir evento
 
 	/**
 	 * 
@@ -71,6 +71,12 @@ public class VentanaEventos extends JFrame {
 			buttonPanel.setOpaque(false);
 			
 			JButton jButton = new JButton();
+			final int j = i;
+			jButton.addActionListener(e -> {
+				new InformacionRecurso(eventos.get(j));
+				dispose();
+			});
+
 			jButton.add(buttonPanel);
 			subPanelContenido2.add(jButton);
 		}

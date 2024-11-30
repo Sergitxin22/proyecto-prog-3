@@ -6,11 +6,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
+
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -36,7 +40,10 @@ public class VentanaBiblioteca extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	private final ArrayList<Libro> listaLibros = Utils.cargarLibros();
+	private ArrayList<Libro> listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
+	
+	@SuppressWarnings("unchecked")
 	public VentanaBiblioteca(Usuario usuario) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		if (usuario == null) {
@@ -68,8 +75,20 @@ public class VentanaBiblioteca extends JFrame {
 			contador++;
 		}
 		
+		@SuppressWarnings("rawtypes")
 		JComboBox ordenar = new JComboBox(array);
 		ordenar.insertItemAt("Ordenar", 0);
+		ordenar.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED && !(e.getItem().equals("Ordenar"))) {
+					MetodosDeOrdenamiento metodoOrdenamiento = (MetodosDeOrdenamiento) e.getItem();
+		            ordenarLibros(metodoOrdenamiento);
+				}
+			}
+		});
+		
 		ordenar.setSelectedIndex(0);
 		subPanelContenido1.add(ordenar, BorderLayout.EAST);
 		ordenar.addPopupMenuListener(new PopupMenuListener() {
@@ -102,15 +121,7 @@ public class VentanaBiblioteca extends JFrame {
 				buscador.setText("");
 			}
 		});
-		buscador.addKeyListener(new KeyAdapter() {
-			@Override
-			 public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					System.out.println(buscador.getText());
-					//recargar pagina con la lista filtrada
-				}
-			}
-		});
+		
 		subPanelContenido1.add(buscador, BorderLayout.CENTER);
 		
 		// Añadir libro
@@ -121,11 +132,11 @@ public class VentanaBiblioteca extends JFrame {
 		
 		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 8));
 		//subPanelContenido2.setBackground(Color.orange);
-		ArrayList<Libro> listaLibros = Utils.cargarLibros();
-		System.out.println(listaLibros.toString());
+//		ArrayList<Libro> listaLibros = Utils.cargarLibros();
+		System.out.println(listaLibrosRenderizada.toString());
 		
 		int contadorLibros = 0;
-		for (Libro libro : listaLibros) {
+		for (Libro libro : listaLibrosRenderizada) {
 			JPanel panelCentrarLibro = crearPanelLibroCentrado(libro);
 			subPanelContenido2.add(panelCentrarLibro);
 			if (contadorLibros >= 30) break;
@@ -137,8 +148,26 @@ public class VentanaBiblioteca extends JFrame {
 
 		add(panelContenido, BorderLayout.CENTER);
 		
+		buscador.addKeyListener(new KeyAdapter() {
+			@Override
+			 public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					System.out.println(buscador.getText());
+					//recargar pagina con la lista filtrada
+					List<Libro> listaFiltrada = listaLibros.stream()
+							.filter(libro -> libro.getTitulo().toLowerCase().contains(buscador.getText().toLowerCase()))
+							.toList();
+					listaLibrosRenderizada = new ArrayList<Libro>(listaFiltrada);
+					
+					 // Llamar a recargar el panel
+					recargarPanelContenido(subPanelContenido2, scrollBar);
+				}
+			}
+		});
+		
 		setVisible(true);
 	}
+	
 	
 	private JPanel crearPanelLibroCentrado(Libro libro) {
 		JPanel panelCentrarLibro = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -170,9 +199,7 @@ public class VentanaBiblioteca extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JLabel labelTitulo = (JLabel) panelLibro.getComponent(1);
-				String titulo = labelTitulo.getToolTipText();
-				System.out.println(panelLibro.getToolTipText());
+				abrirVentanaInformacionLibro(libro);
 				super.mouseClicked(e);
 			}
 			
@@ -205,7 +232,35 @@ public class VentanaBiblioteca extends JFrame {
 	    panelAddLibro.add(textLabel, gbc);
 	    return panelAddLibro;
 	}
+	private void recargarPanelContenido(JPanel subPanelContenido2, JScrollPane scrollBar) {
+	    subPanelContenido2.removeAll(); // Eliminar todos los componentes actuales.
 
+	    int contadorLibros = 0;
+	    for (Libro libro : listaLibrosRenderizada) {
+	        JPanel panelCentrarLibro = crearPanelLibroCentrado(libro);
+	        subPanelContenido2.add(panelCentrarLibro);
+	        if (contadorLibros >= 30) break;
+	        contadorLibros++;
+	    }
+
+	    subPanelContenido2.revalidate(); // Informar al layout que actualice la UI.
+	    subPanelContenido2.repaint();   // Redibujar el panel.
+	}
+	
+
+	private void abrirVentanaInformacionLibro(Libro libro) {
+		// TODO descomentar cuando se actualice el constructor de la ventana InformacionRecurso
+		//InformacionRecurso ventanaInformacionLibro = new InformacionRecurso(libro, this);
+		InformacionRecurso ventanaInformacionLibro = new InformacionRecurso(libro);
+		ventanaInformacionLibro.setVisible(true);
+		setVisible(false);
+		
+	}
+
+	private void ordenarLibros(MetodosDeOrdenamiento item) {
+		System.out.println(item);
+	}
+	
 	public static void main(String[] args) {
 		new VentanaBiblioteca(null);
 //		VentanaBiblioteca ventana2 = new VentanaBiblioteca(new Cliente());

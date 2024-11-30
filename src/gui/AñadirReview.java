@@ -1,20 +1,24 @@
 package gui;
 
+import BiblioTech.Cliente;
+import BiblioTech.Libro;
+import BiblioTech.LibroLectura;
+import BiblioTech.Review;
 import java.awt.BorderLayout;
 import java.awt.Font;
-
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-
-import BiblioTech.Libro;
-import BiblioTech.LibroLectura;
 import utils.Utils;
 
 public class AñadirReview extends JFrame {
@@ -24,7 +28,10 @@ public class AñadirReview extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public AñadirReview(Libro libro) {
+	private int rating = 0;
+	private String comment = "";
+
+	public AñadirReview(Libro libro, Cliente cliente, Review review) {
 		
 		setTitle("Anadir review");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -57,15 +64,45 @@ public class AñadirReview extends JFrame {
 		JLabel valoracionLabel = new JLabel("Valoración");
 		
 		JPanel starPanel = new JPanel();
-		
+		List<JLabel> starList = new ArrayList<>();
+
 		for (int i = 0; i < 5; i++) {
 			JLabel label = new JLabel();
+
+			final int j = i;
+			label.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					starAction(j, starList);
+					rating = (j + 1) * 2;
+				}
+			});
+
 			label.setIcon(Utils.loadImage("estrellaBlanca.png", 24, 24));
 			
-			starPanel.add(label);
+			starList.add(label);
+		}
+
+		for (int i = 0; i < 5; i++) {
+			starPanel.add(starList.get(i));
 		}
 		
 		JButton publicarButton = new JButton("Publicar review");
+
+		publicarButton.addActionListener(e -> {
+			comment = comentarioTextArea.getText();
+
+			review.setCliente(cliente);
+			review.setComentario(comment);
+			review.setLibro((LibroLectura) libro);
+			review.setRating(rating);
+
+			// TODO: Añadir función para añadir review a la BD.
+
+			dispose();
+			InformacionRecurso redirectWindow = new InformacionRecurso(libro);
+			JOptionPane.showMessageDialog(redirectWindow, "Gracias por tu review!", "Review publicada correctamente", JOptionPane.INFORMATION_MESSAGE);
+		});
 		
 		comentarioLabel.setAlignmentX(CENTER_ALIGNMENT);
 		comentarioTextArea.setAlignmentX(CENTER_ALIGNMENT);
@@ -91,12 +128,24 @@ public class AñadirReview extends JFrame {
 
 		setVisible(true);
 	}
+
+	public static void starAction(int starIndex, List<JLabel> starList) {
+		// Pinta las estrellas en función de la estrella de review seleccionada
+
+		for (int i = 0; i < 5; i++) {
+			starList.get(i).setIcon(Utils.loadImage("estrellaBlanca.png", 24, 24));
+		}
+
+		for (int i = 0; i <= starIndex; i++) {
+			starList.get(i).setIcon(Utils.loadImage("estrellaNegra.png", 24, 24));
+		}
+	}
 	
 	public static void main(String[] args) {
 		Libro libro = new LibroLectura("Harry Potter I", "J.K. Rowling", 443, Utils.loadImage("ejemploLibro.jpg", 112, 182), 1, "Harry va a Hogwarts y tal",
 				null, "FANTASIA", 2);
 
-		new AñadirReview(libro);
+		new AñadirReview(libro, new Cliente("032", "Juan", "aa@aa.aa", null, null, null, null, 2), new Review());
 	}
 
 }
