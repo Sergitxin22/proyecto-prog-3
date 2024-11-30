@@ -11,6 +11,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -26,15 +27,19 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import BiblioTech.Admin;
 import BiblioTech.Evento;
 //import BiblioTech.Genero;
 import BiblioTech.Libro;
+import BiblioTech.Review;
 //import BiblioTech.LibroLectura;
 //import BiblioTech.LibroLectura;
 import BiblioTech.Sala;
 import BiblioTech.SalaPrivada;
+import BiblioTech.Seccion;
 //import BiblioTech.SalaPrivada;
 import BiblioTech.TipoEvento;
+import BiblioTech.Usuario;
 import utils.Utils;
 //import utils.Utils;
 public class InformacionRecursoAdmin extends JFrame{
@@ -45,7 +50,7 @@ public class InformacionRecursoAdmin extends JFrame{
 	 */
 	private static final long serialVersionUID = 1647556562163809896L;
 	private JPanel pOeste, pEste, pSur, pCentro, pHeader;
-	public void setMainWindowProperties() {
+	public void setMainWindowProperties(Seccion seccion, Usuario usuario) {
 		
 		vInformacionRecursoAdmin = this;
 		
@@ -59,7 +64,7 @@ public class InformacionRecursoAdmin extends JFrame{
 	    pSur = new JPanel();
 	    pEste = new JPanel();
 	    pOeste = new JPanel();
-	    pHeader = new Header(null, null);
+	    pHeader = new Header(seccion, usuario, this);
 	    
 	    pCentro.setBackground(Color.WHITE);
         pSur.setBackground(Color.WHITE);
@@ -77,9 +82,8 @@ public class InformacionRecursoAdmin extends JFrame{
 		
 	}
 		
-	public InformacionRecursoAdmin(Libro libro) {
-		setMainWindowProperties();
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+	public InformacionRecursoAdmin(Libro libro, Usuario usuario) {
+		setMainWindowProperties(Seccion.BIBLIOTECA, usuario);
 		setTitle ("BiblioTech - Harry Potter 1 (Logueado, Admin)");
 		//PANEL OESTE
 		pOeste.setLayout(new BoxLayout(pOeste, BoxLayout.Y_AXIS));
@@ -143,7 +147,7 @@ public class InformacionRecursoAdmin extends JFrame{
         JScrollPane descripcionScrollPane = new JScrollPane(descripcionLibro);
         descripcionScrollPane.setBackground(Color.WHITE);
         descripcionScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        descripcionScrollPane.setPreferredSize(new Dimension(1000, 700)); // Tamaño más grande para descripción
+        descripcionScrollPane.setPreferredSize(new Dimension(700, 700)); // Tamaño más grande para descripción
         descripcionScrollPane.setBorder(null);
         
         // Añadir título y descripción al panel
@@ -247,8 +251,8 @@ public class InformacionRecursoAdmin extends JFrame{
 		
 	
 	
-	public InformacionRecursoAdmin(Sala sala) {
-		setMainWindowProperties();
+	public InformacionRecursoAdmin(Sala sala, Usuario usuario) {
+		setMainWindowProperties(Seccion.SALAS_DE_ESTUDIO, usuario);
 	    setTitle("BiblioTech - Evento "  + sala.getId() + "(Logueado, Admin)");
 	    
 	    JPanel panelPrincipal = new JPanel();
@@ -324,9 +328,8 @@ public class InformacionRecursoAdmin extends JFrame{
 	   
 	    setVisible(true);
 	}
-    public InformacionRecursoAdmin(Evento evento) {
-        
-    	setMainWindowProperties();
+    public InformacionRecursoAdmin(Evento evento, Usuario usuario) {
+    	setMainWindowProperties(Seccion.EVENTOS, usuario);
     	setTitle("BiblioTech - Evento "  + evento.getTitulo() + "(Logueado, Admin)");
 	    
 	    JPanel panelPrincipal = new JPanel();
@@ -351,7 +354,6 @@ public class InformacionRecursoAdmin extends JFrame{
         descripcionEvento.setEditable(true); 
         descripcionEvento.setPreferredSize(new Dimension(700, 700));
 
-
         JScrollPane scrollPane = new JScrollPane(descripcionEvento);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -366,8 +368,6 @@ public class InformacionRecursoAdmin extends JFrame{
         pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
 	    pOeste.add(panelPrincipal);
     	
-	    
-	    
     	pEste.setLayout(new GridLayout (1,2));
         pEste.setBorder(new EmptyBorder(0, 0, 10, 15));
         pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
@@ -401,7 +401,6 @@ public class InformacionRecursoAdmin extends JFrame{
 	    
         add(panelBoton, BorderLayout.SOUTH);
 
-	    
 		setVisible (true);
 	}
 //    private void addTextBlock(JPanel panel) {
@@ -444,18 +443,14 @@ public class InformacionRecursoAdmin extends JFrame{
     }
 	*/
 	public static void main(String[] args) {
-		//LibroLectura libro = new LibroLectura("HarryPotter1", "J.K.Rowling", 433,  Utils.loadImage("ejemploLibro.jpg", 225, 364).getImage(), 1, null, null, null, "FANTASIA", 4 );
-		
-
-		
+		ImageIcon foto = Utils.loadImage("books/9780006514855" + ".jpg", 350, 403);
+		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, foto, new ArrayList<Review>());
 		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
 		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
 				
-		//new InformacionRecurso(libroLectura);
-		//new InformacionRecurso(libroAcademico);
-		new InformacionRecursoAdmin(evento);
-	
-		new InformacionRecursoAdmin(sala);
+		new InformacionRecursoAdmin(libro, null);
+//		new InformacionRecursoAdmin(evento,null);
+//		new InformacionRecursoAdmin(sala, null);
 		
 	}
 

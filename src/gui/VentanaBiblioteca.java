@@ -40,10 +40,12 @@ public class VentanaBiblioteca extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final ArrayList<Libro> listaLibros = Utils.cargarLibros();
+	private Usuario usuario;
 	private ArrayList<Libro> listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
 	
-	public VentanaBiblioteca(Usuario usuario) {
+	public VentanaBiblioteca(Usuario user) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.usuario = user;
 		if (usuario == null) {
 			setTitle("Bibliotech - No logueado");			
 		} else {			
@@ -54,7 +56,7 @@ public class VentanaBiblioteca extends JFrame {
 		setLocationRelativeTo(null);
 		
 		// Panel superior que contendrá el Header
-        JPanel panelSuperior = new Header(Seccion.BIBLIOTECA, usuario);
+        JPanel panelSuperior = new Header(Seccion.BIBLIOTECA, usuario, this);
         
         // Agregar panel superior al marco principal
         add(panelSuperior, BorderLayout.NORTH);
@@ -216,14 +218,12 @@ public class VentanaBiblioteca extends JFrame {
 	private void abrirVentanaInformacionLibro(Libro libro) {
 		// TODO descomentar cuando se actualice el constructor de la ventana InformacionRecurso
 		//InformacionRecurso ventanaInformacionLibro = new InformacionRecurso(libro, this);
-		InformacionRecurso ventanaInformacionLibro = new InformacionRecurso(libro);
+		InformacionRecurso ventanaInformacionLibro = new InformacionRecurso(libro, usuario);
 		ventanaInformacionLibro.setVisible(true);
-		setVisible(false);
-		
+		this.setVisible(false);
 	}
 
 	private void ordenarLibros(MetodosDeOrdenamiento item, JPanel subPanelContenido2) {
-		//ordenar por titulo
 		switch (item) {
 		case TITULO:
 			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getTitulo().compareTo(o2.getTitulo()));
@@ -231,10 +231,9 @@ public class VentanaBiblioteca extends JFrame {
 		case AUTOR:
 			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getAutor().compareTo(o2.getAutor()));
 			break;
-		// TODO volver a mirar cuando esta la refactorizacion de las clases
-//		case FECHA:
-//			Collections.sort(listaLibrosRenderizada, (o1, o2) -> ((LibroLectura) o1).getAnyoPublicacion().compareTo(((LibroLectura) o2).getAnyoPublicacion()));
-//			break;
+		case FECHA:
+			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getFechaPublicacion() - o2.getFechaPublicacion());
+			break;
 		default:
 			listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
 			break;

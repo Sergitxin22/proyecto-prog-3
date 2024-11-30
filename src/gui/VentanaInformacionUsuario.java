@@ -41,7 +41,7 @@ public class VentanaInformacionUsuario extends JFrame {
 		setSize(640,480);
 		setLocationRelativeTo(null);
 		
-		JPanel header = new Header(Seccion.BIBLIOTECA, null);
+		JPanel header = new Header(Seccion.BIBLIOTECA, null,this);
 		add(header, BorderLayout.NORTH);
 
 		JPanel contenido = new JPanel();

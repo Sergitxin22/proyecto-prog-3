@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,30 +24,29 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import BiblioTech.Admin;
+import BiblioTech.Cliente;
 import BiblioTech.Evento;
-//import BiblioTech.Genero;
 import BiblioTech.Libro;
-//import BiblioTech.LibroLectura;
-//import BiblioTech.LibroLectura;
+import BiblioTech.Review;
 import BiblioTech.Sala;
+import BiblioTech.SalaEventos;
 import BiblioTech.SalaPrivada;
+import BiblioTech.Seccion;
 //import BiblioTech.SalaPrivada;
 import BiblioTech.TipoEvento;
+import BiblioTech.Usuario;
 import utils.Utils;
-//import utils.Utils;
-
-
 
 public class InformacionRecurso extends JFrame {
 	private JFrame vInformacionRecurso;
-	private JButton reservarButton;
 	private Evento evento;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1647556562163809896L;
 	private JPanel pOeste, pEste, pSur, pCentro, pHeader;
-	public void setMainWindowProperties() {
+	public void setMainWindowProperties(Seccion seccion, Usuario usuario) {
 		
 		vInformacionRecurso = this;
 		
@@ -62,27 +60,28 @@ public class InformacionRecurso extends JFrame {
 	    pSur = new JPanel();
 	    pEste = new JPanel();
 	    pOeste = new JPanel();
-	    pHeader = new Header(null, null);
-	    
+	    pHeader = new Header(seccion, usuario, this);
+	  
 	    pCentro.setBackground(Color.WHITE);
         pSur.setBackground(Color.WHITE);
         pHeader.setBackground(Color.WHITE);
         pOeste.setBackground(Color.WHITE);
         pEste.setBackground(Color.WHITE);
         
-	    
 	    getContentPane().add(pCentro, BorderLayout.CENTER);
 	    getContentPane().add(pHeader, BorderLayout.NORTH);
 		getContentPane().add(pSur, BorderLayout.SOUTH);
 		getContentPane().add(pEste, BorderLayout.EAST);
 		getContentPane().add(pOeste, BorderLayout.WEST);
-		
-		
 	}
 		
-	public InformacionRecurso(Libro libro) {
-		setMainWindowProperties();
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+	public InformacionRecurso(Libro libro, Usuario usuario) {
+		if (usuario instanceof Admin) {
+			InformacionRecursoAdmin nuevaVentana = new InformacionRecursoAdmin(libro,usuario);
+			nuevaVentana.setVisible(true);
+			vInformacionRecurso.dispose();
+		}
+		setMainWindowProperties(Seccion.BIBLIOTECA, usuario);
 		setTitle ("BiblioTech - Harry Potter 1 (No Logueado)");
 		//PANEL OESTE
 		pOeste.setLayout(new BoxLayout(pOeste, BoxLayout.Y_AXIS));
@@ -145,7 +144,7 @@ public class InformacionRecurso extends JFrame {
         JScrollPane descripcionScrollPane = new JScrollPane(descripcionLibro);
         descripcionScrollPane.setBackground(Color.WHITE);
         descripcionScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        descripcionScrollPane.setPreferredSize(new Dimension(1000, 700)); // Tamaño más grande para descripción
+        descripcionScrollPane.setPreferredSize(new Dimension(700, 700)); // Tamaño más grande para descripción
         descripcionScrollPane.setBorder(null);
         
         // Añadir título y descripción al panel
@@ -215,22 +214,14 @@ public class InformacionRecurso extends JFrame {
 		botonReservar.setFont(new Font("Arial", Font.BOLD, 17));
 		botonReservar.setPreferredSize(new Dimension(200, 50));
         
-        
+        if (!(usuario instanceof Cliente)) {
+			botonReview.setEnabled(false);
+			botonReservar.setEnabled(false);
+		}
 		botonesPanel.add(botonReview);
 		botonesPanel.add(botonReservar);
-        
-        
+       
 		pCentro.add(botonesPanel);
-		
-		reservarButton.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        // Cerrar la ventana actual
-		        vInformacionRecurso.dispose();
-		        // Abrir Venatana de ConfirmacionReserva
-		        new VentanaConfirmaciónDeReserva();
-		    }
-		});
 		
 		botonReview.addActionListener(new ActionListener() {
 
@@ -241,18 +232,18 @@ public class InformacionRecurso extends JFrame {
 	             if (respuesta == JOptionPane.YES_OPTION) {
 	            	 
 	             }
-				
 			}
-			
 		});
 		
 		setVisible(true);
 	}
-		
-	
-	
-	public InformacionRecurso(Sala sala) {
-		setMainWindowProperties();
+	public InformacionRecurso(Sala sala, Usuario usuario) {
+		if (usuario instanceof Admin) {
+			InformacionRecursoAdmin nuevaVentana = new InformacionRecursoAdmin(sala,usuario);
+			nuevaVentana.setVisible(true);
+			vInformacionRecurso.dispose();
+		}
+		setMainWindowProperties(Seccion.SALAS_DE_ESTUDIO, usuario);
 	    setTitle("Sala " + Integer.toString(sala.getId()) );
 	    
 	    JPanel panelPrincipal = new JPanel();
@@ -297,18 +288,24 @@ public class InformacionRecurso extends JFrame {
         getContentPane().add(panelPrincipal, BorderLayout.CENTER);
         
 	    pOeste.add(panelPrincipal);
-	    
-	    
 	    pEste.setLayout(new BorderLayout());
 	    
 	    JButton reservarButton = new JButton("Reservar");
 	    reservarButton.setFont(new Font("Arial", Font.BOLD, 20));
         reservarButton.setPreferredSize(new Dimension(200, 50));
         
+        reservarButton.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        // Cerrar la ventana actual
+		        vInformacionRecurso.dispose();
+		        // Abrir Venatana de ConfirmacionReserva
+		        new VentanaConfirmaciónDeReserva();
+		    }
+		});
+        
         pEste.setBorder(new EmptyBorder(0, 0, 10, 15));
         pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
-
-
 	    pEste.add(reservarButton, BorderLayout.SOUTH);
 
 	    // Asegúrate de que pEste esté agregado al JFrame
@@ -326,9 +323,14 @@ public class InformacionRecurso extends JFrame {
 	   
 	    setVisible(true);
 	}
-    public InformacionRecurso(Evento evento) {
+    public InformacionRecurso(Evento evento, Usuario usuario) {
+    	if (usuario instanceof Admin) {
+			InformacionRecursoAdmin nuevaVentana = new InformacionRecursoAdmin(evento,usuario);
+			nuevaVentana.setVisible(true);
+			vInformacionRecurso.dispose();
+		}
         this.evento= evento;
-    	setMainWindowProperties();
+    	setMainWindowProperties(Seccion.EVENTOS, usuario);
     	setTitle("Evento " + evento.getTitulo() );
 	    
 	    JPanel panelPrincipal = new JPanel();
@@ -411,26 +413,18 @@ public class InformacionRecurso extends JFrame {
 		        // Abrir Venatana de ConfirmacionReserva
 		        new VentanaConfirmacionReservaEvento(evento);
 		    }
-				
-		
- 	    	
  	    });
- 
     }
 	
 	public static void main(String[] args) {
-		//LibroLectura libroLectura = new LibroLectura("HarryPotter1", "J.K.Rowling", 433,  Utils.loadImage("ejemploLibro.jpg", 225, 364).getImage(), 1, "", new ArrayList<Review>(), "FANTASIA", 4 );
-		
-
-		
-		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
+		ImageIcon foto = Utils.loadImage("books/9780006514855" + ".jpg", 350, 403);
+		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, foto, new ArrayList<Review>());
+		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), null);
 		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
-				
-		//new InformacionRecurso(libroLectura);
-		//new InformacionRecurso(libroAcademico);
-		new InformacionRecurso(evento);
-	
-		new InformacionRecurso(sala);
+		
+		new InformacionRecurso(libro, null);
+		//new InformacionRecurso(evento, new Cliente());
+		//new InformacionRecurso(sala, new Cliente());
 		
 	}
 
