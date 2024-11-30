@@ -8,6 +8,7 @@ public abstract class Libro implements Reservable {
 	private int numeroDePaginas;
 	private ImageIcon foto;
 	private long id;
+
 	
 	public Libro(String titulo, String autor, int numeroDePaginas, ImageIcon foto, long id) {
 		super();
@@ -25,6 +26,7 @@ public abstract class Libro implements Reservable {
 		this.numeroDePaginas = 0;
 		this.foto = null;
 		this.id = 0l;
+
 	}
 
 	public String getTitulo() {
@@ -66,6 +68,7 @@ public abstract class Libro implements Reservable {
 	public void setId(long id) {
 		this.id = id;
 	}
+
 
 	@Override
 	public String toString() {

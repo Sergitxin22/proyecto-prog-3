@@ -1,16 +1,16 @@
 package gui;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -37,13 +38,9 @@ import BiblioTech.SalaPrivada;
 import BiblioTech.TipoEvento;
 import utils.Utils;
 //import utils.Utils;
-
-
-
-public class InformacionRecurso extends JFrame {
-	private JFrame vInformacionRecurso;
-	private JButton reservarButton;
-	private Evento evento;
+public class InformacionRecursoAdmin extends JFrame{
+	private JFrame vInformacionRecursoAdmin;
+	private JButton aniadirButton;
 	/**
 	 * 
 	 */
@@ -51,7 +48,7 @@ public class InformacionRecurso extends JFrame {
 	private JPanel pOeste, pEste, pSur, pCentro, pHeader;
 	public void setMainWindowProperties() {
 		
-		vInformacionRecurso = this;
+		vInformacionRecursoAdmin = this;
 		
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
@@ -81,10 +78,10 @@ public class InformacionRecurso extends JFrame {
 		
 	}
 		
-	public InformacionRecurso(Libro libro) {
+	public InformacionRecursoAdmin(Libro libro) {
 		setMainWindowProperties();
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setTitle ("BiblioTech - Harry Potter 1 (No Logueado)");
+		setTitle ("BiblioTech - Harry Potter 1 (Logueado, Admin)");
 		//PANEL OESTE
 		pOeste.setLayout(new BoxLayout(pOeste, BoxLayout.Y_AXIS));
 		pOeste.setBackground(Color.WHITE);
@@ -119,8 +116,9 @@ public class InformacionRecurso extends JFrame {
 		panelTitulo.setBackground(Color.WHITE);
 		JPanel panelDescripcion = new JPanel();
 		panelDescripcion.setBackground(Color.WHITE);
-		JLabel tituloLibro = new JLabel(libro.getTitulo());
+		JTextField tituloLibro = new JTextField(libro.getTitulo());
 		tituloLibro.setFont(new Font("Arial", Font.BOLD, 24));
+		tituloLibro.setEditable(true);
 		JTextArea descripcionLibro = new JTextArea( "Autor: J.K. Rowling\r\n"
 				+ "Género: Fantasía, Juvenil\r\n"
 				+ "Temas: Magia, Amistad, Aventura, Identidad\r\n"
@@ -134,7 +132,7 @@ public class InformacionRecurso extends JFrame {
 		
 			
 		descripcionLibro.setFont(new Font("Arial", Font.PLAIN, 18));
-        descripcionLibro.setEditable(false);
+        descripcionLibro.setEditable(true);
         descripcionLibro.setLineWrap(true);
         descripcionLibro.setBorder(null);
         descripcionLibro.setBorder(BorderFactory.createEmptyBorder());
@@ -197,7 +195,7 @@ public class InformacionRecurso extends JFrame {
 		pOeste.add(reviews);
 		
 		//PANEL BOTONES
-		
+		/*
 		JPanel botonesPanel = new JPanel(new GridBagLayout());
 		
 		botonesPanel.setPreferredSize(new Dimension(100,100));
@@ -209,62 +207,61 @@ public class InformacionRecurso extends JFrame {
 		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.CENTER;
         
-		JButton botonReview = new JButton("Añadir review");
-		JButton botonReservar = new JButton("Reservar");
-		botonReview.setFont(new Font("Arial", Font.BOLD, 17));
-		botonReview.setPreferredSize(new Dimension(200, 50));
-		botonReservar.setFont(new Font("Arial", Font.BOLD, 17));
-		botonReservar.setPreferredSize(new Dimension(200, 50));
-        
-        
-		botonesPanel.add(botonReview);
-		botonesPanel.add(botonReservar);
-        
-        
-		pCentro.add(botonesPanel);
 		
-		reservarButton.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        // Cerrar la ventana actual
-		        vInformacionRecurso.dispose();
-		        // Abrir Venatana de ConfirmacionReserva
-		        new VentanaConfirmaciónDeReserva();
-		    }
-		});
-		
-		botonReview.addActionListener(new ActionListener() {
+		JButton eliminarLibroButton = new JButton("Eliminar libro");
+		eliminarLibroButton.setFont(new Font("Arial", Font.BOLD, 17));
+		eliminarLibroButton.setPreferredSize(new Dimension(200, 50));
+		*/
+		 JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+	     JButton botonGuardar = new JButton("Guardar Cambios");
+	     JButton botonBorrar = new JButton("Eliminar libro");
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				 int respuesta = JOptionPane.showConfirmDialog(null, "¿Quieres añadir una review?","Confirmar review", JOptionPane.YES_NO_OPTION);
-                 
+	     // Listeners de los botones
+	     botonGuardar.addActionListener(new ActionListener() {
+	    	 @Override
+	         public void actionPerformed(ActionEvent e) {
+	    		 JOptionPane.showMessageDialog(null, "Cambios guardados.");
+	         }
+	     });
+
+	     botonBorrar.addActionListener(new ActionListener() {
+	    	 @Override
+	         public void actionPerformed(ActionEvent e) {
+	    		 int respuesta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar el libro?","Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+	                        
 	             if (respuesta == JOptionPane.YES_OPTION) {
-	            	 
+	            	 JOptionPane.showMessageDialog(null, "Libro eliminado.");
 	             }
+	         }
+	     });
+
+	     panelBoton.add(botonGuardar);
+	     panelBoton.add(botonBorrar);
+	
+	     add(panelBoton, BorderLayout.SOUTH);
+        
+        
+		pCentro.add(panelBoton);
 				
-			}
-			
-		});
-		
 		setVisible(true);
 	}
 		
 	
 	
-	public InformacionRecurso(Sala sala) {
+	public InformacionRecursoAdmin(Sala sala) {
 		setMainWindowProperties();
-	    setTitle("Sala " + Integer.toString(sala.getId()) );
+	    setTitle("BiblioTech - Evento "  + sala.getId() + "(Logueado, Admin)");
 	    
 	    JPanel panelPrincipal = new JPanel();
 	    panelPrincipal.setLayout(new BorderLayout());
 	    panelPrincipal.setBackground(Color.WHITE);
 	    
-	    JLabel tituloSala = new JLabel("Sala " + Integer.toString(sala.getId()), SwingConstants.CENTER);
+	    JTextField tituloSala = new JTextField("Sala " + Integer.toString(sala.getId()), SwingConstants.CENTER);
 	    tituloSala.setFont(new Font("Arial", Font.BOLD, 40));
 	    tituloSala.setHorizontalAlignment(SwingConstants.CENTER); // Centra el texto horizontalmente
-	    tituloSala.setVerticalAlignment(SwingConstants.CENTER);
+	    //tituloSala.setVerticalAlignment(SwingConstants.CENTER);
 	    tituloSala.setBackground(Color.WHITE);
+	    tituloSala.setEditable(true);
 	    panelPrincipal.add(tituloSala, BorderLayout.NORTH);
 
 	    
@@ -282,7 +279,7 @@ public class InformacionRecurso extends JFrame {
         descripcionSala.setFont(new Font("Arial", Font.PLAIN, 18));
         descripcionSala.setLineWrap(true); 
         descripcionSala.setWrapStyleWord(true); 
-        descripcionSala.setEditable(false); 
+        descripcionSala.setEditable(true); 
         descripcionSala.setPreferredSize(new Dimension(700, 700));
 
 
@@ -302,45 +299,47 @@ public class InformacionRecurso extends JFrame {
 	    
 	    pEste.setLayout(new BorderLayout());
 	    
-	    JButton reservarButton = new JButton("Reservar");
-	    reservarButton.setFont(new Font("Arial", Font.BOLD, 20));
-        reservarButton.setPreferredSize(new Dimension(200, 50));
+	    JButton aniadirButton = new JButton("Añadir sala");
+	    aniadirButton.setFont(new Font("Arial", Font.BOLD, 20));
+	    aniadirButton.setPreferredSize(new Dimension(200, 50));
         
         pEste.setBorder(new EmptyBorder(0, 0, 10, 15));
         pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
 
 
-	    pEste.add(reservarButton, BorderLayout.SOUTH);
+	    pEste.add(aniadirButton, BorderLayout.SOUTH);
 
 	    // Asegúrate de que pEste esté agregado al JFrame
 	    getContentPane().add(pEste, BorderLayout.EAST);
 
-	    reservarButton.addActionListener(new ActionListener() {
+	    aniadirButton.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		        // Cerrar la ventana actual
-		        vInformacionRecurso.dispose();
-		        // Abrir Venatana de ConfirmacionReserva
-		        new VentanaConfirmacionReservaSalaPrivada();
+		    	int respuesta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que quieres añadirlo?",
+                        "Si, añadir", JOptionPane.YES_NO_OPTION);
+                if (respuesta == JOptionPane.YES_OPTION) {
+                    JOptionPane.showMessageDialog(null, "Añadido correctamente.");
+                }
 		    }
 		});
 	   
 	    setVisible(true);
 	}
-    public InformacionRecurso(Evento evento) {
-        this.evento= evento;
+    public InformacionRecursoAdmin(Evento evento) {
+        
     	setMainWindowProperties();
-    	setTitle("Evento " + evento.getTitulo() );
+    	setTitle("BiblioTech - Evento "  + evento.getTitulo() + "(Logueado, Admin)");
 	    
 	    JPanel panelPrincipal = new JPanel();
 	    panelPrincipal.setLayout(new BorderLayout());
 	    panelPrincipal.setBackground(Color.WHITE);
 	    
-	    JLabel tituloEvento = new JLabel(evento.getTitulo(), SwingConstants.CENTER);
+	    JTextField tituloEvento = new JTextField(evento.getTitulo(), SwingConstants.CENTER);
 	    tituloEvento.setFont(new Font("Arial", Font.BOLD, 40));
 	    tituloEvento.setHorizontalAlignment(SwingConstants.CENTER); // Centra el texto horizontalmente
-	    tituloEvento.setVerticalAlignment(SwingConstants.CENTER);
+	    //tituloEvento.setVerticalAlignment(SwingConstants.CENTER);
 	    tituloEvento.setBackground(Color.WHITE);
+	    tituloEvento.setEditable(true);
 	    panelPrincipal.add(tituloEvento, BorderLayout.NORTH);
 
 	    
@@ -350,7 +349,7 @@ public class InformacionRecurso extends JFrame {
         descripcionEvento.setFont(new Font("Arial", Font.PLAIN, 18));
         descripcionEvento.setLineWrap(true); 
         descripcionEvento.setWrapStyleWord(true); 
-        descripcionEvento.setEditable(false); 
+        descripcionEvento.setEditable(true); 
         descripcionEvento.setPreferredSize(new Dimension(700, 700));
 
 
@@ -368,10 +367,41 @@ public class InformacionRecurso extends JFrame {
         pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
 	    pOeste.add(panelPrincipal);
     	
-    	
-    	BotonReservar();
-    	
-    
+	    
+	    
+    	pEste.setLayout(new GridLayout (1,2));
+        pEste.setBorder(new EmptyBorder(0, 0, 10, 15));
+        pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
+        
+        JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelBoton.setBackground(Color.WHITE);
+        JButton botonConfirmar = new JButton("Confirmar cambios");
+        JButton botonBorrar = new JButton("Eliminar evento");
+
+        // Listeners de los botones
+        botonConfirmar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Cambios confirmados.");
+            }
+        });
+
+        botonBorrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int respuesta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar el evento?",
+                        "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+                if (respuesta == JOptionPane.YES_OPTION) {
+                    JOptionPane.showMessageDialog(null, "Evento eliminado.");
+                }
+            }
+        });
+
+        panelBoton.add(botonConfirmar);
+        panelBoton.add(botonBorrar);
+	    
+        add(panelBoton, BorderLayout.SOUTH);
+
 	    
 		setVisible (true);
 	}
@@ -389,38 +419,33 @@ public class InformacionRecurso extends JFrame {
 //		
 //	}
     
-    private void BotonReservar() {
+    /*private void BotonGuardarCambios() {
     	
  	    pEste.setLayout(new BorderLayout());
  	    
- 	    JButton reservarButton = new JButton("Reservar");
- 	    reservarButton.setFont(new Font("Arial", Font.BOLD, 20));
-        reservarButton.setPreferredSize(new Dimension(200, 50));
+ 	   
 
- 	    pEste.add(reservarButton, BorderLayout.SOUTH);
+ 	    pEste.add(guardarCambiosButton, BorderLayout.SOUTH);
  	    pEste.setBorder(new EmptyBorder(0, 0, 10, 15));
 
  	    // Asegúrate de que pEste esté agregado al JFrame
  	    getContentPane().add(pEste, BorderLayout.EAST);
  	    
- 	    reservarButton.addActionListener(new ActionListener() {
+ 	    guardarCambiosButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Cerrar la ventana actual
-		        vInformacionRecurso.dispose();
-		        // Abrir Venatana de ConfirmacionReserva
-		        new VentanaConfirmacionReservaEvento(evento);
-		    }
+				// TODO Auto-generated method stub
 				
-		
+			}
  	    	
  	    });
+ 	    
  
     }
-	
+	*/
 	public static void main(String[] args) {
-		//LibroLectura libroLectura = new LibroLectura("HarryPotter1", "J.K.Rowling", 433,  Utils.loadImage("ejemploLibro.jpg", 225, 364).getImage(), 1, "", new ArrayList<Review>(), "FANTASIA", 4 );
+		//LibroLectura libro = new LibroLectura("HarryPotter1", "J.K.Rowling", 433,  Utils.loadImage("ejemploLibro.jpg", 225, 364).getImage(), 1, null, null, null, "FANTASIA", 4 );
 		
 
 		
@@ -429,10 +454,12 @@ public class InformacionRecurso extends JFrame {
 				
 		//new InformacionRecurso(libroLectura);
 		//new InformacionRecurso(libroAcademico);
-		new InformacionRecurso(evento);
+		new InformacionRecursoAdmin(evento);
 	
-		new InformacionRecurso(sala);
+		new InformacionRecursoAdmin(sala);
 		
 	}
 
 }
+
+
