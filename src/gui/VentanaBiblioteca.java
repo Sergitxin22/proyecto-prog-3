@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -64,7 +65,7 @@ public class VentanaBiblioteca extends JFrame {
 		JPanel subPanelContenido1 = new JPanel(new BorderLayout());
 		panelContenido.add(subPanelContenido1, BorderLayout.NORTH);
 		
-		MetodosDeOrdenamiento[] array = new MetodosDeOrdenamiento[3];
+		MetodosDeOrdenamiento[] array = new MetodosDeOrdenamiento[4];
 		int contador = 0;
 				
 		for (MetodosDeOrdenamiento metodo: MetodosDeOrdenamiento.values()) {
@@ -118,7 +119,18 @@ public class VentanaBiblioteca extends JFrame {
 					listaLibrosRenderizada = new ArrayList<Libro>(listaFiltrada);
 					
 					 // Llamar a recargar el panel
-					recargarPanelContenido(subPanelContenido2, scrollBar);
+					recargarPanelContenido(subPanelContenido2);
+				}
+			}
+		});
+		
+		ordenar.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED && !(e.getItem().equals("Ordenar"))) {
+					MetodosDeOrdenamiento metodoOrdenamiento = (MetodosDeOrdenamiento) e.getItem();
+		            ordenarLibros(metodoOrdenamiento,subPanelContenido2);
 				}
 			}
 		});
@@ -185,7 +197,7 @@ public class VentanaBiblioteca extends JFrame {
 	    panelAddLibro.add(textLabel, gbc);
 	    return panelAddLibro;
 	}
-	private void recargarPanelContenido(JPanel subPanelContenido2, JScrollPane scrollBar) {
+	private void recargarPanelContenido(JPanel subPanelContenido2) {
 	    subPanelContenido2.removeAll(); // Eliminar todos los componentes actuales.
 
 	    int contadorLibros = 0;
@@ -210,8 +222,24 @@ public class VentanaBiblioteca extends JFrame {
 		
 	}
 
-	private void ordenarLibros(MetodosDeOrdenamiento item) {
-		System.out.println(item);
+	private void ordenarLibros(MetodosDeOrdenamiento item, JPanel subPanelContenido2) {
+		//ordenar por titulo
+		switch (item) {
+		case TITULO:
+			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getTitulo().compareTo(o2.getTitulo()));
+			break;
+		case AUTOR:
+			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getAutor().compareTo(o2.getAutor()));
+			break;
+		// TODO volver a mirar cuando esta la refactorizacion de las clases
+//		case FECHA:
+//			Collections.sort(listaLibrosRenderizada, (o1, o2) -> ((LibroLectura) o1).getAnyoPublicacion().compareTo(((LibroLectura) o2).getAnyoPublicacion()));
+//			break;
+		default:
+			listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
+			break;
+		}
+		recargarPanelContenido(subPanelContenido2);
 	}
 	
 	public static void main(String[] args) {
