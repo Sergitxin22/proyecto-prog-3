@@ -10,9 +10,9 @@ public class LibroLectura extends Libro {
 	private String genero;
 	private int rating;
 	
-	public LibroLectura(String titulo, String autor, int numeroDePaginas, ImageIcon foto, int id, String sinopsis,
+	public LibroLectura(String titulo, String autor, int numeroDePaginas, ImageIcon image, int id, String sinopsis,
 			ArrayList<Review> reviews, String genero, int rating) {
-		super(titulo, autor, numeroDePaginas, foto, id);
+		super(titulo, autor, numeroDePaginas, image, id);
 		this.sinopsis = sinopsis;
 		this.reviews = reviews;
 		this.genero = genero;
