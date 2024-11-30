@@ -318,9 +318,14 @@ public class InformacionRecurso extends JFrame {
 	   
 	    setVisible(true);
 	}
-    public InformacionRecurso(Evento evento) {
+    public InformacionRecurso(Evento evento, Usuario usuario) {
+    	if (usuario instanceof Admin) {
+			InformacionRecursoAdmin nuevaVentana = new InformacionRecursoAdmin(evento,usuario);
+			nuevaVentana.setVisible(true);
+			vInformacionRecurso.dispose();
+		}
         this.evento= evento;
-    	setMainWindowProperties();
+    	setMainWindowProperties(Seccion.EVENTOS, usuario);
     	setTitle("Evento " + evento.getTitulo() );
 	    
 	    JPanel panelPrincipal = new JPanel();
