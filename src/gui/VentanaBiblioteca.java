@@ -24,8 +24,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 
 import BiblioTech.Admin;
 import BiblioTech.Libro;
@@ -43,7 +41,6 @@ public class VentanaBiblioteca extends JFrame {
 	private final ArrayList<Libro> listaLibros = Utils.cargarLibros();
 	private ArrayList<Libro> listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
 	
-	@SuppressWarnings("unchecked")
 	public VentanaBiblioteca(Usuario usuario) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		if (usuario == null) {
@@ -75,45 +72,9 @@ public class VentanaBiblioteca extends JFrame {
 			contador++;
 		}
 		
-		@SuppressWarnings("rawtypes")
-		JComboBox ordenar = new JComboBox(array);
-		ordenar.insertItemAt("Ordenar", 0);
-		ordenar.addItemListener(new ItemListener() {
-			
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED && !(e.getItem().equals("Ordenar"))) {
-					MetodosDeOrdenamiento metodoOrdenamiento = (MetodosDeOrdenamiento) e.getItem();
-		            ordenarLibros(metodoOrdenamiento);
-				}
-			}
-		});
-		
-		ordenar.setSelectedIndex(0);
+		JComboBox<MetodosDeOrdenamiento> ordenar = new JComboBox<MetodosDeOrdenamiento>(array);
 		subPanelContenido1.add(ordenar, BorderLayout.EAST);
-		ordenar.addPopupMenuListener(new PopupMenuListener() {
-			
-			@Override
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-				if(ordenar.getItemAt(0).equals("Ordenar")) {
-					ordenar.removeItemAt(0);
-				};
-				
-			}
-			
-			@Override
-			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void popupMenuCanceled(PopupMenuEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
+
 		JTextField buscador = new JTextField("Buscador");
 		buscador.addMouseListener(new MouseAdapter() {
 			@Override
