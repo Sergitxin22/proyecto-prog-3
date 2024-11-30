@@ -407,16 +407,14 @@ public class InformacionRecurso extends JFrame {
     }
 	
 	public static void main(String[] args) {
-		//LibroLectura libroLectura = new LibroLectura("HarryPotter1", "J.K.Rowling", 433,  Utils.loadImage("ejemploLibro.jpg", 225, 364).getImage(), 1, "", new ArrayList<Review>(), "FANTASIA", 4 );
+		ImageIcon foto = Utils.loadImage("books/9780006514855" + ".jpg", 350, 403);
 		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, foto, new ArrayList<Review>());
 		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), null);
-		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
 		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
 		
-		//new InformacionRecurso(libroLectura);
-		//new InformacionRecurso(libroAcademico);
-		new InformacionRecurso(evento);
-		new InformacionRecurso(sala);
+		new InformacionRecurso(libro, null);
+		//new InformacionRecurso(evento, new Cliente());
+		//new InformacionRecurso(sala, new Cliente());
 		
 	}
 

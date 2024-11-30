@@ -443,18 +443,14 @@ public class InformacionRecursoAdmin extends JFrame{
     }
 	*/
 	public static void main(String[] args) {
-		//LibroLectura libro = new LibroLectura("HarryPotter1", "J.K.Rowling", 433,  Utils.loadImage("ejemploLibro.jpg", 225, 364).getImage(), 1, null, null, null, "FANTASIA", 4 );
-		
-
-		
+		ImageIcon foto = Utils.loadImage("books/9780006514855" + ".jpg", 350, 403);
+		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, foto, new ArrayList<Review>());
 		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
 		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
 				
-		//new InformacionRecurso(libroLectura);
-		//new InformacionRecurso(libroAcademico);
-		new InformacionRecursoAdmin(evento);
-	
-		new InformacionRecursoAdmin(sala);
+		new InformacionRecursoAdmin(libro, null);
+//		new InformacionRecursoAdmin(evento,null);
+//		new InformacionRecursoAdmin(sala, null);
 		
 	}
 
