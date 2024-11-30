@@ -40,10 +40,12 @@ public class VentanaBiblioteca extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final ArrayList<Libro> listaLibros = Utils.cargarLibros();
+	private Usuario usuario;
 	private ArrayList<Libro> listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
 	
-	public VentanaBiblioteca(Usuario usuario) {
+	public VentanaBiblioteca(Usuario user) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.usuario = user;
 		if (usuario == null) {
 			setTitle("Bibliotech - No logueado");			
 		} else {			
@@ -216,10 +218,9 @@ public class VentanaBiblioteca extends JFrame {
 	private void abrirVentanaInformacionLibro(Libro libro) {
 		// TODO descomentar cuando se actualice el constructor de la ventana InformacionRecurso
 		//InformacionRecurso ventanaInformacionLibro = new InformacionRecurso(libro, this);
-		InformacionRecurso ventanaInformacionLibro = new InformacionRecurso(libro);
+		InformacionRecurso ventanaInformacionLibro = new InformacionRecurso(libro, usuario);
 		ventanaInformacionLibro.setVisible(true);
-		setVisible(false);
-		
+		this.setVisible(false);
 	}
 
 	private void ordenarLibros(MetodosDeOrdenamiento item, JPanel subPanelContenido2) {
