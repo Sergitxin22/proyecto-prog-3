@@ -92,9 +92,6 @@ public class VentanaBiblioteca extends JFrame {
 		}		
 		
 		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 8));
-		//subPanelContenido2.setBackground(Color.orange);
-//		ArrayList<Libro> listaLibros = Utils.cargarLibros();
-		System.out.println(listaLibrosRenderizada.toString());
 		
 		int contadorLibros = 0;
 		for (Libro libro : listaLibrosRenderizada) {
@@ -136,11 +133,6 @@ public class VentanaBiblioteca extends JFrame {
 		JPanel panelLibro = new JPanel();
 		panelLibro.setLayout(new BoxLayout(panelLibro,BoxLayout.Y_AXIS));
 		ImageIcon imagenLibro = libro.getFoto();
-//		try {
-//			imagenLibro = Utils.loadImage("books/big/" + libro + ".jpg",98,151);
-//		} catch (Exception e) {
-//			imagenLibro = Utils.loadImage("books/noImagen.jpg",98,151);
-//		}
         JLabel iconLabel = new JLabel(imagenLibro);
 		panelLibro.add(iconLabel);
 		
@@ -183,8 +175,8 @@ public class VentanaBiblioteca extends JFrame {
 	    panelAddLibro.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
-	        	System.out.println("Panel clickeado");
-	            // Aquí puedes agregar la lógica que necesites
+        	System.out.println("Panel clickeado");
+        	// Aquí puedes agregar la lógica que necesites
         	}
 	    });
 	    
