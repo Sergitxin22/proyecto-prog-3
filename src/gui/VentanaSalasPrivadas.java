@@ -75,6 +75,12 @@ public class VentanaSalasPrivadas extends JFrame {
 			buttonPanel.setOpaque(false);
 			
 			JButton jButton = new JButton();
+			final int j = i;
+			jButton.addActionListener(e -> {
+				new InformacionRecurso(salas.get(j));
+				dispose();
+			});
+
 			jButton.add(buttonPanel);
 			subPanelContenido2.add(jButton);
 		}
