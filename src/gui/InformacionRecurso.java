@@ -215,20 +215,13 @@ public class InformacionRecurso extends JFrame {
 		botonReservar.setPreferredSize(new Dimension(200, 50));
         
         if (!(usuario instanceof Cliente)) {
+			botonReview.setEnabled(false);
+			botonReservar.setEnabled(false);
+		}
 		botonesPanel.add(botonReview);
 		botonesPanel.add(botonReservar);
        
 		pCentro.add(botonesPanel);
-		
-		reservarButton.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        // Cerrar la ventana actual
-		        vInformacionRecurso.dispose();
-		        // Abrir Venatana de ConfirmacionReserva
-		        new VentanaConfirmaciónDeReserva();
-		    }
-		});
 		
 		botonReview.addActionListener(new ActionListener() {
 
