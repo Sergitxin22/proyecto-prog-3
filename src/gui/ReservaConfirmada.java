@@ -2,11 +2,13 @@ package gui;
 
 import BiblioTech.Evento;
 import BiblioTech.Libro;
-import BiblioTech.LibroLectura;
+import BiblioTech.Review;
 import BiblioTech.SalaPrivada;
 import BiblioTech.TipoEvento;
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.util.ArrayList;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -180,7 +182,7 @@ public class ReservaConfirmada extends JFrame {
 		
 		// RECURSOS DE PRUEBA
 		
-		Libro libro = new LibroLectura("Harry Potter dos millones", "J.K. Rowling", 443, Utils.loadImage("ejemploLibro.jpg", 112, 182), 1, "Harry va a Hogwarts y tal", null, "Fantasia", 2);
+		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, null, new ArrayList<Review>());
 		
 		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
 		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		

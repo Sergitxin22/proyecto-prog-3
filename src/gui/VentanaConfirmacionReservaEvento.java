@@ -27,7 +27,6 @@ import javax.swing.border.EmptyBorder;
 import BiblioTech.Evento;
 //import BiblioTech.Genero;
 import BiblioTech.Libro;
-import BiblioTech.LibroLectura;
 //import BiblioTech.LibroLectura;
 //import BiblioTech.LibroLectura;
 import BiblioTech.Sala;

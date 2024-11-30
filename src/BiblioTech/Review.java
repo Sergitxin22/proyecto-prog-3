@@ -4,15 +4,15 @@ import java.util.Objects;
 
 public class Review {
 
-	private LibroLectura libro;
+	private Libro libro;
 	private Cliente cliente;
 	private String comentario;
 	private int rating;
 	
-	public LibroLectura getLibro() {
+	public Libro getLibro() {
 		return libro;
 	}
-	public void setLibro(LibroLectura libro) {
+	public void setLibro(Libro libro) {
 		this.libro = libro;
 	}
 	public Cliente getCliente() {
@@ -34,7 +34,7 @@ public class Review {
 		this.rating = rating;
 	}
 	
-	public Review(LibroLectura libro, Cliente cliente, String comentario, int rating) {
+	public Review(Libro libro, Cliente cliente, String comentario, int rating) {
 		super();
 		this.libro = libro;
 		this.cliente = cliente;
@@ -44,7 +44,7 @@ public class Review {
 	
 	public Review() {
 		super();
-		this.libro = new LibroLectura();
+		this.libro = new Libro();
 		this.cliente = new Cliente();
 		this.comentario = "";
 		this.rating = 0;
