@@ -247,8 +247,10 @@ public class InformacionRecurso extends JFrame {
 	public InformacionRecurso(Sala sala, Usuario usuario) {
 		if (usuario instanceof Admin) {
 			InformacionRecursoAdmin nuevaVentana = new InformacionRecursoAdmin(sala,usuario);
-	public InformacionRecurso(Sala sala) {
-		setMainWindowProperties();
+			nuevaVentana.setVisible(true);
+			vInformacionRecurso.dispose();
+		}
+		setMainWindowProperties(Seccion.SALAS_DE_ESTUDIO, usuario);
 	    setTitle("Sala " + Integer.toString(sala.getId()) );
 	    
 	    JPanel panelPrincipal = new JPanel();
@@ -298,6 +300,16 @@ public class InformacionRecurso extends JFrame {
 	    JButton reservarButton = new JButton("Reservar");
 	    reservarButton.setFont(new Font("Arial", Font.BOLD, 20));
         reservarButton.setPreferredSize(new Dimension(200, 50));
+        
+        reservarButton.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        // Cerrar la ventana actual
+		        vInformacionRecurso.dispose();
+		        // Abrir Venatana de ConfirmacionReserva
+		        new VentanaConfirmaciónDeReserva();
+		    }
+		});
         
         pEste.setBorder(new EmptyBorder(0, 0, 10, 15));
         pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
