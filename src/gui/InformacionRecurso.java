@@ -37,8 +37,6 @@ import BiblioTech.TipoEvento;
 import utils.Utils;
 //import utils.Utils;
 
-
-
 public class InformacionRecurso extends JFrame {
 	private JFrame vInformacionRecurso;
 	private JButton reservarButton;
@@ -63,26 +61,27 @@ public class InformacionRecurso extends JFrame {
 	    pEste = new JPanel();
 	    pOeste = new JPanel();
 	    pHeader = new Header(seccion, usuario, this);
-	    
+	  
 	    pCentro.setBackground(Color.WHITE);
         pSur.setBackground(Color.WHITE);
         pHeader.setBackground(Color.WHITE);
         pOeste.setBackground(Color.WHITE);
         pEste.setBackground(Color.WHITE);
         
-	    
 	    getContentPane().add(pCentro, BorderLayout.CENTER);
 	    getContentPane().add(pHeader, BorderLayout.NORTH);
 		getContentPane().add(pSur, BorderLayout.SOUTH);
 		getContentPane().add(pEste, BorderLayout.EAST);
 		getContentPane().add(pOeste, BorderLayout.WEST);
-		
-		
 	}
 		
-	public InformacionRecurso(Libro libro) {
-		setMainWindowProperties();
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+	public InformacionRecurso(Libro libro, Usuario usuario) {
+		if (usuario instanceof Admin) {
+			InformacionRecursoAdmin nuevaVentana = new InformacionRecursoAdmin(libro,usuario);
+			nuevaVentana.setVisible(true);
+			vInformacionRecurso.dispose();
+		}
+		setMainWindowProperties(Seccion.BIBLIOTECA, usuario);
 		setTitle ("BiblioTech - Harry Potter 1 (No Logueado)");
 		//PANEL OESTE
 		pOeste.setLayout(new BoxLayout(pOeste, BoxLayout.Y_AXIS));
@@ -215,11 +214,10 @@ public class InformacionRecurso extends JFrame {
 		botonReservar.setFont(new Font("Arial", Font.BOLD, 17));
 		botonReservar.setPreferredSize(new Dimension(200, 50));
         
-        
+        if (!(usuario instanceof Cliente)) {
 		botonesPanel.add(botonReview);
 		botonesPanel.add(botonReservar);
-        
-        
+       
 		pCentro.add(botonesPanel);
 		
 		reservarButton.addActionListener(new ActionListener() {
@@ -241,16 +239,14 @@ public class InformacionRecurso extends JFrame {
 	             if (respuesta == JOptionPane.YES_OPTION) {
 	            	 
 	             }
-				
 			}
-			
 		});
 		
 		setVisible(true);
 	}
-		
-	
-	
+	public InformacionRecurso(Sala sala, Usuario usuario) {
+		if (usuario instanceof Admin) {
+			InformacionRecursoAdmin nuevaVentana = new InformacionRecursoAdmin(sala,usuario);
 	public InformacionRecurso(Sala sala) {
 		setMainWindowProperties();
 	    setTitle("Sala " + Integer.toString(sala.getId()) );
@@ -297,8 +293,6 @@ public class InformacionRecurso extends JFrame {
         getContentPane().add(panelPrincipal, BorderLayout.CENTER);
         
 	    pOeste.add(panelPrincipal);
-	    
-	    
 	    pEste.setLayout(new BorderLayout());
 	    
 	    JButton reservarButton = new JButton("Reservar");
@@ -307,8 +301,6 @@ public class InformacionRecurso extends JFrame {
         
         pEste.setBorder(new EmptyBorder(0, 0, 10, 15));
         pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
-
-
 	    pEste.add(reservarButton, BorderLayout.SOUTH);
 
 	    // Asegúrate de que pEste esté agregado al JFrame
@@ -411,25 +403,19 @@ public class InformacionRecurso extends JFrame {
 		        // Abrir Venatana de ConfirmacionReserva
 		        new VentanaConfirmacionReservaEvento(evento);
 		    }
-				
-		
- 	    	
  	    });
- 
     }
 	
 	public static void main(String[] args) {
 		//LibroLectura libroLectura = new LibroLectura("HarryPotter1", "J.K.Rowling", 433,  Utils.loadImage("ejemploLibro.jpg", 225, 364).getImage(), 1, "", new ArrayList<Review>(), "FANTASIA", 4 );
-		
-
-		
+		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, foto, new ArrayList<Review>());
+		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), null);
 		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
 		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
-				
+		
 		//new InformacionRecurso(libroLectura);
 		//new InformacionRecurso(libroAcademico);
 		new InformacionRecurso(evento);
-	
 		new InformacionRecurso(sala);
 		
 	}

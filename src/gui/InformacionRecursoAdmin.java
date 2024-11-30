@@ -349,7 +349,6 @@ public class InformacionRecursoAdmin extends JFrame{
         descripcionEvento.setEditable(true); 
         descripcionEvento.setPreferredSize(new Dimension(700, 700));
 
-
         JScrollPane scrollPane = new JScrollPane(descripcionEvento);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -364,8 +363,6 @@ public class InformacionRecursoAdmin extends JFrame{
         pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
 	    pOeste.add(panelPrincipal);
     	
-	    
-	    
     	pEste.setLayout(new GridLayout (1,2));
         pEste.setBorder(new EmptyBorder(0, 0, 10, 15));
         pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
@@ -399,7 +396,6 @@ public class InformacionRecursoAdmin extends JFrame{
 	    
         add(panelBoton, BorderLayout.SOUTH);
 
-	    
 		setVisible (true);
 	}
 //    private void addTextBlock(JPanel panel) {
