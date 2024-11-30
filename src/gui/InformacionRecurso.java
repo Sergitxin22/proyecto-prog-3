@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,21 +24,22 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import BiblioTech.Admin;
+import BiblioTech.Cliente;
 import BiblioTech.Evento;
-//import BiblioTech.Genero;
 import BiblioTech.Libro;
-//import BiblioTech.LibroLectura;
-//import BiblioTech.LibroLectura;
+import BiblioTech.Review;
 import BiblioTech.Sala;
+import BiblioTech.SalaEventos;
 import BiblioTech.SalaPrivada;
+import BiblioTech.Seccion;
 //import BiblioTech.SalaPrivada;
 import BiblioTech.TipoEvento;
+import BiblioTech.Usuario;
 import utils.Utils;
-//import utils.Utils;
 
 public class InformacionRecurso extends JFrame {
 	private JFrame vInformacionRecurso;
-	private JButton reservarButton;
 	private Evento evento;
 	/**
 	 * 

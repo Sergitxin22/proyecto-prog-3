@@ -11,6 +11,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -26,15 +27,19 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import BiblioTech.Admin;
 import BiblioTech.Evento;
 //import BiblioTech.Genero;
 import BiblioTech.Libro;
+import BiblioTech.Review;
 //import BiblioTech.LibroLectura;
 //import BiblioTech.LibroLectura;
 import BiblioTech.Sala;
 import BiblioTech.SalaPrivada;
+import BiblioTech.Seccion;
 //import BiblioTech.SalaPrivada;
 import BiblioTech.TipoEvento;
+import BiblioTech.Usuario;
 import utils.Utils;
 //import utils.Utils;
 public class InformacionRecursoAdmin extends JFrame{
