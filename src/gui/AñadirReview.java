@@ -2,7 +2,6 @@ package gui;
 
 import BiblioTech.Cliente;
 import BiblioTech.Libro;
-import BiblioTech.LibroLectura;
 import BiblioTech.Review;
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -94,7 +93,7 @@ public class AñadirReview extends JFrame {
 
 			review.setCliente(cliente);
 			review.setComentario(comment);
-			review.setLibro((LibroLectura) libro);
+			review.setLibro(libro);
 			review.setRating(rating);
 
 			// TODO: Añadir función para añadir review a la BD.
@@ -142,9 +141,7 @@ public class AñadirReview extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		Libro libro = new LibroLectura("Harry Potter I", "J.K. Rowling", 443, Utils.loadImage("ejemploLibro.jpg", 112, 182), 1, "Harry va a Hogwarts y tal",
-				null, "FANTASIA", 2);
-
+		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, null, new ArrayList<Review>());
 		new AñadirReview(libro, new Cliente("032", "Juan", "aa@aa.aa", null, null, null, null, 2), new Review());
 	}
 
