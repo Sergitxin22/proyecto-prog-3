@@ -6,16 +6,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Scrollbar;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -44,6 +43,7 @@ public class VentanaBiblioteca extends JFrame {
 	private final ArrayList<Libro> listaLibros = Utils.cargarLibros();
 	private ArrayList<Libro> listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
 	
+	@SuppressWarnings("unchecked")
 	public VentanaBiblioteca(Usuario usuario) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		if (usuario == null) {
@@ -75,8 +75,20 @@ public class VentanaBiblioteca extends JFrame {
 			contador++;
 		}
 		
+		@SuppressWarnings("rawtypes")
 		JComboBox ordenar = new JComboBox(array);
 		ordenar.insertItemAt("Ordenar", 0);
+		ordenar.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED && !(e.getItem().equals("Ordenar"))) {
+					MetodosDeOrdenamiento metodoOrdenamiento = (MetodosDeOrdenamiento) e.getItem();
+		            ordenarLibros(metodoOrdenamiento);
+				}
+			}
+		});
+		
 		ordenar.setSelectedIndex(0);
 		subPanelContenido1.add(ordenar, BorderLayout.EAST);
 		ordenar.addPopupMenuListener(new PopupMenuListener() {
@@ -187,10 +199,7 @@ public class VentanaBiblioteca extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JLabel labelTitulo = (JLabel) panelLibro.getComponent(1);
-				String titulo = labelTitulo.getToolTipText();
 				abrirVentanaInformacionLibro(libro);
-				System.out.println(libro);
 				super.mouseClicked(e);
 			}
 			
@@ -246,6 +255,10 @@ public class VentanaBiblioteca extends JFrame {
 		ventanaInformacionLibro.setVisible(true);
 		setVisible(false);
 		
+	}
+
+	private void ordenarLibros(MetodosDeOrdenamiento item) {
+		System.out.println(item);
 	}
 	
 	public static void main(String[] args) {
