@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Scrollbar;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -77,6 +79,17 @@ public class VentanaBiblioteca extends JFrame {
 		
 		JComboBox ordenar = new JComboBox(array);
 		ordenar.insertItemAt("Ordenar", 0);
+		ordenar.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED && !(e.getItem().equals("Ordenar"))) {
+					MetodosDeOrdenamiento metodoOrdenamiento = (MetodosDeOrdenamiento) e.getItem();
+		            ordenarLibros(metodoOrdenamiento);
+				}
+			}
+		});
+		
 		ordenar.setSelectedIndex(0);
 		subPanelContenido1.add(ordenar, BorderLayout.EAST);
 		ordenar.addPopupMenuListener(new PopupMenuListener() {
