@@ -144,7 +144,7 @@ public class InformacionRecurso extends JFrame {
         JScrollPane descripcionScrollPane = new JScrollPane(descripcionLibro);
         descripcionScrollPane.setBackground(Color.WHITE);
         descripcionScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        descripcionScrollPane.setPreferredSize(new Dimension(1000, 700)); // Tamaño más grande para descripción
+        descripcionScrollPane.setPreferredSize(new Dimension(700, 700)); // Tamaño más grande para descripción
         descripcionScrollPane.setBorder(null);
         
         // Añadir título y descripción al panel
