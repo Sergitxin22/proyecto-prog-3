@@ -224,7 +224,6 @@ public class VentanaBiblioteca extends JFrame {
 	}
 
 	private void ordenarLibros(MetodosDeOrdenamiento item, JPanel subPanelContenido2) {
-		//ordenar por titulo
 		switch (item) {
 		case TITULO:
 			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getTitulo().compareTo(o2.getTitulo()));
@@ -232,10 +231,9 @@ public class VentanaBiblioteca extends JFrame {
 		case AUTOR:
 			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getAutor().compareTo(o2.getAutor()));
 			break;
-		// TODO volver a mirar cuando esta la refactorizacion de las clases
-//		case FECHA:
-//			Collections.sort(listaLibrosRenderizada, (o1, o2) -> ((LibroLectura) o1).getAnyoPublicacion().compareTo(((LibroLectura) o2).getAnyoPublicacion()));
-//			break;
+		case FECHA:
+			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getFechaPublicacion() - o2.getFechaPublicacion());
+			break;
 		default:
 			listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
 			break;
