@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -24,8 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 
 import BiblioTech.Admin;
 import BiblioTech.Libro;
@@ -43,7 +42,6 @@ public class VentanaBiblioteca extends JFrame {
 	private final ArrayList<Libro> listaLibros = Utils.cargarLibros();
 	private ArrayList<Libro> listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
 	
-	@SuppressWarnings("unchecked")
 	public VentanaBiblioteca(Usuario usuario) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		if (usuario == null) {
@@ -67,7 +65,7 @@ public class VentanaBiblioteca extends JFrame {
 		JPanel subPanelContenido1 = new JPanel(new BorderLayout());
 		panelContenido.add(subPanelContenido1, BorderLayout.NORTH);
 		
-		MetodosDeOrdenamiento[] array = new MetodosDeOrdenamiento[3];
+		MetodosDeOrdenamiento[] array = new MetodosDeOrdenamiento[4];
 		int contador = 0;
 				
 		for (MetodosDeOrdenamiento metodo: MetodosDeOrdenamiento.values()) {
@@ -75,45 +73,9 @@ public class VentanaBiblioteca extends JFrame {
 			contador++;
 		}
 		
-		@SuppressWarnings("rawtypes")
-		JComboBox ordenar = new JComboBox(array);
-		ordenar.insertItemAt("Ordenar", 0);
-		ordenar.addItemListener(new ItemListener() {
-			
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED && !(e.getItem().equals("Ordenar"))) {
-					MetodosDeOrdenamiento metodoOrdenamiento = (MetodosDeOrdenamiento) e.getItem();
-		            ordenarLibros(metodoOrdenamiento);
-				}
-			}
-		});
-		
-		ordenar.setSelectedIndex(0);
+		JComboBox<MetodosDeOrdenamiento> ordenar = new JComboBox<MetodosDeOrdenamiento>(array);
 		subPanelContenido1.add(ordenar, BorderLayout.EAST);
-		ordenar.addPopupMenuListener(new PopupMenuListener() {
-			
-			@Override
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-				if(ordenar.getItemAt(0).equals("Ordenar")) {
-					ordenar.removeItemAt(0);
-				};
-				
-			}
-			
-			@Override
-			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void popupMenuCanceled(PopupMenuEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
+
 		JTextField buscador = new JTextField("Buscador");
 		buscador.addMouseListener(new MouseAdapter() {
 			@Override
@@ -131,9 +93,6 @@ public class VentanaBiblioteca extends JFrame {
 		}		
 		
 		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 8));
-		//subPanelContenido2.setBackground(Color.orange);
-//		ArrayList<Libro> listaLibros = Utils.cargarLibros();
-		System.out.println(listaLibrosRenderizada.toString());
 		
 		int contadorLibros = 0;
 		for (Libro libro : listaLibrosRenderizada) {
@@ -160,7 +119,18 @@ public class VentanaBiblioteca extends JFrame {
 					listaLibrosRenderizada = new ArrayList<Libro>(listaFiltrada);
 					
 					 // Llamar a recargar el panel
-					recargarPanelContenido(subPanelContenido2, scrollBar);
+					recargarPanelContenido(subPanelContenido2);
+				}
+			}
+		});
+		
+		ordenar.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED && !(e.getItem().equals("Ordenar"))) {
+					MetodosDeOrdenamiento metodoOrdenamiento = (MetodosDeOrdenamiento) e.getItem();
+		            ordenarLibros(metodoOrdenamiento,subPanelContenido2);
 				}
 			}
 		});
@@ -175,11 +145,6 @@ public class VentanaBiblioteca extends JFrame {
 		JPanel panelLibro = new JPanel();
 		panelLibro.setLayout(new BoxLayout(panelLibro,BoxLayout.Y_AXIS));
 		ImageIcon imagenLibro = libro.getFoto();
-//		try {
-//			imagenLibro = Utils.loadImage("books/big/" + libro + ".jpg",98,151);
-//		} catch (Exception e) {
-//			imagenLibro = Utils.loadImage("books/noImagen.jpg",98,151);
-//		}
         JLabel iconLabel = new JLabel(imagenLibro);
 		panelLibro.add(iconLabel);
 		
@@ -222,8 +187,8 @@ public class VentanaBiblioteca extends JFrame {
 	    panelAddLibro.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
-	        	System.out.println("Panel clickeado");
-	            // Aquí puedes agregar la lógica que necesites
+        	System.out.println("Panel clickeado");
+        	// Aquí puedes agregar la lógica que necesites
         	}
 	    });
 	    
@@ -232,7 +197,7 @@ public class VentanaBiblioteca extends JFrame {
 	    panelAddLibro.add(textLabel, gbc);
 	    return panelAddLibro;
 	}
-	private void recargarPanelContenido(JPanel subPanelContenido2, JScrollPane scrollBar) {
+	private void recargarPanelContenido(JPanel subPanelContenido2) {
 	    subPanelContenido2.removeAll(); // Eliminar todos los componentes actuales.
 
 	    int contadorLibros = 0;
@@ -257,8 +222,24 @@ public class VentanaBiblioteca extends JFrame {
 		
 	}
 
-	private void ordenarLibros(MetodosDeOrdenamiento item) {
-		System.out.println(item);
+	private void ordenarLibros(MetodosDeOrdenamiento item, JPanel subPanelContenido2) {
+		//ordenar por titulo
+		switch (item) {
+		case TITULO:
+			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getTitulo().compareTo(o2.getTitulo()));
+			break;
+		case AUTOR:
+			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getAutor().compareTo(o2.getAutor()));
+			break;
+		// TODO volver a mirar cuando esta la refactorizacion de las clases
+//		case FECHA:
+//			Collections.sort(listaLibrosRenderizada, (o1, o2) -> ((LibroLectura) o1).getAnyoPublicacion().compareTo(((LibroLectura) o2).getAnyoPublicacion()));
+//			break;
+		default:
+			listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
+			break;
+		}
+		recargarPanelContenido(subPanelContenido2);
 	}
 	
 	public static void main(String[] args) {
