@@ -24,6 +24,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import BiblioTech.Cliente;
 import BiblioTech.Evento;
 //import BiblioTech.Genero;
 import BiblioTech.Libro;
@@ -31,6 +32,7 @@ import BiblioTech.Libro;
 //import BiblioTech.LibroLectura;
 import BiblioTech.Sala;
 import BiblioTech.SalaPrivada;
+import BiblioTech.Seccion;
 //import BiblioTech.SalaPrivada;
 import BiblioTech.TipoEvento;
 import utils.Utils;
@@ -56,7 +58,7 @@ public void setMainWindowProperties() {
 	    pSur = new JPanel();
 	    pEste = new JPanel();
 	    pOeste = new JPanel();
-	    pHeader = new Header(null, null);
+	    pHeader = new Header(Seccion.EVENTOS, new Cliente(), this);
 	    
 	    pCentro.setBackground(Color.WHITE);
         pSur.setBackground(Color.WHITE);

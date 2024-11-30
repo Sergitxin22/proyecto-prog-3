@@ -54,7 +54,7 @@ public class VentanaBiblioteca extends JFrame {
 		setLocationRelativeTo(null);
 		
 		// Panel superior que contendrá el Header
-        JPanel panelSuperior = new Header(Seccion.BIBLIOTECA, usuario);
+        JPanel panelSuperior = new Header(Seccion.BIBLIOTECA, usuario, this);
         
         // Agregar panel superior al marco principal
         add(panelSuperior, BorderLayout.NORTH);

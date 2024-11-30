@@ -45,7 +45,7 @@ public class InformacionRecursoAdmin extends JFrame{
 	 */
 	private static final long serialVersionUID = 1647556562163809896L;
 	private JPanel pOeste, pEste, pSur, pCentro, pHeader;
-	public void setMainWindowProperties() {
+	public void setMainWindowProperties(Seccion seccion, Usuario usuario) {
 		
 		vInformacionRecursoAdmin = this;
 		
@@ -59,7 +59,7 @@ public class InformacionRecursoAdmin extends JFrame{
 	    pSur = new JPanel();
 	    pEste = new JPanel();
 	    pOeste = new JPanel();
-	    pHeader = new Header(null, null);
+	    pHeader = new Header(seccion, usuario, this);
 	    
 	    pCentro.setBackground(Color.WHITE);
         pSur.setBackground(Color.WHITE);
@@ -77,9 +77,8 @@ public class InformacionRecursoAdmin extends JFrame{
 		
 	}
 		
-	public InformacionRecursoAdmin(Libro libro) {
-		setMainWindowProperties();
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+	public InformacionRecursoAdmin(Libro libro, Usuario usuario) {
+		setMainWindowProperties(Seccion.BIBLIOTECA, usuario);
 		setTitle ("BiblioTech - Harry Potter 1 (Logueado, Admin)");
 		//PANEL OESTE
 		pOeste.setLayout(new BoxLayout(pOeste, BoxLayout.Y_AXIS));
@@ -247,8 +246,8 @@ public class InformacionRecursoAdmin extends JFrame{
 		
 	
 	
-	public InformacionRecursoAdmin(Sala sala) {
-		setMainWindowProperties();
+	public InformacionRecursoAdmin(Sala sala, Usuario usuario) {
+		setMainWindowProperties(Seccion.SALAS_DE_ESTUDIO, usuario);
 	    setTitle("BiblioTech - Evento "  + sala.getId() + "(Logueado, Admin)");
 	    
 	    JPanel panelPrincipal = new JPanel();
@@ -324,9 +323,8 @@ public class InformacionRecursoAdmin extends JFrame{
 	   
 	    setVisible(true);
 	}
-    public InformacionRecursoAdmin(Evento evento) {
-        
-    	setMainWindowProperties();
+    public InformacionRecursoAdmin(Evento evento, Usuario usuario) {
+    	setMainWindowProperties(Seccion.EVENTOS, usuario);
     	setTitle("BiblioTech - Evento "  + evento.getTitulo() + "(Logueado, Admin)");
 	    
 	    JPanel panelPrincipal = new JPanel();

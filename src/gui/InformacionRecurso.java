@@ -48,7 +48,7 @@ public class InformacionRecurso extends JFrame {
 	 */
 	private static final long serialVersionUID = 1647556562163809896L;
 	private JPanel pOeste, pEste, pSur, pCentro, pHeader;
-	public void setMainWindowProperties() {
+	public void setMainWindowProperties(Seccion seccion, Usuario usuario) {
 		
 		vInformacionRecurso = this;
 		
@@ -62,7 +62,7 @@ public class InformacionRecurso extends JFrame {
 	    pSur = new JPanel();
 	    pEste = new JPanel();
 	    pOeste = new JPanel();
-	    pHeader = new Header(null, null);
+	    pHeader = new Header(seccion, usuario, this);
 	    
 	    pCentro.setBackground(Color.WHITE);
         pSur.setBackground(Color.WHITE);
