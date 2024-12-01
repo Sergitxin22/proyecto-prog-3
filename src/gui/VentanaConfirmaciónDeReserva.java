@@ -55,6 +55,14 @@ public class VentanaConfirmaciónDeReserva extends JFrame {
 				+ "An icon inline with text.<br><br></html>");
 		JButton botonConfirmar = new JButton("Confirmar reservar");
 		
+		botonConfirmar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {				 
+				ReservaConfirmada nuevaVentana = new ReservaConfirmada(libro, new Cliente());
+				nuevaVentana.setVisible(true);
+			}
+		});
 		
 		add(header,BorderLayout.NORTH);
 		add(body);
