@@ -1,7 +1,6 @@
 package gui;
 
 import BiblioTech.Admin;
-import BiblioTech.Recurso;
 import BiblioTech.Sala;
 import BiblioTech.SalaPrivada;
 import BiblioTech.Seccion;
@@ -19,6 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import utils.AddPanel;
+import utils.Utils;
 
 
 // BASADO EN EL CÓDIGO DE VentanaBiblioteca
@@ -31,11 +31,23 @@ public class VentanaSalasPrivadas extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private List<SalaPrivada> salas;
 
-	public VentanaSalasPrivadas(Usuario usuario, List<Sala> salas) {
+	public VentanaSalasPrivadas(Usuario usuario) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
+
+		ArrayList<Sala> salasTotales = Utils.cargarSalas();
+		ArrayList<SalaPrivada> salasPrivadas = new ArrayList<>();
+
+		for (Sala sala : salasTotales) {
+			if (sala instanceof SalaPrivada) {
+				salasPrivadas.add((SalaPrivada) sala);
+			}
+		}
+
+		salas = salasPrivadas;
 		
 		if (usuario == null) {
 			setTitle("Bibliotech - No logueado");			
@@ -44,7 +56,7 @@ public class VentanaSalasPrivadas extends JFrame {
 		}
 		
 		// Header
-        JPanel panelSuperior = new Header(Seccion.SALAS_DE_ESTUDIO, usuario);
+        JPanel panelSuperior = new Header(Seccion.SALAS_DE_ESTUDIO, usuario, this);
         add(panelSuperior, BorderLayout.NORTH);
 		
 		// Panel central
@@ -60,7 +72,7 @@ public class VentanaSalasPrivadas extends JFrame {
 		
 		Font buttonFont = new JButton().getFont();
 		
-		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 4, 5, 5));
+		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 2, 5, 5));
 		for (int i = 0; i < salas.size(); i++) {
 			// Labels para el botón
 			JPanel buttonPanel = new JPanel();
@@ -96,15 +108,6 @@ public class VentanaSalasPrivadas extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		ArrayList<Recurso> recursos = new ArrayList<>();
-		recursos.add(Recurso.ORDENADORES);
-		recursos.add(Recurso.PROYECTOR);
-		recursos.add(Recurso.PIZARRA);
-		List<Sala> salasPrivadas = new ArrayList<>();
-		
-		for (int i = 1; i <= 20; i++) {
-			salasPrivadas.add(new SalaPrivada(5, i, 2, null, recursos));
-		}
-		new VentanaSalasPrivadas(null, salasPrivadas);
+		new VentanaSalasPrivadas(new Admin());
 	}
 }
