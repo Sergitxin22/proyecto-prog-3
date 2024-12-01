@@ -25,7 +25,7 @@ public class VentanaConfirmaciónDeReserva extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = -5490640345084381273L;
-	public VentanaConfirmaciónDeReserva() {
+	public VentanaConfirmaciónDeReserva(Libro libro) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("BiblioTech - Confirmación de reserva");
 		setSize(640,480);
@@ -44,10 +44,10 @@ public class VentanaConfirmaciónDeReserva extends JFrame {
 		
 		//panel texto
 		JPanel panelTexto = new JPanel();
-		JLabel labelTitulo = new JLabel("TITULO LIBRO");
+		JLabel labelTitulo = new JLabel(libro.getTitulo());
 		Font fuente = new Font("ARIAL",Font.BOLD, 32);
 		labelTitulo.setFont(fuente);
-		JLabel labelDescripcionLibro = new JLabel("<html>A paragraph of text with an unassigned link.<br>"
+		JTextArea descripcionLibro = new JTextArea(libro.getSinopsis());
 				+ "A second row of text with a web link<br>"
 				+ "An icon inline with text.<br>"
 				+ "A paragraph of text with an unassigned link.<br>"
@@ -87,6 +87,6 @@ public class VentanaConfirmaciónDeReserva extends JFrame {
 		setVisible(true);
 	} 
 	public static void main(String[] args) {
-		VentanaConfirmaciónDeReserva ventana = new VentanaConfirmaciónDeReserva();
+		VentanaConfirmaciónDeReserva ventana = new VentanaConfirmaciónDeReserva(new Libro());
 	}
 }
