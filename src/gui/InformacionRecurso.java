@@ -222,11 +222,11 @@ public class InformacionRecurso extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				 int respuesta = JOptionPane.showConfirmDialog(null, "¿Quieres añadir una review?","Confirmar review", JOptionPane.YES_NO_OPTION);
-                 
-	             if (respuesta == JOptionPane.YES_OPTION) {
-	            	 
-	             }
+				AñadirReview ventanaNueva = new AñadirReview(libro, usuario);
+			}
+		});
+		
+		botonReservar.addActionListener(new ActionListener() {
 			}
 		});
 		
