@@ -205,7 +205,12 @@ public class InformacionRecursoAdmin extends JFrame{
 	     botonGuardar.addActionListener(new ActionListener() {
 	    	 @Override
 	         public void actionPerformed(ActionEvent e) {
-	    		 JOptionPane.showMessageDialog(null, "Cambios guardados.");
+	    		 int respuesta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que quieres actualizar el libro?","Confirmar actualización", JOptionPane.YES_NO_OPTION);
+                 
+	             if (respuesta == JOptionPane.YES_OPTION) {
+	            	 // TODO Guardar cambios libro
+	            	 JOptionPane.showMessageDialog(null, "Libro actualizado.");
+	             }
 	         }
 	     });
 
@@ -215,6 +220,7 @@ public class InformacionRecursoAdmin extends JFrame{
 	    		 int respuesta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar el libro?","Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 	                        
 	             if (respuesta == JOptionPane.YES_OPTION) {
+	            	 // TODO eliminar el libro
 	            	 JOptionPane.showMessageDialog(null, "Libro eliminado.");
 	             }
 	         }
