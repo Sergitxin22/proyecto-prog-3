@@ -227,6 +227,10 @@ public class InformacionRecurso extends JFrame {
 		});
 		
 		botonReservar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {				 
+				new VentanaConfirmaciónDeReserva();
 			}
 		});
 		
