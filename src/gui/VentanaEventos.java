@@ -6,6 +6,7 @@ import BiblioTech.Sala;
 import BiblioTech.SalaEventos;
 import BiblioTech.Seccion;
 import BiblioTech.Usuario;
+import io.InputUtils;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -37,12 +38,12 @@ public class VentanaEventos extends JFrame { // TODO: Falta la funcionalidad de 
 
 		ArrayList<SalaEventos> salasEventos = new ArrayList<>();
 
-		for (Sala sala : Utils.cargarSalas()) {
+		for (Sala sala : InputUtils.cargarSalas()) {
 			if (sala instanceof SalaEventos) {
 				salasEventos.add((SalaEventos) sala);
 			}
 		}
-		eventos = Utils.cargarEventos(salasEventos);
+		eventos = InputUtils.cargarEventos(salasEventos);
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1280, 720);

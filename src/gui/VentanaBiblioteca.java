@@ -31,6 +31,7 @@ import BiblioTech.Libro;
 import BiblioTech.MetodosDeOrdenamiento;
 import BiblioTech.Seccion;
 import BiblioTech.Usuario;
+import io.InputUtils;
 import utils.Utils;
 
 public class VentanaBiblioteca extends JFrame {
@@ -39,7 +40,7 @@ public class VentanaBiblioteca extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final ArrayList<Libro> listaLibros = Utils.cargarLibros();
+	private final ArrayList<Libro> listaLibros = InputUtils.cargarLibros();
 	private Usuario usuario;
 	private ArrayList<Libro> listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
 	
