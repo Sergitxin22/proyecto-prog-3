@@ -196,25 +196,7 @@ public class InformacionRecursoAdmin extends JFrame{
         reviews.add(reviewsScrollPane);
        
 		pOeste.add(reviews);
-		
-		//PANEL BOTONES
-		/*
-		JPanel botonesPanel = new JPanel(new GridBagLayout());
-		
-		botonesPanel.setPreferredSize(new Dimension(100,100));
-		botonesPanel.setBackground(Color.WHITE);
-		
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(10, 10, 10, 10);
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.anchor = GridBagConstraints.CENTER;
-        
-		
-		JButton eliminarLibroButton = new JButton("Eliminar libro");
-		eliminarLibroButton.setFont(new Font("Arial", Font.BOLD, 17));
-		eliminarLibroButton.setPreferredSize(new Dimension(200, 50));
-		*/
+
 		 JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 	     JButton botonGuardar = new JButton("Guardar Cambios");
 	     JButton botonBorrar = new JButton("Eliminar libro");
@@ -223,7 +205,12 @@ public class InformacionRecursoAdmin extends JFrame{
 	     botonGuardar.addActionListener(new ActionListener() {
 	    	 @Override
 	         public void actionPerformed(ActionEvent e) {
-	    		 JOptionPane.showMessageDialog(null, "Cambios guardados.");
+	    		 int respuesta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que quieres actualizar el libro?","Confirmar actualización", JOptionPane.YES_NO_OPTION);
+                 
+	             if (respuesta == JOptionPane.YES_OPTION) {
+	            	 // TODO Guardar cambios libro
+	            	 JOptionPane.showMessageDialog(null, "Libro actualizado.");
+	             }
 	         }
 	     });
 
@@ -233,6 +220,7 @@ public class InformacionRecursoAdmin extends JFrame{
 	    		 int respuesta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar el libro?","Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 	                        
 	             if (respuesta == JOptionPane.YES_OPTION) {
+	            	 // TODO eliminar el libro
 	            	 JOptionPane.showMessageDialog(null, "Libro eliminado.");
 	             }
 	         }
