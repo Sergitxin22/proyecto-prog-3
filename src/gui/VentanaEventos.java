@@ -2,9 +2,9 @@ package gui;
 
 import BiblioTech.Admin;
 import BiblioTech.Evento;
+import BiblioTech.Sala;
 import BiblioTech.SalaEventos;
 import BiblioTech.Seccion;
-import BiblioTech.TipoEvento;
 import BiblioTech.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import utils.AddPanel;
+import utils.Utils;
 
 // BASADO EN EL CÓDIGO DE VentanaBiblioteca
 
@@ -29,8 +30,20 @@ public class VentanaEventos extends JFrame { // TODO: Falta la funcionalidad de 
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private List<Evento> eventos;
 
-	public VentanaEventos(Usuario usuario, List<Evento> eventos) {
+
+	public VentanaEventos(Usuario usuario) {
+
+		ArrayList<SalaEventos> salasEventos = new ArrayList<>();
+
+		for (Sala sala : Utils.cargarSalas()) {
+			if (sala instanceof SalaEventos) {
+				salasEventos.add((SalaEventos) sala);
+			}
+		}
+		eventos = Utils.cargarEventos(salasEventos);
+
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
@@ -42,7 +55,7 @@ public class VentanaEventos extends JFrame { // TODO: Falta la funcionalidad de 
 		}
 		
 		// Header
-        JPanel panelSuperior = new Header(Seccion.EVENTOS, usuario);
+        JPanel panelSuperior = new Header(Seccion.EVENTOS, usuario, this);
         add(panelSuperior, BorderLayout.NORTH);
 		
 		// Panel central
@@ -58,7 +71,7 @@ public class VentanaEventos extends JFrame { // TODO: Falta la funcionalidad de 
 		
 		Font buttonFont = new JButton().getFont();
 		
-		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 4, 5, 5));
+		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 2, 5, 5));
 		for (int i = 0; i < eventos.size(); i++) {
 			// Labels para el botón
 			JPanel buttonPanel = new JPanel();
@@ -92,29 +105,7 @@ public class VentanaEventos extends JFrame { // TODO: Falta la funcionalidad de 
 	}
 
 	public static void main(String[] args) {
-
-		// Datos de prueba
-		
-		List<Evento> eventos = new ArrayList<>();
-		
-		for (int i = 1; i <= 10; i++) {
-			Evento evento = new Evento("Evento sobre literatura", TipoEvento.CHARLA, new ArrayList<>(), null);
-			SalaEventos sala = new SalaEventos(evento);
-
-			eventos.add(new Evento("Evento sobre IA", TipoEvento.CHARLA, new ArrayList<>(), sala));
-		}
-
-		for (int i = 1; i <= 20; i++) {
-			Evento evento = new Evento("Evento sobre literatura", TipoEvento.CHARLA, new ArrayList<>(), null);
-			SalaEventos sala = new SalaEventos(evento);
-
-			evento.setSala(sala);
-			
-
-			eventos.add(evento);
-			
-		}
-		new VentanaEventos(new Admin(), eventos);
+		new VentanaEventos(new Admin());
 	}
 }
 

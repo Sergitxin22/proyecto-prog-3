@@ -30,7 +30,7 @@ public class AñadirReview extends JFrame {
 	private int rating = 0;
 	private String comment = "";
 
-	public AñadirReview(Libro libro, Cliente cliente, Review review) {
+	public AñadirReview(Libro libro, Cliente cliente) {
 		
 		setTitle("Anadir review");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -90,16 +90,12 @@ public class AñadirReview extends JFrame {
 
 		publicarButton.addActionListener(e -> {
 			comment = comentarioTextArea.getText();
-
-			review.setCliente(cliente);
-			review.setComentario(comment);
-			review.setLibro(libro);
-			review.setRating(rating);
-
+			Review review = new Review(libro, cliente, comment, rating);
+			libro.getReviews().add(review);
 			// TODO: Añadir función para añadir review a la BD.
 
 			dispose();
-			InformacionRecurso redirectWindow = new InformacionRecurso(libro);
+			InformacionRecurso redirectWindow = new InformacionRecurso(libro, cliente);
 			JOptionPane.showMessageDialog(redirectWindow, "Gracias por tu review!", "Review publicada correctamente", JOptionPane.INFORMATION_MESSAGE);
 		});
 		
@@ -142,7 +138,7 @@ public class AñadirReview extends JFrame {
 	
 	public static void main(String[] args) {
 		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, null, new ArrayList<Review>());
-		new AñadirReview(libro, new Cliente("032", "Juan", "aa@aa.aa", null, null, null, null, 2), new Review());
+		new AñadirReview(libro, new Cliente("032", "Juan", "aa@aa.aa", null, null, null, null, 2));
 	}
 
 }
