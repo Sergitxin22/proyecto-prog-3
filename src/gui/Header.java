@@ -1,21 +1,19 @@
 package gui;
 
+import BiblioTech.Admin;
+import BiblioTech.Cliente;
+import BiblioTech.Seccion;
+import BiblioTech.Usuario;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import BiblioTech.Admin;
-import BiblioTech.Cliente;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
 import utils.Utils;
 
 public class Header extends JPanel {
@@ -26,7 +24,7 @@ public class Header extends JPanel {
 	private static final long serialVersionUID = -1102784202811827191L;
 	private static boolean tieneImagen = true; 
 
-	public Header(Seccion seccion, Usuario usuario) {
+	public Header(Seccion seccion, Usuario usuario,JFrame ventana) {
 		setLayout(new BorderLayout());
 //        setBackground(Color.GRAY);
 //        setBorder(new EmptyBorder(new Insets(0, 20, 0, 20)));
@@ -50,8 +48,8 @@ public class Header extends JPanel {
         iconLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("Ícono clickeado");
-                // Aquí puedes agregar la lógica que necesites
+                System.out.println("Ícono clickeado");  
+                navegarHacia(seccion, ventana, usuario);
             }
         });
         
@@ -63,7 +61,10 @@ public class Header extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 System.out.println("Texto clickeado");
+                Portada ventanaPortada = new Portada(usuario);
+                ventanaPortada.setVisible(true);
                 // Aquí puedes agregar la lógica que necesites
+                ventana.dispose();
             }
         });
         
@@ -80,9 +81,22 @@ public class Header extends JPanel {
 //        panelDerecho.setBackground(Color.DARK_GRAY);
         
         String nombreIconoUsuario = obtenerNombreImagenUsuario(usuario);        
-        
         ImageIcon icon2 = Utils.loadImage(nombreIconoUsuario, 48, 48);
         JLabel iconLabel2 = new JLabel(icon2);
+		iconLabel2.addMouseListener(new MouseAdapter() {
+			@Override
+            public void mouseClicked(MouseEvent e) {
+				switch(nombreIconoUsuario) {
+					case "user.png":
+						new IniciarSesion(ventana);
+						ventana.setVisible(false);
+						break;
+					default:
+						new VentanaInformacionUsuario(usuario);
+						break;
+				}	
+            }
+		});
         panelDerecho.add(iconLabel2);
         
         // Agregar los paneles izquierdo y derecho al Header
@@ -117,5 +131,24 @@ public class Header extends JPanel {
 			return "noUser.png";
 		}
 	}
+	
+	private void navegarHacia(Seccion seccion, JFrame ventana, Usuario usuario) {
+		JFrame nuevaVentana = null;
+		switch (seccion) {
+		case BIBLIOTECA:
+			nuevaVentana = new VentanaBiblioteca(usuario);
+			
+			break;
+		case EVENTOS:
+			nuevaVentana = new VentanaEventos(usuario);
+			break;
+		case SALAS_DE_ESTUDIO: 
+			nuevaVentana = new SeleccionarSalaPublicaPrivada(usuario);
+			break;
+		}
+		nuevaVentana.setVisible(true);
+		ventana.dispose();
+	}
+	
 
 }

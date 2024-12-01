@@ -6,11 +6,16 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -21,12 +26,21 @@ public class VentanaRegistrarse extends JFrame {
 	 */
 	private static final long serialVersionUID = 2621741612069651140L;
 	
-	public VentanaRegistrarse() {
+	public VentanaRegistrarse(JFrame previousWindow) {
 		setTitle("Regístrate");
 		setSize (600, 600);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				previousWindow.setVisible(true);
+				dispose();
+			}
+});
+
+		
+
 		// Texto superior
 		JLabel topText = new JLabel("Regístrate", SwingConstants.CENTER);
 		topText.setFont(new Font("Verdana", Font.BOLD, 32));
@@ -35,7 +49,10 @@ public class VentanaRegistrarse extends JFrame {
 		// Cuerpo de la ventana
 		JPanel body = new JPanel(new GridLayout(8, 1, 0, 0));
 		body.setBorder(new EmptyBorder(50, 100, 0, 100));
-				
+		
+		JLabel textDNI= new JLabel("DNI", SwingConstants.CENTER);
+		textDNI.setFont(topText.getFont().deriveFont(Font.PLAIN, 20));
+
 		JLabel textNombre= new JLabel("Nombre", SwingConstants.CENTER);
 		textNombre.setFont(topText.getFont().deriveFont(Font.PLAIN, 20));
 		
@@ -49,18 +66,20 @@ public class VentanaRegistrarse extends JFrame {
 		textRepetirContrasenia.setFont(topText.getFont().deriveFont(Font.PLAIN, 20));
 		
 			
-		
+		JTextField tfDNI = new JTextField();
 		JTextField tfNombre = new JTextField();
 		JTextField tfUsuarioEmail = new JTextField();
-		JTextField tfContrasena = new JTextField();
-		JTextField tfRepetirContrasenia = new JTextField();
+		JPasswordField tfContrasena = new JPasswordField();
+		JPasswordField tfRepetirContrasenia = new JPasswordField();
 		
+		tfDNI.setPreferredSize(new Dimension(125, 25));
 		tfNombre.setPreferredSize(new Dimension(125, 25));
 		tfUsuarioEmail.setPreferredSize(new Dimension(125, 25));
 		tfContrasena.setPreferredSize(new Dimension(125, 25));
 		tfRepetirContrasenia.setPreferredSize(new Dimension(125, 25));
 		
-		
+		JPanel tfDNIPanel = new JPanel();
+		tfDNIPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		JPanel tfNombrePanel = new JPanel();
 		tfNombrePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		JPanel tfUsuarioEmailPanel = new JPanel();
@@ -70,6 +89,7 @@ public class VentanaRegistrarse extends JFrame {
 		JPanel tfRepetirContraseniaPanel = new JPanel();
 		tfRepetirContraseniaPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 			
+		tfDNIPanel.add(tfDNI);
 		tfNombrePanel.add(tfNombre);
 		tfUsuarioEmailPanel.add(tfUsuarioEmail);
 		tfContrasenaPanel.add(tfContrasena);
@@ -77,6 +97,8 @@ public class VentanaRegistrarse extends JFrame {
 
 		textContrasena.setForeground(Color.black);
 		
+		body.add(textDNI);
+		body.add(tfDNIPanel);
 		body.add(textNombre);
 		body.add(tfNombrePanel);
 		body.add(textEmail);
@@ -92,7 +114,30 @@ public class VentanaRegistrarse extends JFrame {
 		
 		// Parte baja de la pantalla
 		JButton registrarseButton = new JButton("Registrarse");
+		registrarseButton.addActionListener(e -> {
+			if (!new String(tfContrasena.getPassword()).equals(new String(tfRepetirContrasenia.getPassword()))) {
+				JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+			} else {
+				
+
+				// TODO: Añadir a la lista y a la BD el usuario
+
+				previousWindow.removeAll();
+				previousWindow.setVisible(true);
+				previousWindow.revalidate();
+				previousWindow.repaint();
+			}
+			
+		});
+
 		JLabel yaCuentaLabel = new JLabel("¿Ya tienes cuenta?");
+		yaCuentaLabel.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        new IniciarSesion(previousWindow);
+						dispose();
+                    }	
+		});
 		yaCuentaLabel.setForeground(Color.blue);
 		
 		JPanel tail = new JPanel(new GridLayout(2, 1, 0, 0));
@@ -115,7 +160,7 @@ public class VentanaRegistrarse extends JFrame {
 		setVisible(true);
 	}
 	public static void main(String[] args) {
-		new VentanaRegistrarse();
+		new VentanaRegistrarse(null);
 	}
 }
 

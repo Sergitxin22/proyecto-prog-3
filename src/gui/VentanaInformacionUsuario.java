@@ -1,5 +1,8 @@
 package gui;
 
+import BiblioTech.Cliente;
+import BiblioTech.Seccion;
+import BiblioTech.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -11,7 +14,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,8 +23,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import BiblioTech.Seccion;
 import utils.Utils;
 
 public class VentanaInformacionUsuario extends JFrame {
@@ -36,12 +38,12 @@ public class VentanaInformacionUsuario extends JFrame {
 	private static boolean editarPassword = false;
 	private static int contadorClicksPassword = 0;
 
-	public VentanaInformacionUsuario() {
+	public VentanaInformacionUsuario(Usuario usuario) {
 		setTitle("Ventana Información Usuario");
 		setSize(640,480);
 		setLocationRelativeTo(null);
 		
-		JPanel header = new Header(Seccion.BIBLIOTECA, null);
+		JPanel header = new Header(Seccion.BIBLIOTECA, usuario, this);
 		add(header, BorderLayout.NORTH);
 
 		JPanel contenido = new JPanel();
@@ -169,7 +171,7 @@ public class VentanaInformacionUsuario extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		VentanaInformacionUsuario viu = new VentanaInformacionUsuario();
+		VentanaInformacionUsuario viu = new VentanaInformacionUsuario(new Cliente("3232323", "Juan", "juan", LocalDateTime.now(), "a", new ArrayList<>(), new ArrayList<>(), 0));
 		System.out.println(viu.getBackground());
 	}
 

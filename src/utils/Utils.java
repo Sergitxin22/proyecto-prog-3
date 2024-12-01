@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 public class Utils {
+
 	public static ImageIcon loadImage(String imageName, int width, int height) {
 		
 		/*
@@ -21,11 +22,12 @@ public class Utils {
 		try {
 			bi = ImageIO.read(new File("resources/images/" + imageName)); // Abre la imagen
 		} catch (IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		
 		result = new ImageIcon(bi.getScaledInstance(width, height, Image.SCALE_DEFAULT)); // La convierte en ImageIcon con un tamaño
 		
 		return result;
-	}	
+	}
+
 }

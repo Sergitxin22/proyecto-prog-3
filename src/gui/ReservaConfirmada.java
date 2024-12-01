@@ -1,22 +1,23 @@
 package gui;
 
+import BiblioTech.Cliente;
+import BiblioTech.Evento;
+import BiblioTech.Libro;
+import BiblioTech.SalaEventos;
+import BiblioTech.SalaPrivada;
+import BiblioTech.TipoEvento;
+import BiblioTech.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Font;
-
+import java.time.LocalDate;
+import java.util.ArrayList;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-
-import BiblioTech.Evento;
-//import BiblioTech.Genero;
-import BiblioTech.Libro;
-//import BiblioTech.LibroLectura;
-import BiblioTech.SalaPrivada;
 //import BiblioTech.TipoEvento;
 //import utils.Utils;
 
@@ -45,7 +46,7 @@ public class ReservaConfirmada extends JFrame {
 	}
 	
 	
-	public ReservaConfirmada(Libro libro) {
+	public ReservaConfirmada(Libro libro, Usuario usuario) {
 		
 		setMainWindowProperties();
 		
@@ -54,7 +55,7 @@ public class ReservaConfirmada extends JFrame {
 		bookPanel.setLayout(new BoxLayout(bookPanel, BoxLayout.Y_AXIS));
 		
 		JLabel bookImageLabel = new JLabel();
-		bookImageLabel.setIcon(new ImageIcon(libro.getFoto()));
+		bookImageLabel.setIcon(libro.getFoto());
 		
 		JLabel bookTitleLabel = new JLabel(libro.getTitulo());
 		bookTitleLabel.setFont(new Font("Verdana", Font.PLAIN, 16));
@@ -85,13 +86,22 @@ public class ReservaConfirmada extends JFrame {
 		reservaPanel.setBorder(new EmptyBorder(70, 0, 0, 0));
 		bookPanel.setBorder(new EmptyBorder(30, 100, 0, 0));
 		
+		JButton volverButton = new JButton("Volver");
+		volverButton.addActionListener(e -> {
+			new InformacionRecurso(libro,usuario);
+			dispose();
+		});
+
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(volverButton);
+
 		add(bookPanel, BorderLayout.WEST);
 		add(reservaPanel, BorderLayout.CENTER);
-		add(new JButton("Volver"), BorderLayout.SOUTH);
+		add(buttonPanel, BorderLayout.SOUTH);
 		setVisible(true);
 	}
 	
-	public ReservaConfirmada(Evento evento) {
+	public ReservaConfirmada(Evento evento, Usuario usuario) {
 		
 		setMainWindowProperties();
 		
@@ -117,15 +127,21 @@ public class ReservaConfirmada extends JFrame {
 		reservaPanel.add(codigoLabelCenterPanel);
 		
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.add(new JButton("Volver"));
+		JButton volverButton = new JButton("Volver");
+		volverButton.addActionListener(e -> {
+			new InformacionRecurso(evento, usuario);
+			dispose();
+		});
 		
+		buttonPanel.add(volverButton);
+
 		add(reservaPanel);
 		add(buttonPanel, BorderLayout.SOUTH);
 		
 		setVisible(true);
 	}
 	
-	public ReservaConfirmada(SalaPrivada sala) {
+	public ReservaConfirmada(SalaPrivada sala, Usuario usuario) {
 		setMainWindowProperties();
 		JPanel reservaPanel = new JPanel();
 		reservaPanel.setLayout(new BoxLayout(reservaPanel, BoxLayout.Y_AXIS));
@@ -148,7 +164,13 @@ public class ReservaConfirmada extends JFrame {
 		reservaPanel.add(codigoLabelCenterPanel);
 		
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.add(new JButton("Volver"));
+		JButton volverButton = new JButton("Volver");
+		volverButton.addActionListener(e -> {
+			new InformacionRecurso(sala, usuario);
+			dispose();
+		});
+
+		buttonPanel.add(volverButton);
 		
 		add(reservaPanel);
 		add(buttonPanel, BorderLayout.SOUTH);
@@ -160,13 +182,13 @@ public class ReservaConfirmada extends JFrame {
 	public static void main(String[] args) {
 		
 		// RECURSOS DE PRUEBA
+//		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, null, new ArrayList<Review>());	
+		Evento evento = new Evento(239, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<>(), new SalaEventos(null), LocalDate.now(), 10);
+//		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
 		
-//		Libro libro = new LibroLectura("Harry Potter I", "J.K. Rowling", 443, Utils.loadImage("ejemploLibro.jpg", 112, 182).getImage(), 1, "Harry va a Hogwarts y tal",
-//				null, Genero.FANTASIA, 2);
-//		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
-		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
-				
-		new ReservaConfirmada(sala);
-		
+//		int id, String titulo, TipoEvento tipoEvento, ArrayList<Cliente> asistentes, SalaEventos sala, LocalDate fecha, int hora
+//		new ReservaConfirmada(libro, new Cliente());
+//		new ReservaConfirmada(sala, new Cliente());
+		new ReservaConfirmada(evento, new Cliente());
 	}
 }

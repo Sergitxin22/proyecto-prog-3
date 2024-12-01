@@ -1,5 +1,0 @@
-package BiblioTech;
-
-public enum Genero {
-	DRAMA, MISTERIO, ROMANCE, COMEDIA, FANTASIA, CIENCIA_FICCION, INFANTIL, DIVULGACION;
-}

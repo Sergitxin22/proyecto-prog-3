@@ -1,24 +1,25 @@
 package gui;
 
+import BiblioTech.Admin;
+import BiblioTech.Cliente;
+import BiblioTech.Usuario;
 import java.awt.BorderLayout;
-
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
-import java.awt.Font;
-import java.awt.GridLayout;
-
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import BiblioTech.Admin;
-import BiblioTech.Cliente;
-import BiblioTech.Usuario;
 import utils.Utils;
 
 public class Portada extends JFrame {	
+
+	// Para poder darle el argumento de la ventana a IniciarSesion() al darle al botón de usuario
+	private JFrame currentWindow = null; 
 	
 	/**
 	 * 
@@ -27,6 +28,8 @@ public class Portada extends JFrame {
 
 	public Portada(Usuario usuario) {
 		
+		currentWindow = this;
+
 		setTitle("BiblioTech - Portada");
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
@@ -42,6 +45,7 @@ public class Portada extends JFrame {
 		// PROCESO DE ABRIR LAS IMAGENES Y ASIGNARLAS A SUS LABELS:
 		// Imagen del usuario
 		ImageIcon usuarioIcon = null;
+
 		if (usuario instanceof Admin) {
 			usuarioIcon = Utils.loadImage("adminUser.png", 80, 80);
 		} else if (usuario instanceof Cliente) {
@@ -52,6 +56,18 @@ public class Portada extends JFrame {
 		
 		JLabel usuarioLabel = new JLabel();
 		usuarioLabel.setIcon(usuarioIcon);
+
+		usuarioLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+				if (usuario == null) {
+
+					new IniciarSesion(currentWindow);
+				} else {
+					new VentanaInformacionUsuario(usuario);
+				}	
+            }
+		});
 	
 		// Imagen del libro
 		ImageIcon libroIcon = Utils.loadImage("libros.png", 150, 150);
@@ -87,8 +103,25 @@ public class Portada extends JFrame {
 		
 		JPanel mid = new JPanel();
 		JButton bibliotecaButton = new JButton("Biblioteca");
+
+		bibliotecaButton.addActionListener(e -> {
+                    new VentanaBiblioteca(usuario);
+					dispose();
+                });
+
 		JButton salasButton = new JButton("Salas");
+
+		salasButton.addActionListener(e -> {
+                    new SeleccionarSalaPublicaPrivada(usuario);
+					dispose();
+		});
+
 		JButton eventosButton = new JButton("Eventos");
+
+		eventosButton.addActionListener(e -> {
+			new VentanaEventos(usuario);
+			dispose();
+		});
 		
 		JPanel bibliotecaButtonPanel = new JPanel();
 		JPanel salasButtonPanel = new JPanel();
@@ -141,7 +174,7 @@ public class Portada extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		new Portada(null);
+		new Portada(new Admin());
 		
 	}
 }

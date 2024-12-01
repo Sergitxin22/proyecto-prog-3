@@ -1,15 +1,16 @@
 package utils;
 
+import BiblioTech.Seccion;
+import BiblioTech.Usuario;
+import gui.VentanaCrearEvento;
+import gui.VentanaCrearSalaPrivada;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import BiblioTech.Seccion;
 
 public class AddPanel extends JPanel {
 
@@ -18,7 +19,7 @@ public class AddPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public AddPanel(Seccion seccion) {
+		public AddPanel(Seccion seccion, Usuario usuario) {
 		
 		String entidad = "";
 		
@@ -43,8 +44,17 @@ public class AddPanel extends JPanel {
 	    addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
-	        	System.out.println("Panel clickeado");
-	            // Aquí puedes agregar la lógica que necesites
+	        	if (seccion.equals(Seccion.BIBLIOTECA)) {
+					// TODO: ventana para añadir libros
+				}
+
+				if (seccion.equals(Seccion.SALAS_DE_ESTUDIO)) {
+					new VentanaCrearSalaPrivada(usuario);
+				}
+
+				if (seccion.equals(Seccion.EVENTOS)) {
+					new VentanaCrearEvento(usuario);
+				}
         	}
 	    });
 	    

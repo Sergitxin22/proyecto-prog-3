@@ -6,30 +6,40 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-public class IniciarSesion extends JFrame {
-	
-	// TODO: Añadir subrayado al texto de "¿No tienes cuenta?" cuando el cursor pase por el label	
+public class IniciarSesion extends JFrame {	
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public IniciarSesion() {
+	public IniciarSesion(JFrame previousWindow) {
 		setTitle("Iniciar Sesión");
 		setSize(650, 500);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
+
+		addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        previousWindow.setVisible(true);
+						dispose();
+                    }
+			
+		});
 		
 		// Texto superior
 		JLabel topText = new JLabel("Iniciar sesión", SwingConstants.CENTER); // Label con texto centrado
@@ -47,7 +57,7 @@ public class IniciarSesion extends JFrame {
 		textContrasena.setFont(topText.getFont().deriveFont(Font.PLAIN, 20));
 		
 		JTextField tfUsuarioEmail = new JTextField();
-		JTextField tfContrasena = new JTextField();
+		JPasswordField tfContrasena = new JPasswordField();
 		
 		tfUsuarioEmail.setPreferredSize(new Dimension(125, 25));
 		tfContrasena.setPreferredSize(new Dimension(125, 25));
@@ -71,11 +81,26 @@ public class IniciarSesion extends JFrame {
 		
 		// Parte baja de la pantalla
 		JButton iniciarSesionButton = new JButton("Iniciar sesión");
+		iniciarSesionButton.addActionListener(e -> {
+			// TODO: COMPROBACIÓN DE QUE EL USUARIO EXISTE
+			previousWindow.setVisible(true);
+			previousWindow.repaint();
+			dispose();
+
+		});
+
 		JLabel noCuentaLabel = new JLabel("¿No tienes cuenta?", SwingConstants.CENTER);
 		noCuentaLabel.setForeground(Color.blue);
+		noCuentaLabel.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        new VentanaRegistrarse(previousWindow);
+						dispose();
+                    }
+			
+		});
 		
 		JPanel tail = new JPanel(new GridLayout(2, 1, 0, 0));
-		
 		
 		JPanel iniciarSesionButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		iniciarSesionButtonPanel.add(iniciarSesionButton);
@@ -98,7 +123,7 @@ public class IniciarSesion extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		new IniciarSesion();	
+		new IniciarSesion(null);	
 	}
 
 }
