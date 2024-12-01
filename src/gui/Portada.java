@@ -48,7 +48,7 @@ public class Portada extends JFrame {
 
 		if (usuario instanceof Admin) {
 			usuarioIcon = Utils.loadImage("adminUser.png", 80, 80);
-		} else if (usuario instanceof Cliente && !usuario.getNombre().equals("")) {
+		} else if (usuario instanceof Cliente) {
 			usuarioIcon = Utils.loadImage("user.png", 80, 80);
 		} else {
 			usuarioIcon = Utils.loadImage("noUser.png", 80, 80);
@@ -60,12 +60,11 @@ public class Portada extends JFrame {
 		usuarioLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-				if (usuario.getNombre().equals("")) {
-					setVisible(false);
-					IniciarSesion sesionFrame = new IniciarSesion(currentWindow);
+				if (usuario == null) {
+
+					new IniciarSesion(currentWindow);
 				} else {
-					setVisible(false);
-					VentanaInformacionUsuario sesionFrame = new VentanaInformacionUsuario();
+					new VentanaInformacionUsuario(usuario);
 				}	
             }
 		});
@@ -106,21 +105,21 @@ public class Portada extends JFrame {
 		JButton bibliotecaButton = new JButton("Biblioteca");
 
 		bibliotecaButton.addActionListener(e -> {
-                    VentanaBiblioteca bibliotecaFrame = new VentanaBiblioteca(usuario);
+                    new VentanaBiblioteca(usuario);
 					dispose();
                 });
 
 		JButton salasButton = new JButton("Salas");
 
 		salasButton.addActionListener(e -> {
-                    SeleccionarSalaPublicaPrivada salasFrame = new SeleccionarSalaPublicaPrivada(usuario);
+                    new SeleccionarSalaPublicaPrivada(usuario);
 					dispose();
 		});
 
 		JButton eventosButton = new JButton("Eventos");
 
 		eventosButton.addActionListener(e -> {
-			VentanaEventos eventosFrame = new VentanaEventos(usuario);
+			new VentanaEventos(usuario);
 			dispose();
 		});
 		
@@ -175,7 +174,7 @@ public class Portada extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		new Portada(null);
+		new Portada(new Admin());
 		
 	}
 }

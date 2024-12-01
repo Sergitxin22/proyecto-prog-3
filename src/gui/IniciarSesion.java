@@ -1,7 +1,5 @@
  package gui;
 
-import BiblioTech.Cliente;
-import BiblioTech.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;

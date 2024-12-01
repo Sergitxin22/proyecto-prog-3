@@ -1,15 +1,5 @@
 package io;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Scanner;
-
-import javax.swing.ImageIcon;
-
 import BiblioTech.Cliente;
 import BiblioTech.Evento;
 import BiblioTech.Libro;
@@ -21,6 +11,14 @@ import BiblioTech.SalaPrivada;
 import BiblioTech.SalaPublica;
 import BiblioTech.TipoEvento;
 import BiblioTech.Usuario;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Scanner;
+import javax.swing.ImageIcon;
 import utils.Utils;
 
 public class InputUtils {
@@ -43,7 +41,7 @@ public class InputUtils {
 	                String genero = datos[5];
 	                String sinopsis = datos[7];
 	                int fecha_publicacion = Integer.parseInt(datos[8]);
-	                int rating = Integer.parseInt(datos[9]);
+	                int rating = (Integer.parseInt(datos[9]) * 2) / 100;
 	                int numeroDePaginas = Integer.parseInt(datos[10]);
 
 	                ImageIcon foto = Utils.loadImage("books/" + isbn + ".jpg", 98, 151);

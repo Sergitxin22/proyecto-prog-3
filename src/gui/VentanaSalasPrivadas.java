@@ -66,7 +66,7 @@ public class VentanaSalasPrivadas extends JFrame {
 	
 		// Añadir sala (solo para Admins)
 		if (usuario instanceof Admin) {
-			JPanel panelAddLibro = new AddPanel(Seccion.SALAS_DE_ESTUDIO);
+			JPanel panelAddLibro = new AddPanel(Seccion.SALAS_DE_ESTUDIO, usuario);
 	        subPanelContenido1.add(panelAddLibro, BorderLayout.WEST);
 		}		
 		

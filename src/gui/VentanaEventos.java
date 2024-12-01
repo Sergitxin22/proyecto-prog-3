@@ -65,7 +65,7 @@ public class VentanaEventos extends JFrame { // TODO: Falta la funcionalidad de 
 	
 		// Añadir evento (solo para Admins)
 		if (usuario instanceof Admin) {
-			JPanel panelAddLibro = new AddPanel(Seccion.EVENTOS);
+			JPanel panelAddLibro = new AddPanel(Seccion.EVENTOS, usuario);
 	        subPanelContenido1.add(panelAddLibro, BorderLayout.WEST);
 		}		
 		

@@ -18,7 +18,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -34,7 +33,6 @@ import BiblioTech.Sala;
 import BiblioTech.SalaEventos;
 import BiblioTech.SalaPrivada;
 import BiblioTech.Seccion;
-//import BiblioTech.SalaPrivada;
 import BiblioTech.TipoEvento;
 import BiblioTech.Usuario;
 import java.time.LocalDate;
@@ -285,7 +283,7 @@ public class InformacionRecurso extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AñadirReview ventanaNueva = new AñadirReview(libro, (Cliente) usuario);
+				new AñadirReview(libro, (Cliente) usuario);
 			}
 		});
 		
@@ -302,9 +300,6 @@ public class InformacionRecurso extends JFrame {
 		setVisible(true);
 	}
 	public InformacionRecurso(Sala sala, Usuario usuario) {
-		if (usuario instanceof Admin) {
-			vInformacionRecurso.dispose();
-		}
 		setMainWindowProperties(Seccion.SALAS_DE_ESTUDIO, usuario);
 	    setTitle("Sala " + Integer.toString(sala.getId()) );
 	    
@@ -344,6 +339,9 @@ public class InformacionRecurso extends JFrame {
 	    pOeste.add(panelPrincipal);
 	    pEste.setLayout(new BorderLayout());
 	    JButton reservarButton = new JButton("Reservar");
+		if (usuario == null) {
+			reservarButton.setEnabled(false);
+		}
 	    reservarButton.setFont(new Font("Arial", Font.BOLD, 20));
         reservarButton.setPreferredSize(new Dimension(200, 50));
  
@@ -368,10 +366,7 @@ public class InformacionRecurso extends JFrame {
 	    setVisible(true);
 	}
     public InformacionRecurso(Evento evento, Usuario usuario) {
-    	if (usuario instanceof Admin) {
-			vInformacionRecurso.dispose();
-		}
-        this.evento= evento;
+        this.evento = evento;
     	setMainWindowProperties(Seccion.EVENTOS, usuario);
     	setTitle("Evento " + evento.getTitulo() );
 	    
@@ -447,6 +442,9 @@ public class InformacionRecurso extends JFrame {
  	    pEste.setLayout(new BorderLayout());
  	    
  	    JButton reservarButton = new JButton("Reservar");
+		if (usuario == null) {
+			reservarButton.setEnabled(false);
+		}
  	    reservarButton.setFont(new Font("Arial", Font.BOLD, 20));
         reservarButton.setPreferredSize(new Dimension(200, 50));
 
@@ -468,7 +466,7 @@ public class InformacionRecurso extends JFrame {
  	    });
     }
 	
-	public LocalDate calcularDiasParaDevolver(int paginas) {
+	public LocalDate calcularDiasParaDevolver(int paginas) { // TODO
 		LocalDate fechaDevolucion = LocalDate.now();
 		int dias = Math.round(paginas / 10);
 		return fechaDevolucion.plusDays(dias);
@@ -482,8 +480,7 @@ public class InformacionRecurso extends JFrame {
 		libro.getReviews().add(new Review(libro, new Cliente("e", "Ander", "s", LocalDateTime.now(), "a", new ArrayList<>(), new ArrayList<>(), 2), "Mal libro", 10));
 
 
-		Evento evento = new Evento(12, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), new SalaEventos(100, 2, 4, new ArrayList<Cliente>(), new Evento()), LocalDate.now(), 19);
-		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
+		Evento evento = new Evento(12, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), new SalaEventos(100, 2, 4, new ArrayList<Cliente>(), new Evento()), LocalDate.now(), 19);		
 		
 		//new InformacionRecurso(sala, new Cliente());
 		new InformacionRecurso(evento, new Cliente());
