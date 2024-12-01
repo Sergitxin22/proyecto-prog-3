@@ -1,10 +1,10 @@
 package gui;
 
+import BiblioTech.SalaPublica;
 import BiblioTech.Seccion;
 import BiblioTech.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -27,7 +27,7 @@ public class SeleccionarSalaPublicaPrivada extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		// PANEL SUPERIOR
-		JPanel top = new Header(Seccion.SALAS_DE_ESTUDIO, usuario);
+		JPanel top = new Header(Seccion.SALAS_DE_ESTUDIO, usuario, this);
 			
 		// Imagen del libro
 		JLabel salaPublicaIcon = new JLabel();
@@ -51,7 +51,7 @@ public class SeleccionarSalaPublicaPrivada extends JFrame {
 
 		JButton salasPrivadasButton = new JButton("Reservar");
 		salasPrivadasButton.addActionListener(e -> {
-			new VentanaSalasPrivadas(usuario, new ArrayList()); // TODO: sustituir la lista cuando este la lista de salas en el main
+			new VentanaSalasPrivadas(usuario);
 		});
 		
 		JPanel salaPublicaPanel = new JPanel();

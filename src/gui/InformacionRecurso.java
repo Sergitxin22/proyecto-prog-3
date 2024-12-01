@@ -103,11 +103,6 @@ public class InformacionRecurso extends JFrame {
 		imagenDelLibro.setPreferredSize(new Dimension(350,500));
 		ImageIcon imagen = libro.getFoto(); 
 		
-		//Esacalar imagen 
-		Image img = imagen.getImage();
-		Image scaledImg = img.getScaledInstance(350, 500, Image.SCALE_SMOOTH);
-		imagenDelLibro.setIcon(new ImageIcon(scaledImg));
-		
 		imagenDelLibro.setIcon(imagen);
 		panelimagenLibro.add(imagenDelLibro);
 		pOeste.add(panelimagenLibro);
@@ -228,11 +223,15 @@ public class InformacionRecurso extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				 int respuesta = JOptionPane.showConfirmDialog(null, "¿Quieres añadir una review?","Confirmar review", JOptionPane.YES_NO_OPTION);
-                 
-	             if (respuesta == JOptionPane.YES_OPTION) {
-	            	 
-	             }
+				AñadirReview ventanaNueva = new AñadirReview(libro, usuario);
+			}
+		});
+		
+		botonReservar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {				 
+				new VentanaConfirmaciónDeReserva();
 			}
 		});
 		

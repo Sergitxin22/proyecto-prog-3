@@ -1,5 +1,7 @@
  package gui;
 
+import BiblioTech.Cliente;
+import BiblioTech.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,11 +10,14 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -27,8 +32,16 @@ public class IniciarSesion extends JFrame {
 	public IniciarSesion(JFrame previousWindow) {
 		setTitle("Iniciar Sesión");
 		setSize(650, 500);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
+
+		addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        previousWindow.setVisible(true);
+						dispose();
+                    }
+			
+		});
 		
 		// Texto superior
 		JLabel topText = new JLabel("Iniciar sesión", SwingConstants.CENTER); // Label con texto centrado
@@ -46,7 +59,7 @@ public class IniciarSesion extends JFrame {
 		textContrasena.setFont(topText.getFont().deriveFont(Font.PLAIN, 20));
 		
 		JTextField tfUsuarioEmail = new JTextField();
-		JTextField tfContrasena = new JTextField();
+		JPasswordField tfContrasena = new JPasswordField();
 		
 		tfUsuarioEmail.setPreferredSize(new Dimension(125, 25));
 		tfContrasena.setPreferredSize(new Dimension(125, 25));
@@ -70,6 +83,14 @@ public class IniciarSesion extends JFrame {
 		
 		// Parte baja de la pantalla
 		JButton iniciarSesionButton = new JButton("Iniciar sesión");
+		iniciarSesionButton.addActionListener(e -> {
+			// TODO: COMPROBACIÓN DE QUE EL USUARIO EXISTE
+			previousWindow.dispose();
+			Portada portada = new Portada((Usuario) new Cliente());
+			dispose();
+
+		});
+
 		JLabel noCuentaLabel = new JLabel("¿No tienes cuenta?", SwingConstants.CENTER);
 		noCuentaLabel.setForeground(Color.blue);
 		noCuentaLabel.addMouseListener(new MouseAdapter() {

@@ -1,10 +1,14 @@
 package gui;
 
+import BiblioTech.Cliente;
+import BiblioTech.SalaPublica;
 import BiblioTech.Seccion;
 import BiblioTech.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,18 +17,21 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
+import main.Main;
 import utils.Utils;
 
 public class VentanaSalaPublica extends JFrame {
 
-    public VentanaSalaPublica(Usuario usuario)  { // TODO: HashMap para la gestión de bloques
+    public VentanaSalaPublica(Usuario usuario)  { 
+
+        SalaPublica salaPublica = Main.getSalaPublica();
         
         setTitle("Sala Pública");
         setSize(1280, 720);
         setLocationRelativeTo(null);
 	    
         // Header panel
-        JPanel header = new Header(Seccion.SALAS_DE_ESTUDIO, usuario);
+        JPanel header = new Header(Seccion.SALAS_DE_ESTUDIO, usuario, this);
         
         // Image panel
         JPanel imagePanel = new JPanel();
@@ -59,7 +66,39 @@ public class VentanaSalaPublica extends JFrame {
 
         });
 
-        JButton asignarBloqueButton = new JButton("Asignar bloque");
+        boolean clienteEnSala = clienteEnSalaPublica((Cliente) usuario);
+        JButton asignarBloqueButton = new JButton();
+
+        if (usuario == null) {
+            asignarBloqueButton.setEnabled(false);
+        }
+        if (clienteEnSala) {
+            asignarBloqueButton.setText("Desasignar bloque");
+        } else {
+            asignarBloqueButton.setText("Asignar bloque");
+        }
+
+        asignarBloqueButton.addActionListener(e -> {
+
+            if (clienteEnSala) {
+
+            } else {
+                int bloqueAsignado = 0;
+                for (Integer i : salaPublica.getClientesPorBloque().keySet()) {
+                    if (Main.getSalaPublica().getClientesPorBloque().get(i) == null) {
+                        bloqueAsignado = i;
+                        salaPublica.getClientesPorBloque().put(i, (Cliente) usuario);
+                        break;
+                    }
+                }
+
+                if (bloqueAsignado == 0) {
+                    JOptionPane.showMessageDialog(this, "Lo lamentamos, la sala se encuentra llena actualmente.", "Error en la asignación", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Se le ha asignado el bloque " + bloqueAsignado, "Asignación confirmada", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
 
         buttonPanel.add(masInformacionButton);
         buttonPanel.add(asignarBloqueButton);
@@ -81,8 +120,26 @@ public class VentanaSalaPublica extends JFrame {
 	    setVisible(true);
     }
 
+    public static boolean clienteEnSalaPublica(Cliente cliente) {
+
+        SalaPublica sala = Main.getSalaPublica();
+
+        if (cliente == null) {
+            return false;
+        }
+
+        for (Integer i: sala.getClientesPorBloque().keySet()) {
+            if (sala.getClientesPorBloque().get(i) != null) {
+                if (sala.getClientesPorBloque().get(i).equals(cliente)) {
+                    return true;
+                }
+            }   
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
-        new VentanaSalaPublica(null);
+        new VentanaSalaPublica((Usuario) new Cliente("8483483", "Juah", "a", LocalDateTime.now(), "a", new ArrayList<>(), new ArrayList<>(), 2));
     }
     
 }

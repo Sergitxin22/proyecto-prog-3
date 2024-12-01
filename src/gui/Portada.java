@@ -8,7 +8,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -61,9 +60,15 @@ public class Portada extends JFrame {
 		usuarioLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                setVisible(false);
-				IniciarSesion sesionFrame = new IniciarSesion(currentWindow);
-				dispose();
+				if (usuario == null) {
+					setVisible(false);
+					IniciarSesion sesionFrame = new IniciarSesion(currentWindow);
+				} else {
+					setVisible(false);
+					VentanaInformacionUsuario sesionFrame = new VentanaInformacionUsuario();
+				}
+				
+				
             }
 		});
 	
@@ -117,7 +122,7 @@ public class Portada extends JFrame {
 		JButton eventosButton = new JButton("Eventos");
 
 		eventosButton.addActionListener(e -> {
-			VentanaEventos eventosFrame = new VentanaEventos(usuario, new ArrayList()); // TODO: Cuando se cree la lista de eventos en Main, reemplaza la lista.
+			VentanaEventos eventosFrame = new VentanaEventos(usuario);
 			dispose();
 		});
 		
