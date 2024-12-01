@@ -1,5 +1,6 @@
 package utils;
 
+import BiblioTech.Cliente;
 import BiblioTech.Evento;
 import BiblioTech.Libro;
 import BiblioTech.Recurso;
@@ -9,12 +10,15 @@ import BiblioTech.SalaEventos;
 import BiblioTech.SalaPrivada;
 import BiblioTech.SalaPublica;
 import BiblioTech.TipoEvento;
+import BiblioTech.Usuario;
+
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -216,6 +220,108 @@ public class Utils {
 
 		return result;
 	}
+	public static void cargarReviews(ArrayList<Libro> libros, ArrayList<Usuario> usuarios) {
+        File file = new File("resources/data/reviews.csv");
+        
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String linea = scanner.nextLine();
+                String[] datos = linea.split(";");
+                
+                try {
+                    String isbn = datos[0];  
+                    String dni = datos[1];
+                    String comentario = datos[2]; 
+                    int rating = Integer.parseInt(datos[3]);
+                   
+                    Libro libro = buscarLibroPorIsbn(libros, isbn);
+                    
+                    if (libro != null) {
+                       
+                        Usuario usuario = buscarUsuarioPorDni(usuarios, dni);
+                        
+                        if (usuario != null && usuario instanceof Cliente) {
+                           
+                            Review review = new Review(libro, (Cliente) usuario, comentario, rating);
+                            
+                            // Añadir la review al libro
+                            libro.agregarReview(review);
+                        } else {
+                            System.err.println("Usuario no encontrado o no es un cliente para DNI: " + dni);
+                        }
+                    } else {
+                        System.err.println("Libro no encontrado con ISBN: " + isbn);
+                    }
+                    
+                } catch (Exception e) {
+                    System.err.println("Error al procesar la línea: " + linea);
+                    e.printStackTrace();
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.err.println("ERROR: Archivo de reviews no encontrado");
+        }
+    }
+
+    // Método para buscar un libro por su ISBN
+	public static Libro buscarLibroPorIsbn(ArrayList<Libro> libros, String isbn) {
+	    for (Libro libro : libros) {
+	        if (String.valueOf(libro.getIsbn()).equals(isbn)) {
+	            return libro;
+	        }
+	    }
+	    return null; // Si no encuentra el libro
+	}
+    // Método para buscar un usuario por su DNI
+    public static Usuario buscarUsuarioPorDni(ArrayList<Usuario> usuarios, String dni) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getDni().equals(dni)) {
+                return usuario;
+            }
+        }
+        return null; // Si no encuentra el usuario
+    }
+
+	
+    public static ArrayList<Usuario> cargarUsuarios() {
+        ArrayList<Usuario> result = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        
+        File file = new File("resources/data/usuarios.csv");
+        try {
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                String linea = scanner.nextLine();
+                String[] datos = linea.split(";");
+                
+                try {
+                    String dni = datos[0];
+                    String nombre = datos[1];
+                    String email = datos[2];
+                    LocalDateTime fechaCreacion = LocalDateTime.parse(datos[3], formatter);
+                    String contrasena = datos[4];
+                    
+                    //Inicializo con valor por defecto
+                    ArrayList<Libro> historial = new ArrayList<>(); 
+                    ArrayList<Review> listaReviews = new ArrayList<>(); 
+                    int amonestaciones = 0; 
+
+                    
+                    Usuario usuario = new Cliente(dni, nombre, email, fechaCreacion, contrasena, historial, listaReviews, amonestaciones);
+                    result.add(usuario);
+                    
+                } catch (Exception e) {
+                    System.err.println("Error al procesar la línea: " + linea);
+                    e.printStackTrace();
+                }
+            }
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("ERROR: Archivo no encontrado");
+        }
+        
+        return result;
+    }
 
 	public static void main(String[] args) {
 		cargarEventos(new ArrayList<>());
