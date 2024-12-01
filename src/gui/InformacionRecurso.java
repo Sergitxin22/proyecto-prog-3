@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -99,10 +100,10 @@ public class InformacionRecurso extends JFrame {
 		JPanel panelimagenLibro= new JPanel();
 		panelimagenLibro.setBackground(Color.WHITE);
 		JLabel imagenDelLibro = new JLabel();
-		imagenDelLibro.setPreferredSize(new Dimension(350,500));
-		ImageIcon imagen = libro.getFoto(); 
-		
-		imagenDelLibro.setIcon(imagen);
+		imagenDelLibro.setPreferredSize(new Dimension(275,500));
+		Image imagen = libro.getFoto().getImage().getScaledInstance(200, 350, Image.SCALE_SMOOTH);
+		ImageIcon imagenEscalada = new ImageIcon(imagen);
+		imagenDelLibro.setIcon(imagenEscalada);
 		panelimagenLibro.add(imagenDelLibro);
 		pOeste.add(panelimagenLibro);
 		
