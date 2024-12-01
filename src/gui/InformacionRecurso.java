@@ -102,11 +102,6 @@ public class InformacionRecurso extends JFrame {
 		imagenDelLibro.setPreferredSize(new Dimension(350,500));
 		ImageIcon imagen = libro.getFoto(); 
 		
-		//Esacalar imagen 
-		Image img = imagen.getImage();
-		Image scaledImg = img.getScaledInstance(350, 500, Image.SCALE_SMOOTH);
-		imagenDelLibro.setIcon(new ImageIcon(scaledImg));
-		
 		imagenDelLibro.setIcon(imagen);
 		panelimagenLibro.add(imagenDelLibro);
 		pOeste.add(panelimagenLibro);
