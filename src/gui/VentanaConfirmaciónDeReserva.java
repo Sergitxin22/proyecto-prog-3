@@ -11,6 +11,8 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -43,9 +45,10 @@ public class VentanaConfirmaciónDeReserva extends JFrame {
 		
 		//panel header
 		Header header = new Header(Seccion.BIBLIOTECA, new Cliente(), this);
-		
+		header.setBackground(Color.WHITE);
 		//panel body
 		JPanel body = new JPanel(new GridLayout(0,2));
+		body.setBackground(Color.WHITE);
 		
 		//panel imagen
 		JPanel panelimagenLibro= new JPanel();
@@ -56,26 +59,51 @@ public class VentanaConfirmaciónDeReserva extends JFrame {
 		ImageIcon imagenEscalada = new ImageIcon(imagen);
 		imagenDelLibro.setIcon(imagenEscalada);
 		panelimagenLibro.add(imagenDelLibro);
+		panelimagenLibro.setBackground(Color.WHITE);
 		body.add(panelimagenLibro);
 		
 		//panel texto
 		JPanel panelTexto = new JPanel();
+		panelTexto.setBackground(Color.WHITE);
+		panelTexto.setLayout(new BoxLayout(panelTexto, BoxLayout.Y_AXIS));
 		JLabel labelTitulo = new JLabel(libro.getTitulo());
 		Font fuente = new Font("ARIAL",Font.BOLD, 32);
 		labelTitulo.setFont(fuente);
-		JTextArea descripcionLibro = new JTextArea(libro.getSinopsis());
 		
-		descripcionLibro.setFont(new Font("Arial", Font.PLAIN, 18));
-        descripcionLibro.setEditable(false);
-        descripcionLibro.setLineWrap(true);
-        descripcionLibro.setBorder(null);
-        descripcionLibro.setBorder(BorderFactory.createEmptyBorder());
-        descripcionLibro.setWrapStyleWord(true);
 		
-        JScrollPane descripcionScrollPane = new JScrollPane(descripcionLibro);
+		List<JTextArea> areas = new ArrayList<>();
+
+		JTextArea taAutor = new JTextArea("Autor(a): " + libro.getAutor());
+		JTextArea taGenero = new JTextArea("Género: " + libro.getGenero());
+		JTextArea taNumeroPaginas = new JTextArea("Número de páginas: " + libro.getNumeroDePaginas());
+		JTextArea taRating = new JTextArea("Rating: " + libro.getRating() + "/10");
+		JTextArea taSinopsis = new JTextArea("Sinopsis: " + libro.getSinopsis());
+		
+		
+		areas.add(taAutor);
+		areas.add(taGenero);
+		areas.add(taNumeroPaginas);
+		areas.add(taRating); // TODO: ?
+		areas.add(taSinopsis);
+
+		for (JTextArea ta : areas) {
+			ta.setFont(new Font("Arial", Font.PLAIN, 18));
+        	ta.setEditable(false);
+ 	       	ta.setLineWrap(true);
+    	    ta.setBorder(null);
+        	ta.setBorder(BorderFactory.createEmptyBorder());
+     	   	ta.setWrapStyleWord(true);
+        	ta.setBackground(Color.WHITE);
+		}
+		
+
+		
+        JScrollPane descripcionScrollPane = new JScrollPane(taSinopsis);
         descripcionScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         descripcionScrollPane.setPreferredSize(new Dimension(600, 500)); // Tamaño más grande para descripción
         descripcionScrollPane.setBorder(null);
+        
+        
         
         //panel boton
 		JPanel botonesPanel = new JPanel(new GridBagLayout());
@@ -109,12 +137,16 @@ public class VentanaConfirmaciónDeReserva extends JFrame {
         body.add(panelTexto);
 		body.add(panelimagenLibro, BorderLayout.EAST);
 		body.add(panelTexto, BorderLayout.WEST);
+		body.add(botonConfirmar);
 		
 		panelimagenLibro.setLayout(new GridBagLayout());
 		panelimagenLibro.add(imagenDelLibro,gbc);
 		
-		panelTexto.add(descripcionScrollPane, BorderLayout.CENTER);
 		panelTexto.add(labelTitulo,gbc);
+		panelTexto.add(taAutor, BorderLayout.CENTER);
+        panelTexto.add(taGenero, BorderLayout.CENTER);
+        panelTexto.add(taNumeroPaginas, BorderLayout.CENTER);
+        panelTexto.add(taRating, BorderLayout.CENTER);
 		panelTexto.add(descripcionScrollPane,gbc);
 		panelTexto.add(botonConfirmar, gbc);
 		
