@@ -35,6 +35,8 @@ import BiblioTech.SalaPrivada;
 import BiblioTech.Seccion;
 //import BiblioTech.SalaPrivada;
 import BiblioTech.TipoEvento;
+import BiblioTech.Usuario;
+import java.time.LocalDate;
 import utils.Utils;
 //import utils.Utils;
 
@@ -76,7 +78,7 @@ public void setMainWindowProperties() {
 		
 	}
 	
-	public VentanaConfirmacionReservaEvento (Evento evento) {
+	public VentanaConfirmacionReservaEvento (Evento evento, Usuario usuario) {
 		
 		setMainWindowProperties();
     	setTitle("BiblioTech - Confirmar reserva");
@@ -116,11 +118,11 @@ public void setMainWindowProperties() {
         
         pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
 	    pOeste.add(panelPrincipal);
-	    BotonConfirmarReservar();
+	    BotonConfirmarReservar(usuario);
     
 		setVisible (true);
 	}
-	private void BotonConfirmarReservar() {
+	private void BotonConfirmarReservar(Usuario usuario) {
     	
  	    pEste.setLayout(new BorderLayout());
  	    
@@ -141,15 +143,17 @@ public void setMainWindowProperties() {
 			// Cerrar la ventana actual
 	        dispose();
 	        // Abrir Venatana de ConfirmacionReserva
-	        Evento evento = new Evento("Charla sobre la Innovación Educativa", TipoEvento.CHARLA, null, null); 
-            new ReservaConfirmada(evento);
+	        Evento evento = new Evento(10, "Charla sobre la Innovación Educativa", TipoEvento.CHARLA, null, null, LocalDate.now(), 18); 
+            new ReservaConfirmada(evento, usuario);
 		}   
  	   });
     }
 	public static void main(String[] args) {	
-		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
+		Evento evento = new Evento(20, "Charla sobre la Comunicación", TipoEvento.CHARLA, null, null, LocalDate.now(), 10);
 		
-		new VentanaConfirmacionReservaEvento(evento);
+		new VentanaConfirmacionReservaEvento(evento, new Usuario() {
+			
+		});
 
 		
 	}

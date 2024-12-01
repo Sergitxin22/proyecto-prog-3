@@ -1,31 +1,11 @@
 package utils;
 
-import BiblioTech.Cliente;
-import BiblioTech.Evento;
-import BiblioTech.Libro;
-import BiblioTech.Recurso;
-import BiblioTech.Review;
-import BiblioTech.Sala;
-import BiblioTech.SalaEventos;
-import BiblioTech.SalaPrivada;
-import BiblioTech.SalaPublica;
-import BiblioTech.TipoEvento;
-import BiblioTech.Usuario;
-
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-
-import org.junit.internal.ArrayComparisonFailure;
 
 public class Utils {
 
@@ -49,7 +29,5 @@ public class Utils {
 		
 		return result;
 	}
-	
-
 
 }

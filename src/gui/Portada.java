@@ -48,7 +48,7 @@ public class Portada extends JFrame {
 
 		if (usuario instanceof Admin) {
 			usuarioIcon = Utils.loadImage("adminUser.png", 80, 80);
-		} else if (usuario instanceof Cliente) {
+		} else if (usuario instanceof Cliente && !usuario.getNombre().equals("")) {
 			usuarioIcon = Utils.loadImage("user.png", 80, 80);
 		} else {
 			usuarioIcon = Utils.loadImage("noUser.png", 80, 80);
@@ -60,15 +60,13 @@ public class Portada extends JFrame {
 		usuarioLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-				if (usuario == null) {
+				if (usuario.getNombre().equals("")) {
 					setVisible(false);
 					IniciarSesion sesionFrame = new IniciarSesion(currentWindow);
 				} else {
 					setVisible(false);
 					VentanaInformacionUsuario sesionFrame = new VentanaInformacionUsuario();
-				}
-				
-				
+				}	
             }
 		});
 	

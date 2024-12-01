@@ -5,6 +5,7 @@ import BiblioTech.Sala;
 import BiblioTech.SalaPrivada;
 import BiblioTech.Seccion;
 import BiblioTech.Usuario;
+import io.InputUtils;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -18,7 +19,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import utils.AddPanel;
-import utils.Utils;
 
 
 // BASADO EN EL CÓDIGO DE VentanaBiblioteca
@@ -38,7 +38,7 @@ public class VentanaSalasPrivadas extends JFrame {
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
 
-		ArrayList<Sala> salasTotales = Utils.cargarSalas();
+		ArrayList<Sala> salasTotales = InputUtils.cargarSalas();
 		ArrayList<SalaPrivada> salasPrivadas = new ArrayList<>();
 
 		for (Sala sala : salasTotales) {
@@ -89,7 +89,7 @@ public class VentanaSalasPrivadas extends JFrame {
 			JButton jButton = new JButton();
 			final int j = i;
 			jButton.addActionListener(e -> {
-				new InformacionRecurso(salas.get(j));
+				new InformacionRecurso(salas.get(j), usuario);
 				dispose();
 			});
 

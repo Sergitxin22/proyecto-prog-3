@@ -1,13 +1,5 @@
 package gui;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-
 import BiblioTech.Cliente;
 import BiblioTech.Seccion;
 import BiblioTech.Usuario;
@@ -15,6 +7,12 @@ import domain.ButtonCellEditor;
 import domain.ButtonCellRenderer;
 import domain.ImageCellEditor;
 import domain.ImageCellRenderer;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class VentanaHistorialUsuario extends JFrame{
 	/**
@@ -32,7 +30,7 @@ public class VentanaHistorialUsuario extends JFrame{
 		setLocationRelativeTo(null);
 		
 		//panel arriba
-		JPanel header = new Header(Seccion.BIBLIOTECA, usuario);
+		JPanel header = new Header(Seccion.BIBLIOTECA, usuario, this);
 		add(header,BorderLayout.NORTH);
 		
 		//Panel contenedor

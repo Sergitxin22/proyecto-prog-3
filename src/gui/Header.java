@@ -1,23 +1,19 @@
 package gui;
 
+import BiblioTech.Admin;
+import BiblioTech.Cliente;
+import BiblioTech.Seccion;
+import BiblioTech.Usuario;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import BiblioTech.Admin;
-import BiblioTech.Cliente;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
 import utils.Utils;
 
 public class Header extends JPanel {
@@ -85,9 +81,22 @@ public class Header extends JPanel {
 //        panelDerecho.setBackground(Color.DARK_GRAY);
         
         String nombreIconoUsuario = obtenerNombreImagenUsuario(usuario);        
-        
         ImageIcon icon2 = Utils.loadImage(nombreIconoUsuario, 48, 48);
         JLabel iconLabel2 = new JLabel(icon2);
+		iconLabel2.addMouseListener(new MouseAdapter() {
+			@Override
+            public void mouseClicked(MouseEvent e) {
+				switch(nombreIconoUsuario) {
+					case "user.png":
+						new IniciarSesion(ventana);
+						ventana.setVisible(false);
+						break;
+					default:
+						new VentanaInformacionUsuario();
+						break;
+				}	
+            }
+		});
         panelDerecho.add(iconLabel2);
         
         // Agregar los paneles izquierdo y derecho al Header

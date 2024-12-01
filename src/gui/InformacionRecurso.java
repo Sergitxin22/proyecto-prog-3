@@ -37,6 +37,9 @@ import BiblioTech.Seccion;
 //import BiblioTech.SalaPrivada;
 import BiblioTech.TipoEvento;
 import BiblioTech.Usuario;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import utils.Utils;
 
 public class InformacionRecurso extends JFrame {
@@ -77,11 +80,7 @@ public class InformacionRecurso extends JFrame {
 	}
 		
 	public InformacionRecurso(Libro libro, Usuario usuario) {
-		if (usuario instanceof Admin) {
-			InformacionRecursoAdmin nuevaVentana = new InformacionRecursoAdmin(libro,usuario);
-			nuevaVentana.setVisible(true);
-			vInformacionRecurso.dispose();
-		}
+
 		setMainWindowProperties(Seccion.BIBLIOTECA, usuario);
 		setTitle ("BiblioTech - Harry Potter 1 (No Logueado)");
 		//PANEL OESTE
@@ -94,7 +93,6 @@ public class InformacionRecurso extends JFrame {
 		//TAMAÑO DE PANELES SOUTH Y CENTRE
 		pOeste.setPreferredSize(new Dimension(500, 0));
 		pCentro.setPreferredSize(new Dimension(1000, 0));
-		
 		
 		//PANEL DE IMAGEN DEL LIBRO
 		JPanel panelimagenLibro= new JPanel();
@@ -112,31 +110,55 @@ public class InformacionRecurso extends JFrame {
 		panelTitulo.setPreferredSize(new Dimension(900, 50)); 
 		panelTitulo.setBackground(Color.WHITE);
 		JPanel panelDescripcion = new JPanel();
+		panelDescripcion.setLayout(new BoxLayout(panelDescripcion, BoxLayout.Y_AXIS));
 		panelDescripcion.setBackground(Color.WHITE);
 		JLabel tituloLibro = new JLabel(libro.getTitulo());
+		JTextArea tituloLibroArea = new JTextArea(libro.getTitulo());
+
 		tituloLibro.setFont(new Font("Arial", Font.BOLD, 24));
-		JTextArea descripcionLibro = new JTextArea(libro.getSinopsis());
-			
-		descripcionLibro.setFont(new Font("Arial", Font.PLAIN, 18));
-        descripcionLibro.setEditable(false);
-        descripcionLibro.setLineWrap(true);
-        descripcionLibro.setBorder(null);
-        descripcionLibro.setBorder(BorderFactory.createEmptyBorder());
-        descripcionLibro.setWrapStyleWord(true);
-        descripcionLibro.setBackground(Color.WHITE);
-        
+		tituloLibroArea.setFont(tituloLibro.getFont());
+
+		List<JTextArea> areas = new ArrayList<>();
+
+		JTextArea taAutor = new JTextArea("Autor(a): " + libro.getAutor());
+		JTextArea taGenero = new JTextArea("Género: " + libro.getGenero());
+		JTextArea taNumeroPaginas = new JTextArea("Número de páginas: " + libro.getNumeroDePaginas());
+		JTextArea taRating = new JTextArea("Rating: " + libro.getRating() + "/10");
+		JTextArea taSinopsis = new JTextArea("Sinopsis: " + libro.getSinopsis());
+
+		areas.add(taAutor);
+		areas.add(taGenero);
+		areas.add(taNumeroPaginas);
+		areas.add(taRating); // TODO: ?
+		areas.add(taSinopsis);
+
+		for (JTextArea ta : areas) {
+			ta.setFont(new Font("Arial", Font.PLAIN, 18));
+        	ta.setEditable(false);
+ 	       	ta.setLineWrap(true);
+    	    ta.setBorder(null);
+        	ta.setBorder(BorderFactory.createEmptyBorder());
+     	   	ta.setWrapStyleWord(true);
+        	ta.setBackground(Color.WHITE);
+		}
         
         // Agregar JTextArea en un JScrollPane
-        JScrollPane descripcionScrollPane = new JScrollPane(descripcionLibro);
-        descripcionScrollPane.setBackground(Color.WHITE);
-        descripcionScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        descripcionScrollPane.setPreferredSize(new Dimension(700, 700)); // Tamaño más grande para descripción
-        descripcionScrollPane.setBorder(null);
+        JScrollPane sinopsisScrollPane = new JScrollPane(taSinopsis);
+        sinopsisScrollPane.setBackground(Color.WHITE);
+        sinopsisScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        sinopsisScrollPane.setBorder(null);
         
         // Añadir título y descripción al panel
-        panelTitulo.add(tituloLibro, BorderLayout.NORTH);
-        
-        panelDescripcion.add(descripcionScrollPane, BorderLayout.CENTER);
+		if (usuario instanceof Admin) {
+			panelTitulo.add(tituloLibroArea, BorderLayout.NORTH);
+		} else {
+        	panelTitulo.add(tituloLibro, BorderLayout.NORTH);
+		}
+        panelDescripcion.add(taAutor, BorderLayout.CENTER);
+		panelDescripcion.add(taGenero, BorderLayout.CENTER);
+		panelDescripcion.add(taNumeroPaginas, BorderLayout.CENTER);
+		panelDescripcion.add(taRating, BorderLayout.CENTER);
+		panelDescripcion.add(sinopsisScrollPane, BorderLayout.CENTER);
         pCentro.add(panelTitulo);
         pCentro.add(panelDescripcion);
 		
@@ -151,20 +173,16 @@ public class InformacionRecurso extends JFrame {
 		tituloReviews.setFont(new Font("Arial", Font.BOLD, 16));
 		reviews.add(tituloReviews);
 		
-		JTextArea textoReviews = new JTextArea("Harry Potter y la piedra filosofal\" es el comienzo perfecto para una serie mágica que captura la imaginación de niños y adultos. La manera en la que Rowling introduce el mundo mágico a través de los ojos de un niño que no sabía que era especial es realmente entrañable. Este primer libro está lleno de aventuras, humor y amistad. ¡Imposible dejarlo hasta el final!\r\n"
-				+ "— Marta G.\r\n"
-				+ "\r\n"
-				+ "Este libro no solo es emocionante y fácil de leer, sino que también aborda temas profundos como el valor, la lealtad y la amistad. La autora crea un mundo tan detallado que uno se pierde por completo en los pasillos de Hogwarts y las calles de Hogsmeade. Me encantó desde la primera página y lo recomiendo a cualquier persona que busque una historia inolvidable.\r\n"
-				+ "— Luis R.\r\n"
-				+ "\r\n"
-				+ "Un clásico moderno que merece todos los elogios que ha recibido. Aunque está escrito para jóvenes, su narrativa cautiva a lectores de todas las edades. Harry es un personaje increíblemente humano y cercano, y los personajes secundarios, como Hermione y Ron, son entrañables y realistas. Este libro es solo la puerta de entrada a un universo que se expande y evoluciona en cada entrega.\r\n"
-				+ "— Laura P.\r\n"
-				+ "\r\n"
-				+ "¡Increíble! La autora no solo creó un mundo completamente nuevo y único, sino que lo hizo tan detallado y rico en historia que parece real. \"La piedra filosofal\" es el libro perfecto para introducirse en el mundo de la magia, y está lleno de momentos de emoción, intriga y lecciones de vida. Recomiendo este libro a cualquiera que quiera sumergirse en una aventura mágica.\r\n"
-				+ "— David M.\r\n"
-				+ "\r\n"
-				+ "Un libro que cambió la literatura juvenil para siempre. Lo leí de pequeño y me marcó, pero volverlo a leer ahora como adulto me hace darme cuenta de cuánto detalle y dedicación hay en cada página. Los personajes son inspiradores y la trama está llena de giros inesperados. Perfecto para leer en cualquier momento.\r\n"
-				+ "— Elena S.");
+		String stringReviews = "";
+		for (Review review : libro.getReviews()) {
+			stringReviews += review.toString() + "\n";
+		}
+
+		if (stringReviews.equals("")) {
+			stringReviews = "Este libro no tiene reviews";
+		}
+
+		JTextArea textoReviews = new JTextArea(stringReviews);
 		textoReviews.setFont(new Font("Arial", Font.PLAIN, 14));
 		textoReviews.setEditable(false);
 		textoReviews.setBackground(Color.WHITE);
@@ -200,12 +218,66 @@ public class InformacionRecurso extends JFrame {
 		botonReservar.setFont(new Font("Arial", Font.BOLD, 17));
 		botonReservar.setPreferredSize(new Dimension(200, 50));
         
-        if (!(usuario instanceof Cliente)) {
+        if (usuario == null) {
 			botonReview.setEnabled(false);
 			botonReservar.setEnabled(false);
 		}
-		botonesPanel.add(botonReview);
-		botonesPanel.add(botonReservar);
+
+		if (usuario instanceof Admin) {
+
+			for (JTextArea ta : areas) {
+				ta.setEditable(true);
+			}
+
+			tituloLibroArea.setEditable(true);
+
+			JButton guardarCambiosButton = new JButton("Guardar cambios");
+			guardarCambiosButton.addActionListener(e -> {
+
+				String titulo = tituloLibroArea.getText();
+				System.out.println(titulo);
+
+				String autor = taAutor.getText();
+				autor = autor.substring(10);
+				System.out.println(autor);
+
+				String genero = taGenero.getText();
+				genero = genero.substring(8);
+				System.out.println(genero);
+
+				String numeroPaginas = taNumeroPaginas.getText();
+				numeroPaginas = numeroPaginas.substring(19);
+				System.out.println(numeroPaginas);
+
+				String rating = taRating.getText();
+				int lengthRating = taRating.getText().length();
+				rating = rating.substring(8, lengthRating - 3);
+				System.out.println(rating);
+
+				String sinopsis = taSinopsis.getText();
+				sinopsis = sinopsis.substring(10);
+				System.out.println(sinopsis);
+
+				libro.setTitulo(titulo);
+				libro.setAutor(autor);
+				libro.setGenero(genero);
+				libro.setNumeroDePaginas(Integer.parseInt(numeroPaginas));
+				libro.setRating(Integer.parseInt(rating));
+				libro.setSinopsis(sinopsis);
+				repaint();
+				// TODO: AÑADIR AQUI FUNCIONALIDAD PARA PASARLO A LA BASE DE DATOS Y A LA LISTA DE LIBROS
+			});
+			
+			JButton eliminarLibroButton = new JButton("Eliminar libro");
+
+			botonesPanel.add(guardarCambiosButton);
+			botonesPanel.add(eliminarLibroButton);
+		} else {
+			botonesPanel.add(botonReview);
+			botonesPanel.add(botonReservar);
+		}
+
+		
        
 		pCentro.add(botonesPanel);
 		
@@ -231,15 +303,13 @@ public class InformacionRecurso extends JFrame {
 	}
 	public InformacionRecurso(Sala sala, Usuario usuario) {
 		if (usuario instanceof Admin) {
-			InformacionRecursoAdmin nuevaVentana = new InformacionRecursoAdmin(sala,usuario);
-			nuevaVentana.setVisible(true);
 			vInformacionRecurso.dispose();
 		}
 		setMainWindowProperties(Seccion.SALAS_DE_ESTUDIO, usuario);
 	    setTitle("Sala " + Integer.toString(sala.getId()) );
 	    
 	    JPanel panelPrincipal = new JPanel();
-	    panelPrincipal.setLayout(new BorderLayout());
+	    panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
 	    panelPrincipal.setBackground(Color.WHITE);
 	    
 	    JLabel tituloSala = new JLabel("Sala " + Integer.toString(sala.getId()), SwingConstants.CENTER);
@@ -249,39 +319,30 @@ public class InformacionRecurso extends JFrame {
 	    tituloSala.setBackground(Color.WHITE);
 	    panelPrincipal.add(tituloSala, BorderLayout.NORTH);
 
-	    
-	    String textoDescripcion = "La sala de estudio privada es un espacio diseñado especialmente para el enfoque y la productividad en un ambiente tranquilo y cómodo. Con una superficie de aproximadamente 20 metros cuadrados, la sala cuenta con un amplio escritorio de madera que permite organizar libros, cuadernos, y dispositivos electrónicos sin generar distracciones. La iluminación natural proviene de una gran ventana ubicada en la pared norte, ofreciendo una vista agradable sin perturbar la concentración. Además, se han instalado persianas ajustables para regular la luz según las necesidades del usuario, creando un ambiente adaptable tanto para el trabajo diurno como nocturno.\r\n"
-                + "\r\n"
-                + "El mobiliario incluye una silla ergonómica de alta calidad que proporciona soporte lumbar y ajustes en altura e inclinación, ideal para largas horas de estudio o trabajo. Para maximizar el confort y la salud postural, también cuenta con un reposapiés regulable. La sala está equipada con una pequeña estantería donde se pueden almacenar libros de referencia, material de oficina y objetos personales. Sobre el escritorio se encuentra una lámpara LED de bajo consumo con varios niveles de intensidad y modos de luz, pensada para reducir la fatiga visual.\r\n"
-                + "\r\n"
-                + "Para facilitar el aprendizaje visual y colaborativo, la sala dispone de una pizarra blanca de gran tamaño, acompañada de un set de marcadores en diferentes colores y un borrador magnético. En la pared opuesta, se ha instalado un proyector de alta resolución, ideal para revisar presentaciones o estudiar en grupo con proyecciones claras y nítidas. También cuenta con conectividad HDMI y adaptadores para varios dispositivos.\r\n"
-                + "\r\n"
-                + "Además, la sala está equipada con aire acondicionado y calefacción, permitiendo ajustar la temperatura en cualquier época del año. Se ha cuidado especialmente la insonorización del espacio, por lo que los ruidos externos son mínimos, lo que asegura un entorno silencioso y propicio para la concentración. Para la comodidad del usuario, hay una pequeña estación de café y té, así como un dispensador de agua fría y caliente.\r\n"
-                + "\r\n"
-                + "Por último, la sala de estudio cuenta con conexión Wi-Fi de alta velocidad, y dispone de múltiples enchufes y puertos USB alrededor del escritorio, facilitando la carga de dispositivos electrónicos. Este espacio privado ofrece todo lo necesario para maximizar la eficiencia y el confort, convirtiéndose en el lugar perfecto para realizar investigaciones, preparar exámenes o desarrollar proyectos personales sin interrupciones.";
+	    List<JTextArea> areas = new ArrayList<>();
+		//int capacidad, int id, int piso, ArrayList<Cliente> listaClientes
 
-        JTextArea descripcionSala = new JTextArea(textoDescripcion);
-        descripcionSala.setFont(new Font("Arial", Font.PLAIN, 18));
-        descripcionSala.setLineWrap(true); 
-        descripcionSala.setWrapStyleWord(true); 
-        descripcionSala.setEditable(false); 
-        descripcionSala.setPreferredSize(new Dimension(700, 700));
+        JTextArea taPiso = new JTextArea("Piso: " + Integer.toString(sala.getPiso()));
+		JTextArea taCapacidad = new JTextArea("Capacidad: " + Integer.toString(sala.getCapacidad()));
+		JTextArea taRecursos = new JTextArea("Recursos: " + (((SalaPrivada) sala).getRecursos()));
 
+		areas.add(taPiso);
+		areas.add(taCapacidad);
+		areas.add(taRecursos);
 
-        JScrollPane scrollPane = new JScrollPane(descripcionSala);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setPreferredSize(new Dimension(800, 600));
+		for (JTextArea area : areas) {
+			area.setFont(new Font("Arial", Font.BOLD, 38));
+ 	        area.setLineWrap(true); 
+    	    area.setWrapStyleWord(true); 
+        	area.setEditable(false); 
+		}
 
-        // Añadir el JScrollPane al panel principal
-        panelPrincipal.add(scrollPane, BorderLayout.CENTER);
-
-        // Añadir el panel principal al JFrame
-        getContentPane().add(panelPrincipal, BorderLayout.CENTER);
-        
+        panelPrincipal.add(taPiso, BorderLayout.CENTER);
+		panelPrincipal.add(taCapacidad, BorderLayout.CENTER);
+		panelPrincipal.add(taRecursos, BorderLayout.CENTER);
+		
 	    pOeste.add(panelPrincipal);
 	    pEste.setLayout(new BorderLayout());
-	    
 	    JButton reservarButton = new JButton("Reservar");
 	    reservarButton.setFont(new Font("Arial", Font.BOLD, 20));
         reservarButton.setPreferredSize(new Dimension(200, 50));
@@ -289,10 +350,11 @@ public class InformacionRecurso extends JFrame {
         reservarButton.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
+
 		        // Cerrar la ventana actual
 		        vInformacionRecurso.dispose();
 		        // Abrir Venatana de ConfirmacionReserva
-		        new VentanaConfirmaciónDeReserva();
+		      //  new VentanaConfirmaciónDeReserva();
 		    }
 		});
         
@@ -317,8 +379,6 @@ public class InformacionRecurso extends JFrame {
 	}
     public InformacionRecurso(Evento evento, Usuario usuario) {
     	if (usuario instanceof Admin) {
-			InformacionRecursoAdmin nuevaVentana = new InformacionRecursoAdmin(evento,usuario);
-			nuevaVentana.setVisible(true);
 			vInformacionRecurso.dispose();
 		}
         this.evento= evento;
@@ -362,7 +422,7 @@ public class InformacionRecurso extends JFrame {
 	    pOeste.add(panelPrincipal);
     	
     	
-    	BotonReservar();
+    	BotonReservar(usuario);
     	
     
 	    
@@ -382,7 +442,7 @@ public class InformacionRecurso extends JFrame {
 //		
 //	}
     
-    private void BotonReservar() {
+    private void BotonReservar(Usuario usuario) {
     	
  	    pEste.setLayout(new BorderLayout());
  	    
@@ -403,18 +463,29 @@ public class InformacionRecurso extends JFrame {
 				// Cerrar la ventana actual
 		        vInformacionRecurso.dispose();
 		        // Abrir Venatana de ConfirmacionReserva
-		        new VentanaConfirmacionReservaEvento(evento);
+		        new VentanaConfirmacionReservaEvento(evento, usuario);
 		    }
  	    });
     }
 	
+	public LocalDate calcularDiasParaDevolver(int paginas) {
+		LocalDate fechaDevolucion = LocalDate.now();
+		int dias = Math.round(paginas / 10);
+		return fechaDevolucion.plusDays(dias);
+	}
+
 	public static void main(String[] args) {
-		ImageIcon foto = Utils.loadImage("books/9780006514855" + ".jpg", 350, 403);
+		ImageIcon foto = Utils.loadImage("books/9780006514855" + ".jpg", 128, 200);
 		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, foto, new ArrayList<Review>());
-		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), null);
+
+		libro.getReviews().add(new Review(libro, new Cliente("e", "Ane", "s", LocalDateTime.now(), "a", new ArrayList<>(), new ArrayList<>(), 2), "Buen libro", 3));
+		libro.getReviews().add(new Review(libro, new Cliente("e", "Ander", "s", LocalDateTime.now(), "a", new ArrayList<>(), new ArrayList<>(), 2), "Mal libro", 10));
+
+
+		Evento evento = new Evento(12, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), null, LocalDate.now(), 19);
 		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
 		
-		new InformacionRecurso(libro, null);
+		new InformacionRecurso(sala, new Cliente());
 		//new InformacionRecurso(evento, new Cliente());
 		//new InformacionRecurso(sala, new Cliente());
 		
