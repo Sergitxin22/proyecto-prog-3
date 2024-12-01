@@ -1,5 +1,6 @@
 package gui;
 
+import BiblioTech.Cliente;
 import BiblioTech.Evento;
 import BiblioTech.Libro;
 import BiblioTech.Review;
@@ -189,6 +190,6 @@ public class ReservaConfirmada extends JFrame {
 //		int id, String titulo, TipoEvento tipoEvento, ArrayList<Cliente> asistentes, SalaEventos sala, LocalDate fecha, int hora
 //		new ReservaConfirmada(libro, new Cliente());
 //		new ReservaConfirmada(sala, new Cliente());
-//		new ReservaConfirmada(evento, new Cliente());
+		new ReservaConfirmada(evento, new Cliente());
 	}
 }
