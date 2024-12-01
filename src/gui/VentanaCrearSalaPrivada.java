@@ -30,7 +30,7 @@ public class VentanaCrearSalaPrivada extends JFrame{
 		setSize(1280,720);
 		setLocationRelativeTo(null);
 		
-		Header header = new Header(Seccion.SALAS_DE_ESTUDIO, usuario);
+		Header header = new Header(Seccion.SALAS_DE_ESTUDIO, usuario, this);
 		add(header,BorderLayout.NORTH);
 		
 		JPanel body = new JPanel(new GridLayout(1,2));
