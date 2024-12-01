@@ -20,7 +20,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import utils.AddPanel;
-import utils.Utils;
 
 // BASADO EN EL CÓDIGO DE VentanaBiblioteca
 
@@ -87,7 +86,7 @@ public class VentanaEventos extends JFrame { // TODO: Falta la funcionalidad de 
 			JButton jButton = new JButton();
 			final int j = i;
 			jButton.addActionListener(e -> {
-				new InformacionRecurso(eventos.get(j));
+				new InformacionRecurso(eventos.get(j), usuario);
 				dispose();
 			});
 

@@ -85,8 +85,8 @@ public class IniciarSesion extends JFrame {
 		JButton iniciarSesionButton = new JButton("Iniciar sesión");
 		iniciarSesionButton.addActionListener(e -> {
 			// TODO: COMPROBACIÓN DE QUE EL USUARIO EXISTE
-			previousWindow.dispose();
-			Portada portada = new Portada((Usuario) new Cliente());
+			previousWindow.setVisible(true);
+			previousWindow.repaint();
 			dispose();
 
 		});
@@ -96,7 +96,7 @@ public class IniciarSesion extends JFrame {
 		noCuentaLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        new VentanaRegistrarse();
+                        new VentanaRegistrarse(previousWindow);
 						dispose();
                     }
 			

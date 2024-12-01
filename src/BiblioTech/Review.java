@@ -65,7 +65,6 @@ public class Review {
 	
 	@Override
 	public String toString() {
-		return "Review [libro=" + libro + ", cliente=" + cliente + ", comentario=" + comentario + ", rating=" + rating
-				+ "]";
+		return String.format("@%s (Rating: %d/10): %s", cliente.getNombre(), getRating(), getComentario());
 	}
 }

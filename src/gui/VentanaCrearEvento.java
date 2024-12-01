@@ -1,24 +1,20 @@
 package gui;
 
+import BiblioTech.Admin;
+import BiblioTech.Seccion;
+import BiblioTech.Usuario;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
-import BiblioTech.Admin;
-import BiblioTech.Cliente;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
 
 public class VentanaCrearEvento extends JFrame{
 
@@ -34,7 +30,7 @@ public class VentanaCrearEvento extends JFrame{
 		setLocationRelativeTo(null);
 		
 		
-		Header header = new Header(Seccion.EVENTOS, usuario);
+		Header header = new Header(Seccion.EVENTOS, usuario, this);
 		JPanel panelContenido = new JPanel(new BorderLayout());
 		JPanel tituloEvento = new JPanel();
 		JTextField titulo = new JTextField("Titulo");

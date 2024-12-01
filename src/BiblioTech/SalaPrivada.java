@@ -12,7 +12,7 @@ public class SalaPrivada extends Sala {
 	
 	public SalaPrivada() {
 		super();
-		this.recursos = new ArrayList<Recurso>();
+		this.recursos = new ArrayList<>();
 	}
 
 	public ArrayList<Recurso> getRecursos() {
