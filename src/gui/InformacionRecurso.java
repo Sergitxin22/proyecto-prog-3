@@ -361,7 +361,7 @@ public class InformacionRecurso extends JFrame {
 		        // Cerrar la ventana actual
 		        vInformacionRecurso.dispose();
 		        // Abrir Venatana de ConfirmacionReserva
-		        new VentanaConfirmacionReservaSalaPrivada();
+		        new VentanaConfirmacionReservaSalaPrivada((SalaPrivada) sala, usuario);
 		    }
 		});
 	   
