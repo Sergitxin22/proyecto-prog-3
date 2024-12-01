@@ -2,10 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -32,7 +29,7 @@ import BiblioTech.MetodosDeOrdenamiento;
 import BiblioTech.Seccion;
 import BiblioTech.Usuario;
 import io.InputUtils;
-import utils.Utils;
+import utils.AddPanel;
 
 public class VentanaBiblioteca extends JFrame {
 	
@@ -91,7 +88,7 @@ public class VentanaBiblioteca extends JFrame {
 		
 		// Añadir libro
 		if (usuario instanceof Admin) {
-			JPanel panelAddLibro = createPanelAddLibro();
+			JPanel panelAddLibro = new AddPanel(Seccion.BIBLIOTECA, usuario);
 	        subPanelContenido1.add(panelAddLibro, BorderLayout.WEST);
 		}		
 		
@@ -175,31 +172,6 @@ public class VentanaBiblioteca extends JFrame {
 		return panelCentrarLibro;
 	}
 
-	private JPanel createPanelAddLibro() {
-		JPanel panelAddLibro = new JPanel(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(0, -5, 0, 5); // Margen entre componentes (icono y texto)
-	    gbc.anchor = GridBagConstraints.CENTER; // Centrar verticalmente y horizontalmente
-	    
-		ImageIcon iconoAddLibro = Utils.loadImage("add.png",36,36);
-	    JLabel iconLabel = new JLabel(iconoAddLibro);
-	     
-	    JLabel textLabel = new JLabel("Añadir libro");
-     
-	    // Añadir mouse listener para el panel
-	    panelAddLibro.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-        	System.out.println("Panel clickeado");
-        	// Aquí puedes agregar la lógica que necesites
-        	}
-	    });
-	    
-	    panelAddLibro.add(iconLabel, gbc);
-	    gbc.gridx = 1; // Segunda columna
-	    panelAddLibro.add(textLabel, gbc);
-	    return panelAddLibro;
-	}
 	private void recargarPanelContenido(JPanel subPanelContenido2) {
 	    subPanelContenido2.removeAll(); // Eliminar todos los componentes actuales.
 

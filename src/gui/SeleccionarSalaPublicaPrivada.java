@@ -1,6 +1,5 @@
 package gui;
 
-import BiblioTech.SalaPublica;
 import BiblioTech.Seccion;
 import BiblioTech.Usuario;
 import java.awt.BorderLayout;
@@ -52,6 +51,7 @@ public class SeleccionarSalaPublicaPrivada extends JFrame {
 		JButton salasPrivadasButton = new JButton("Reservar");
 		salasPrivadasButton.addActionListener(e -> {
 			new VentanaSalasPrivadas(usuario);
+			dispose();
 		});
 		
 		JPanel salaPublicaPanel = new JPanel();

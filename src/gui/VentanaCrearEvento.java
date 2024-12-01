@@ -93,6 +93,6 @@ public class VentanaCrearEvento extends JFrame{
 		}
 	}
 	public static void main(String[] args) {
-		VentanaCrearEvento ventana = new VentanaCrearEvento(new Admin());
+		new VentanaCrearEvento(new Admin());
 	}
 }

@@ -92,7 +92,7 @@ public class Header extends JPanel {
 						ventana.setVisible(false);
 						break;
 					default:
-						new VentanaInformacionUsuario();
+						new VentanaInformacionUsuario(usuario);
 						break;
 				}	
             }
@@ -137,6 +137,7 @@ public class Header extends JPanel {
 		switch (seccion) {
 		case BIBLIOTECA:
 			nuevaVentana = new VentanaBiblioteca(usuario);
+			
 			break;
 		case EVENTOS:
 			nuevaVentana = new VentanaEventos(usuario);
@@ -145,6 +146,7 @@ public class Header extends JPanel {
 			nuevaVentana = new SeleccionarSalaPublicaPrivada(usuario);
 			break;
 		}
+		nuevaVentana.setVisible(true);
 		ventana.dispose();
 	}
 	

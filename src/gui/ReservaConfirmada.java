@@ -3,7 +3,6 @@ package gui;
 import BiblioTech.Cliente;
 import BiblioTech.Evento;
 import BiblioTech.Libro;
-import BiblioTech.Review;
 import BiblioTech.SalaEventos;
 import BiblioTech.SalaPrivada;
 import BiblioTech.TipoEvento;
@@ -183,9 +182,9 @@ public class ReservaConfirmada extends JFrame {
 	public static void main(String[] args) {
 		
 		// RECURSOS DE PRUEBA
-		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, null, new ArrayList<Review>());	
+//		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, null, new ArrayList<Review>());	
 		Evento evento = new Evento(239, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<>(), new SalaEventos(null), LocalDate.now(), 10);
-		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
+//		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
 		
 //		int id, String titulo, TipoEvento tipoEvento, ArrayList<Cliente> asistentes, SalaEventos sala, LocalDate fecha, int hora
 //		new ReservaConfirmada(libro, new Cliente());

@@ -6,7 +6,6 @@ import BiblioTech.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
@@ -86,10 +85,10 @@ public class VentanaConfirmacionReservaSalaPrivada extends JFrame{
 		JButton confirmarButton = new JButton("Confirmar");
 		buttonPanel.add(confirmarButton);
 		confirmarButton.addActionListener(e -> {
-			LocalDate fecha = LocalDate.parse(tfFecha.getText()); // TODO: cambiar el formato del textfield para fechas
-
-			int horaEntrada = Integer.parseInt(tfHoraEntrada.getText());
-			int horaSalida = Integer.parseInt(tfHoraSalida.getText());
+//			LocalDate fecha = LocalDate.parse(tfFecha.getText()); // TODO: cambiar el formato del textfield para fechas
+//
+//			int horaEntrada = Integer.parseInt(tfHoraEntrada.getText());
+//			int horaSalida = Integer.parseInt(tfHoraSalida.getText());
 
 			// TODO: Añadir la reserva a la base de datos
 		});
