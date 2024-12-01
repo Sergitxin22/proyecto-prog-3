@@ -115,17 +115,7 @@ public class InformacionRecurso extends JFrame {
 		panelDescripcion.setBackground(Color.WHITE);
 		JLabel tituloLibro = new JLabel(libro.getTitulo());
 		tituloLibro.setFont(new Font("Arial", Font.BOLD, 24));
-		JTextArea descripcionLibro = new JTextArea( "Autor: J.K. Rowling\r\n"
-				+ "Género: Fantasía, Juvenil\r\n"
-				+ "Temas: Magia, Amistad, Aventura, Identidad\r\n"
-				+ "\r\n"
-				+ "\r\n"
-				+ "Harry Potter y la Piedra Filosofal es el inicio de una saga que ha cautivado a lectores de todas las edades en todo el mundo. En esta primera entrega, conocemos a Harry Potter, un niño huérfano que ha pasado una vida triste y sin amor en casa de sus crueles tíos. Todo cambia el día que recibe una misteriosa carta que revela que es, en realidad, un mago y que ha sido aceptado en el Colegio Hogwarts de Magia y Hechicería.\r\n"
-				+ "\r\n"
-				+ "A medida que Harry descubre este fascinante mundo de hechizos, criaturas mágicas y encantamientos, también se entera de un oscuro secreto sobre sus padres y el misterioso pasado que lo une a un temible mago, Voldemort. Con sus nuevos amigos, Hermione y Ron, Harry comienza una aventura que lo llevará a enfrentarse con desafíos sorprendentes y pruebas de valentía, a la vez que aprende sobre la amistad, la lealtad y el poder de la elección en medio de la adversidad.\r\n"
-				+ "\r\n"
-				+ "Esta novela es la puerta de entrada a un universo mágico lleno de detalles, personajes inolvidables y lecciones profundas que han convertido a la serie de Harry Potter en un fenómeno literario y cultural. Harry Potter y la Piedra Filosofal es una lectura ideal tanto para jóvenes que se adentran en el mundo de la fantasía como para adultos que buscan revivir el asombro de descubrir la magia por primera vez.");
-		
+		JTextArea descripcionLibro = new JTextArea(libro.getSinopsis());
 			
 		descripcionLibro.setFont(new Font("Arial", Font.PLAIN, 18));
         descripcionLibro.setEditable(false);
