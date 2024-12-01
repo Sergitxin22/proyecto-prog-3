@@ -32,7 +32,7 @@ public class VentanaConfirmaciónDeReserva extends JFrame {
 		setLocationRelativeTo(null);
 		
 		//panel header
-		Header header = new Header(Seccion.BIBLIOTECA, new Cliente());
+		Header header = new Header(Seccion.BIBLIOTECA, new Cliente(), this);
 		
 		//panel body
 		JPanel body = new JPanel(new GridLayout(0,2));
