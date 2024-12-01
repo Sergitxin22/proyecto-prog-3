@@ -119,6 +119,10 @@ public class Libro implements Reservable {
 	public void setFoto(ImageIcon foto) {
 		this.foto = foto;
 	}
+	
+	public void agregarReview(Review review) {
+        this.reviews.add(review);
+    }
 
 	public ArrayList<Review> getReviews() {
 		return reviews;
