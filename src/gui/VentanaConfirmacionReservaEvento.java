@@ -11,6 +11,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -31,6 +32,7 @@ import BiblioTech.Libro;
 //import BiblioTech.LibroLectura;
 //import BiblioTech.LibroLectura;
 import BiblioTech.Sala;
+import BiblioTech.SalaEventos;
 import BiblioTech.SalaPrivada;
 import BiblioTech.Seccion;
 //import BiblioTech.SalaPrivada;
@@ -84,45 +86,56 @@ public void setMainWindowProperties() {
     	setTitle("BiblioTech - Confirmar reserva");
 	    
 	    JPanel panelPrincipal = new JPanel();
-	    panelPrincipal.setLayout(new BorderLayout());
+	    panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
 	    panelPrincipal.setBackground(Color.WHITE);
+	    
+	    JPanel panelTitulo = new JPanel();
+	    panelTitulo.setBackground(Color.WHITE);
 	    
 	    JLabel tituloEvento = new JLabel(evento.getTitulo(), SwingConstants.CENTER);
 	    tituloEvento.setFont(new Font("Arial", Font.BOLD, 40));
-	    tituloEvento.setHorizontalAlignment(SwingConstants.CENTER); // Centra el texto horizontalmente
-	    tituloEvento.setVerticalAlignment(SwingConstants.CENTER);
+	 
 	    tituloEvento.setBackground(Color.WHITE);
-	    panelPrincipal.add(tituloEvento, BorderLayout.NORTH);
+	    panelTitulo.add(tituloEvento, BorderLayout.NORTH);
 
 	    
-	    String textoOriginal = "Las Jornadas de Innovación Educativa tienen como objetivo reunir a docentes, investigadores y profesionales del ámbito educativo para compartir experiencias y buenas prácticas en la enseñanza. "
-	    		+ "Este evento es una oportunidad para reflexionar sobre las metodologías educativas contemporáneas y su aplicación en el aula.";
+	    List<JTextArea> areas = new ArrayList<>();
+	    
+	    JTextArea taTipoEvento = new JTextArea("Tipo del Evento: " + (evento.getTipoEvento()));
+		JTextArea taSala = new JTextArea("Sala: " + (evento.getSala().getId()));
+		JTextArea taFecha = new JTextArea("Fecha: " + (evento.getFecha()).toString());
+		JTextArea taHora = new JTextArea("Hora: " + (Integer.toString(evento.getHora())));
 
-        JTextArea descripcionEvento = new JTextArea(textoOriginal);
-        descripcionEvento.setFont(new Font("Arial", Font.PLAIN, 18));
-        descripcionEvento.setLineWrap(true); 
-        descripcionEvento.setWrapStyleWord(true); 
-        descripcionEvento.setEditable(false); 
-        descripcionEvento.setPreferredSize(new Dimension(700, 700));
+		areas.add(taTipoEvento);
+		areas.add(taSala);
+		areas.add(taFecha);
+		areas.add(taHora);
 
-        JScrollPane scrollPane = new JScrollPane(descripcionEvento);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setPreferredSize(new Dimension(800, 600));
+		for (JTextArea area : areas) {
+			area.setFont(new Font("Arial", Font.BOLD, 38));
+ 	        area.setLineWrap(true); 
+    	    area.setWrapStyleWord(true); 
+        	area.setEditable(false); 
+		}
+		
+		panelPrincipal.add(panelTitulo);
+        panelPrincipal.add(taTipoEvento, BorderLayout.CENTER);
+		panelPrincipal.add(taSala, BorderLayout.CENTER);
+		panelPrincipal.add(taFecha, BorderLayout.CENTER);
+		panelPrincipal.add(taHora, BorderLayout.CENTER);
 
-        // Añadir el JScrollPane al panel principal
-        panelPrincipal.add(scrollPane, BorderLayout.CENTER);
+	    
 
         // Añadir el panel principal al JFrame
         getContentPane().add(panelPrincipal, BorderLayout.CENTER);
         
-        pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
+        pOeste.setBorder(new EmptyBorder(0, 0, 10, 0));
 	    pOeste.add(panelPrincipal);
-	    BotonConfirmarReservar(usuario);
+	    BotonConfirmarReservar(usuario, evento);
     
 		setVisible (true);
 	}
-	private void BotonConfirmarReservar(Usuario usuario) {
+	private void BotonConfirmarReservar(Usuario usuario, Evento evento) {
     	
  	    pEste.setLayout(new BorderLayout());
  	    
@@ -143,13 +156,13 @@ public void setMainWindowProperties() {
 			// Cerrar la ventana actual
 	        dispose();
 	        // Abrir Venatana de ConfirmacionReserva
-	        Evento evento = new Evento(10, "Charla sobre la Innovación Educativa", TipoEvento.CHARLA, null, null, LocalDate.now(), 18); 
+	        
             new ReservaConfirmada(evento, usuario);
 		}   
  	   });
     }
 	public static void main(String[] args) {	
-		Evento evento = new Evento(20, "Charla sobre la Comunicación", TipoEvento.CHARLA, null, null, LocalDate.now(), 10);
+		Evento evento = new Evento(12, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), new SalaEventos(100, 2, 4, new ArrayList<Cliente>(), new Evento()), LocalDate.now(), 19);
 		
 		new VentanaConfirmacionReservaEvento(evento, new Usuario() {
 			

@@ -190,7 +190,7 @@ public class InformacionRecurso extends JFrame {
 		JScrollPane reviewsScrollPane = new JScrollPane(textoReviews);
         reviewsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         reviewsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        reviewsScrollPane.setPreferredSize(new Dimension(200, 100)); // Ajusta el tamaño preferido según necesites
+        reviewsScrollPane.setPreferredSize(new Dimension(200, 100));
         reviewsScrollPane.setBorder(null);
         reviewsScrollPane.setPreferredSize(new Dimension(400, 150));
 
@@ -346,17 +346,7 @@ public class InformacionRecurso extends JFrame {
 	    JButton reservarButton = new JButton("Reservar");
 	    reservarButton.setFont(new Font("Arial", Font.BOLD, 20));
         reservarButton.setPreferredSize(new Dimension(200, 50));
-        
-        reservarButton.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-
-		        // Cerrar la ventana actual
-		        vInformacionRecurso.dispose();
-		        // Abrir Venatana de ConfirmacionReserva
-		      //  new VentanaConfirmaciónDeReserva();
-		    }
-		});
+ 
         
         pEste.setBorder(new EmptyBorder(0, 0, 10, 15));
         pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
@@ -386,39 +376,49 @@ public class InformacionRecurso extends JFrame {
     	setTitle("Evento " + evento.getTitulo() );
 	    
 	    JPanel panelPrincipal = new JPanel();
-	    panelPrincipal.setLayout(new BorderLayout());
+	    panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
 	    panelPrincipal.setBackground(Color.WHITE);
+
+	    JPanel panelTitulo = new JPanel();
+	    panelTitulo.setBackground(Color.WHITE);
 	    
 	    JLabel tituloEvento = new JLabel(evento.getTitulo(), SwingConstants.CENTER);
 	    tituloEvento.setFont(new Font("Arial", Font.BOLD, 40));
-	    tituloEvento.setHorizontalAlignment(SwingConstants.CENTER); // Centra el texto horizontalmente
-	    tituloEvento.setVerticalAlignment(SwingConstants.CENTER);
-	    tituloEvento.setBackground(Color.WHITE);
-	    panelPrincipal.add(tituloEvento, BorderLayout.NORTH);
 
 	    
-	    String textoOriginal = "Las Jornadas de Innovación Educativa tienen como objetivo reunir a docentes, investigadores y profesionales del ámbito educativo para compartir experiencias y buenas prácticas en la enseñanza. Este evento es una oportunidad para reflexionar sobre las metodologías educativas contemporáneas y su aplicación en el aula.";
+	    tituloEvento.setBackground(Color.WHITE);
+	    panelTitulo.add(tituloEvento, BorderLayout.NORTH);
 
-        JTextArea descripcionEvento = new JTextArea(textoOriginal);
-        descripcionEvento.setFont(new Font("Arial", Font.PLAIN, 18));
-        descripcionEvento.setLineWrap(true); 
-        descripcionEvento.setWrapStyleWord(true); 
-        descripcionEvento.setEditable(false); 
-        descripcionEvento.setPreferredSize(new Dimension(700, 700));
+	    List<JTextArea> areas = new ArrayList<>();
+	    
+	    JTextArea taTipoEvento = new JTextArea("Tipo del Evento: " + evento.getTipoEvento().toString());
+		JTextArea taSala = new JTextArea("Sala: " + evento.getSala().getId());
+		JTextArea taFecha = new JTextArea("Fecha: " + evento.getFecha().toString());
+		JTextArea taHora = new JTextArea("Hora: " + evento.getHora());
 
+		areas.add(taTipoEvento);
+		areas.add(taSala);
+		areas.add(taFecha);
+		areas.add(taHora);
 
-        JScrollPane scrollPane = new JScrollPane(descripcionEvento);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setPreferredSize(new Dimension(800, 600));
-
-        // Añadir el JScrollPane al panel principal
-        panelPrincipal.add(scrollPane, BorderLayout.CENTER);
+		for (JTextArea area : areas) {
+			area.setFont(new Font("Arial", Font.BOLD, 38));
+ 	        area.setLineWrap(true); 
+    	    area.setWrapStyleWord(true); 
+        	area.setEditable(false); 
+		}
+		
+		panelPrincipal.add(panelTitulo);
+        panelPrincipal.add(taTipoEvento, BorderLayout.CENTER);
+		panelPrincipal.add(taSala, BorderLayout.CENTER);
+		panelPrincipal.add(taFecha, BorderLayout.CENTER);
+		panelPrincipal.add(taHora, BorderLayout.CENTER);
+	    
 
         // Añadir el panel principal al JFrame
         getContentPane().add(panelPrincipal, BorderLayout.CENTER);
         
-        pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
+        pOeste.setBorder(new EmptyBorder(0, 0, 10, 0));
 	    pOeste.add(panelPrincipal);
     	
     	
@@ -482,12 +482,13 @@ public class InformacionRecurso extends JFrame {
 		libro.getReviews().add(new Review(libro, new Cliente("e", "Ander", "s", LocalDateTime.now(), "a", new ArrayList<>(), new ArrayList<>(), 2), "Mal libro", 10));
 
 
-		Evento evento = new Evento(12, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), null, LocalDate.now(), 19);
+		Evento evento = new Evento(12, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), new SalaEventos(100, 2, 4, new ArrayList<Cliente>(), new Evento()), LocalDate.now(), 19);
 		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
 		
-		new InformacionRecurso(sala, new Cliente());
-		//new InformacionRecurso(evento, new Cliente());
 		//new InformacionRecurso(sala, new Cliente());
+		new InformacionRecurso(evento, new Cliente());
+		//new InformacionRecurso(sala, new Cliente());
+		//new InformacionRecurso(libro, new Cliente());
 		
 	}
 
