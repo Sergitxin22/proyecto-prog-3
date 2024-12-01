@@ -213,7 +213,7 @@ public class InformacionRecurso extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AñadirReview ventanaNueva = new AñadirReview(libro, usuario);
+				AñadirReview ventanaNueva = new AñadirReview(libro, (Cliente) usuario);
 			}
 		});
 		
