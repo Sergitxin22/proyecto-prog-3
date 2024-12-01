@@ -1,10 +1,13 @@
 package gui;
 
+import BiblioTech.Cliente;
 import BiblioTech.Evento;
 import BiblioTech.Libro;
 import BiblioTech.Review;
 import BiblioTech.SalaPrivada;
 import BiblioTech.TipoEvento;
+import BiblioTech.Usuario;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -45,7 +48,7 @@ public class ReservaConfirmada extends JFrame {
 	}
 	
 	
-	public ReservaConfirmada(Libro libro) {
+	public ReservaConfirmada(Libro libro, Usuario usuario) {
 		
 		setMainWindowProperties();
 		
@@ -87,7 +90,7 @@ public class ReservaConfirmada extends JFrame {
 		
 		JButton volverButton = new JButton("Volver");
 		volverButton.addActionListener(e -> {
-			new InformacionRecurso(libro);
+			new InformacionRecurso(libro,usuario);
 			dispose();
 		});
 
@@ -100,7 +103,7 @@ public class ReservaConfirmada extends JFrame {
 		setVisible(true);
 	}
 	
-	public ReservaConfirmada(Evento evento) {
+	public ReservaConfirmada(Evento evento, Usuario usuario) {
 		
 		setMainWindowProperties();
 		
@@ -128,7 +131,7 @@ public class ReservaConfirmada extends JFrame {
 		JPanel buttonPanel = new JPanel();
 		JButton volverButton = new JButton("Volver");
 		volverButton.addActionListener(e -> {
-			new InformacionRecurso(evento);
+			new InformacionRecurso(evento, usuario);
 			dispose();
 		});
 		
@@ -140,7 +143,7 @@ public class ReservaConfirmada extends JFrame {
 		setVisible(true);
 	}
 	
-	public ReservaConfirmada(SalaPrivada sala) {
+	public ReservaConfirmada(SalaPrivada sala, Usuario usuario) {
 		setMainWindowProperties();
 		JPanel reservaPanel = new JPanel();
 		reservaPanel.setLayout(new BoxLayout(reservaPanel, BoxLayout.Y_AXIS));
@@ -165,7 +168,7 @@ public class ReservaConfirmada extends JFrame {
 		JPanel buttonPanel = new JPanel();
 		JButton volverButton = new JButton("Volver");
 		volverButton.addActionListener(e -> {
-			new InformacionRecurso(sala);
+			new InformacionRecurso(sala, usuario);
 			dispose();
 		});
 
@@ -181,13 +184,12 @@ public class ReservaConfirmada extends JFrame {
 	public static void main(String[] args) {
 		
 		// RECURSOS DE PRUEBA
-		
-		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, null, new ArrayList<Review>());
-		
+		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, null, new ArrayList<Review>());	
 		Evento evento = new Evento("Charla sobre la Comunicación", TipoEvento.CHARLA, null, null);
 		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
-				
-		new ReservaConfirmada(sala);
 		
+//		new ReservaConfirmada(libro, new Cliente());
+//		new ReservaConfirmada(sala, new Cliente());
+//		new ReservaConfirmada(evento, new Cliente());
 	}
 }
