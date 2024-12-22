@@ -10,6 +10,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDateTime;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,6 +22,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
+import BiblioTech.Admin;
+import main.Main;
 
 public class IniciarSesion extends JFrame {	
 
@@ -83,7 +89,16 @@ public class IniciarSesion extends JFrame {
 		JButton iniciarSesionButton = new JButton("Iniciar sesión");
 		iniciarSesionButton.addActionListener(e -> {
 			// TODO: COMPROBACIÓN DE QUE EL USUARIO EXISTE
-			previousWindow.setVisible(true);
+			Main.usuario = new Admin("daa", "dasas", "adsdsaas", LocalDateTime.now(), "das", null);
+			
+//			Instanciar una nueva ventana Madre
+			try {
+				previousWindow.getClass().getConstructor().newInstance();
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			previousWindow.repaint();
 			dispose();
 
