@@ -3,11 +3,15 @@ package gui;
 import BiblioTech.Admin;
 import BiblioTech.Cliente;
 import BiblioTech.Usuario;
+import main.Main;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,8 +30,8 @@ public class Portada extends JFrame {
 	 */
 	private static final long serialVersionUID = -7861052196761464371L;
 
-	public Portada(Usuario usuario) {
-		
+	public Portada() {
+		Usuario usuario = Main.usuario;
 		currentWindow = this;
 
 		setTitle("BiblioTech - Portada");
@@ -174,7 +178,7 @@ public class Portada extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		new Portada(new Admin());
+		new Portada();
 		
 	}
 }
