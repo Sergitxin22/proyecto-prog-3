@@ -10,12 +10,12 @@ import java.util.logging.Logger;
 import BiblioTech.Cliente;
 import BiblioTech.Usuario;
 
-public class ClienteDAOCSV implements ClienteDAOInterface {
+public class UsuarioDAOCSV implements UsuarioDAOInterface {
 
     private File archivoCSV;
     private Logger logger = null;
 
-    public ClienteDAOCSV(String nombreArchivo) {
+    public UsuarioDAOCSV(String nombreArchivo) {
     	nombreArchivo = "resources/data/" + nombreArchivo + ".csv";
         archivoCSV = new File(nombreArchivo);
         logger = Logger.getLogger("GestorPersistencia-" + archivoCSV.getName());

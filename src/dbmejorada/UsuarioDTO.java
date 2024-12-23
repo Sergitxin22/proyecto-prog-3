@@ -1,9 +1,10 @@
 package dbmejorada;
 
-public class ClienteDTO {
+public class UsuarioDTO {
 	private String dni;
 	private String nombre;
 	private int amonestaciones;
+	private boolean admin;
 	
 	public String getDni() {
 		return dni;
@@ -27,5 +28,19 @@ public class ClienteDTO {
 	
 	public void setAmonestaciones(int amonestaciones) {
 		this.amonestaciones = amonestaciones;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
+
+	@Override
+	public String toString() {
+		return "UsuarioDTO [dni=" + dni + ", nombre=" + nombre + ", amonestaciones=" + amonestaciones + ", admin="
+				+ admin + "]";
 	}
 }
