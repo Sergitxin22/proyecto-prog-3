@@ -11,9 +11,11 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import BiblioTech.Admin;
-import BiblioTech.Cliente;
-import BiblioTech.Usuario;
+import org.sqlite.SQLiteException;
+
+import domain.Admin;
+import domain.Cliente;
+import domain.Usuario;
 
 public class UsuarioDAOBBDD implements UsuarioDAOInterface {
 
@@ -179,18 +181,18 @@ public class UsuarioDAOBBDD implements UsuarioDAOInterface {
 	
 	public void pruebas() {
 		System.out.println("****Borrar registros****");
-    	borrarRegistros();
+    	//borrarRegistros();
     	
         Cliente u = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDateTime.now(), "hola", new ArrayList<>(),
               new ArrayList<>(), 3);
         Admin a = new Admin("11111111B", "Aroa", "aroa@no.com", LocalDateTime.now(), "aroa2003", new ArrayList<>());
         
         System.out.println("****Añadir usuarios****");
-        addUsuario(u);
-        addUsuario(a);
+        //addUsuario(u);
+        //addUsuario(a);
         
         System.out.println("****Recuperar usuarios****");
-        UsuarioDTO uDTO = getUsuario("00000000A", "hola");
+        UsuarioDTO uDTO = getUsuario("00000000A", "contraseña cambiada");
         System.out.println(uDTO);
         System.out.println(getUsuario("11111111B", "aroa2003"));
 

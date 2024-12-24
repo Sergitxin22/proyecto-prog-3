@@ -1,6 +1,8 @@
 package dbmejorada;
 
-import BiblioTech.Usuario;
+import org.sqlite.SQLiteException;
+
+import domain.Usuario;
 
 public interface UsuarioDAOInterface {
 	boolean addUsuario(Usuario usuario);

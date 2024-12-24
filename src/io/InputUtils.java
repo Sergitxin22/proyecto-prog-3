@@ -1,16 +1,17 @@
 package io;
 
-import BiblioTech.Cliente;
-import BiblioTech.Evento;
-import BiblioTech.Libro;
-import BiblioTech.Recurso;
-import BiblioTech.Review;
-import BiblioTech.Sala;
-import BiblioTech.SalaEventos;
-import BiblioTech.SalaPrivada;
-import BiblioTech.SalaPublica;
-import BiblioTech.TipoEvento;
-import BiblioTech.Usuario;
+import domain.Cliente;
+import domain.Evento;
+import domain.Libro;
+import domain.Recurso;
+import domain.Review;
+import domain.Sala;
+import domain.SalaEventos;
+import domain.SalaPrivada;
+import domain.SalaPublica;
+import domain.TipoEvento;
+import domain.Usuario;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;

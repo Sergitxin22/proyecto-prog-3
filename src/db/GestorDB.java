@@ -10,14 +10,14 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import BiblioTech.Cliente;
-import BiblioTech.Libro;
-import BiblioTech.Reserva;
-import BiblioTech.Review;
-import BiblioTech.Sala;
-import BiblioTech.SalaPrivada;
-import BiblioTech.SalaPublica;
-import BiblioTech.Usuario;
+import domain.Cliente;
+import domain.Libro;
+import domain.Reserva;
+import domain.Review;
+import domain.Sala;
+import domain.SalaPrivada;
+import domain.SalaPublica;
+import domain.Usuario;
 
 public class GestorDB {
 
