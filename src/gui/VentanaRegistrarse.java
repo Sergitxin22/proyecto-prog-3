@@ -10,6 +10,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,10 +24,15 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import org.sqlite.SQLiteException;
+
+import domain.Cliente;
+import domain.Libro;
+import domain.Review;
+import main.Main;
+
 public class VentanaRegistrarse extends JFrame {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 2621741612069651140L;
 	
 	public VentanaRegistrarse(JFrame previousWindow) {
@@ -86,14 +95,14 @@ public class VentanaRegistrarse extends JFrame {
 		tfUsuarioEmailPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		JPanel tfContrasenaPanel = new JPanel();
 		tfContrasenaPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-		JPanel tfRepetirContraseniaPanel = new JPanel();
-		tfRepetirContraseniaPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		JPanel tfRepetirContrasenaPanel = new JPanel();
+		tfRepetirContrasenaPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 			
 		tfDNIPanel.add(tfDNI);
 		tfNombrePanel.add(tfNombre);
 		tfUsuarioEmailPanel.add(tfUsuarioEmail);
 		tfContrasenaPanel.add(tfContrasena);
-		tfRepetirContraseniaPanel.add(tfRepetirContrasenia);
+		tfRepetirContrasenaPanel.add(tfRepetirContrasenia);
 
 		textContrasena.setForeground(Color.black);
 		
@@ -106,7 +115,7 @@ public class VentanaRegistrarse extends JFrame {
 		body.add(textContrasena);
 		body.add(tfContrasenaPanel);
 		body.add(textRepetirContrasenia);
-		body.add(tfRepetirContraseniaPanel);
+		body.add(tfRepetirContrasenaPanel);
 		
 				
 		body.setPreferredSize(new Dimension(20, 20));
@@ -117,24 +126,37 @@ public class VentanaRegistrarse extends JFrame {
 		registrarseButton.addActionListener(e -> {
 			if (!new String(tfContrasena.getPassword()).equals(new String(tfRepetirContrasenia.getPassword()))) {
 				JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
-			} else {
+				tfContrasena.setText("");
+				tfRepetirContrasenia.setText("");
 				
-
-				// TODO: Añadir a la lista y a la BD el usuario
-
-				previousWindow.removeAll();
-				previousWindow.setVisible(true);
-				previousWindow.revalidate();
-				previousWindow.repaint();
-			}
-			
+			} else {
+				Cliente nuevoUsuario = new Cliente(tfDNI.getText(), tfNombre.getText(), tfUsuarioEmail.getText(), LocalDateTime.now(), new String(tfContrasena.getPassword()), new ArrayList<Libro>(), new ArrayList<Review>(), 0);
+				if (!Main.getUsuarioDAO().addUsuario(nuevoUsuario)) {
+					JOptionPane.showMessageDialog(this, "Ya hay un usuario/a registrado con este DNI", "Error", JOptionPane.ERROR_MESSAGE);
+					tfDNI.setText("");
+					tfNombre.setText("");
+					tfUsuarioEmail.setText("");
+					tfContrasena.setText("");
+					tfRepetirContrasenia.setText("");
+				} else {
+					Main.setUsuario(nuevoUsuario);
+					try {						
+						previousWindow.getClass().getConstructor().newInstance();
+					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+							| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
+						e1.printStackTrace();
+					}
+					
+					dispose();
+				}
+			}		
 		});
 
 		JLabel yaCuentaLabel = new JLabel("¿Ya tienes cuenta?");
 		yaCuentaLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        new IniciarSesion(previousWindow);
+                        new VentanaIniciarSesion(previousWindow);
 						dispose();
                     }	
 		});
