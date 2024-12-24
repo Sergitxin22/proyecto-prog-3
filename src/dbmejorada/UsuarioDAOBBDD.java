@@ -192,7 +192,7 @@ public class UsuarioDAOBBDD implements UsuarioDAOInterface {
         //addUsuario(a);
         
         System.out.println("****Recuperar usuarios****");
-        UsuarioDTO uDTO = getUsuario("00000000A", "contraseña cambiada");
+        UsuarioDTO uDTO = getUsuario("00000000A", "hola");
         System.out.println(uDTO);
         System.out.println(getUsuario("11111111B", "aroa2003"));
 
