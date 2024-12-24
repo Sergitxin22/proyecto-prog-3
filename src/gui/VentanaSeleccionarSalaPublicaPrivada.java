@@ -1,7 +1,10 @@
 package gui;
 
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
+import domain.Seccion;
+import domain.Usuario;
+import gui.components.Header;
+import main.Main;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import javax.swing.BoxLayout;
@@ -10,16 +13,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import utils.Utils;
 
-public class SeleccionarSalaPublicaPrivada extends JFrame {
+public class VentanaSeleccionarSalaPublicaPrivada extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	private Usuario usuario = Main.getUsuario();
 
-	public SeleccionarSalaPublicaPrivada(Usuario usuario) {
+	public VentanaSeleccionarSalaPublicaPrivada() {
 		setTitle("Salas de estudio");
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
@@ -44,13 +46,13 @@ public class SeleccionarSalaPublicaPrivada extends JFrame {
 		JPanel mid = new JPanel();
 		JButton salaPublicaButton = new JButton("Saber más");
 		salaPublicaButton.addActionListener(e -> {
-			new VentanaSalaPublica(usuario);
+			new VentanaSalaPublica();
 			dispose();
 		});
 
 		JButton salasPrivadasButton = new JButton("Reservar");
 		salasPrivadasButton.addActionListener(e -> {
-			new VentanaSalasPrivadas(usuario);
+			new VentanaSalasPrivadas();
 			dispose();
 		});
 		
@@ -115,7 +117,7 @@ public class SeleccionarSalaPublicaPrivada extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		new SeleccionarSalaPublicaPrivada(null);
+		new VentanaSeleccionarSalaPublicaPrivada();
 	}
 
 }

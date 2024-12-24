@@ -1,12 +1,14 @@
 package gui;
 
-import BiblioTech.Cliente;
-import BiblioTech.Evento;
-import BiblioTech.Libro;
-import BiblioTech.SalaEventos;
-import BiblioTech.SalaPrivada;
-import BiblioTech.TipoEvento;
-import BiblioTech.Usuario;
+import domain.Cliente;
+import domain.Evento;
+import domain.Libro;
+import domain.SalaEventos;
+import domain.SalaPrivada;
+import domain.TipoEvento;
+import domain.Usuario;
+import main.Main;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.time.LocalDate;
@@ -21,19 +23,15 @@ import javax.swing.border.EmptyBorder;
 //import BiblioTech.TipoEvento;
 //import utils.Utils;
 
-public class ReservaConfirmada extends JFrame {
+public class VentanaReservaConfirmada extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
+	private Usuario usuario = Main.getUsuario();
 
 	public void setMainWindowProperties() {
 		
 		// Método que recoge las propiedades en común de los constructores de esta ventana
 		
-		setTitle("Reserva confirmada");
 		setSize(600, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -46,9 +44,10 @@ public class ReservaConfirmada extends JFrame {
 	}
 	
 	
-	public ReservaConfirmada(Libro libro, Usuario usuario) {
+	public VentanaReservaConfirmada(Libro libro) {
 		
 		setMainWindowProperties();
+		setTitle(libro.getTitulo() + ": Reserva confirmada");
 		
 		// Panel donde se muestra la información del libro
 		JPanel bookPanel = new JPanel();
@@ -88,7 +87,7 @@ public class ReservaConfirmada extends JFrame {
 		
 		JButton volverButton = new JButton("Volver");
 		volverButton.addActionListener(e -> {
-			new InformacionRecurso(libro,usuario);
+			new VentanaInformacionRecurso(libro);
 			dispose();
 		});
 
@@ -101,9 +100,10 @@ public class ReservaConfirmada extends JFrame {
 		setVisible(true);
 	}
 	
-	public ReservaConfirmada(Evento evento, Usuario usuario) {
+	public VentanaReservaConfirmada(Evento evento) {
 		
 		setMainWindowProperties();
+		setTitle(evento.getTitulo() + ": Reserva confirmada");
 		
 		JPanel reservaPanel = new JPanel();
 		reservaPanel.setLayout(new BoxLayout(reservaPanel, BoxLayout.Y_AXIS));
@@ -129,7 +129,7 @@ public class ReservaConfirmada extends JFrame {
 		JPanel buttonPanel = new JPanel();
 		JButton volverButton = new JButton("Volver");
 		volverButton.addActionListener(e -> {
-			new InformacionRecurso(evento, usuario);
+			new VentanaInformacionRecurso(evento);
 			dispose();
 		});
 		
@@ -141,8 +141,10 @@ public class ReservaConfirmada extends JFrame {
 		setVisible(true);
 	}
 	
-	public ReservaConfirmada(SalaPrivada sala, Usuario usuario) {
+	public VentanaReservaConfirmada(SalaPrivada sala) {
 		setMainWindowProperties();
+		setTitle("Sala " + sala.getId() + ": Reserva confirmada");
+		
 		JPanel reservaPanel = new JPanel();
 		reservaPanel.setLayout(new BoxLayout(reservaPanel, BoxLayout.Y_AXIS));
 		
@@ -166,7 +168,7 @@ public class ReservaConfirmada extends JFrame {
 		JPanel buttonPanel = new JPanel();
 		JButton volverButton = new JButton("Volver");
 		volverButton.addActionListener(e -> {
-			new InformacionRecurso(sala, usuario);
+			new VentanaInformacionRecurso(sala);
 			dispose();
 		});
 
@@ -189,6 +191,6 @@ public class ReservaConfirmada extends JFrame {
 //		int id, String titulo, TipoEvento tipoEvento, ArrayList<Cliente> asistentes, SalaEventos sala, LocalDate fecha, int hora
 //		new ReservaConfirmada(libro, new Cliente());
 //		new ReservaConfirmada(sala, new Cliente());
-		new ReservaConfirmada(evento, new Cliente());
+		new VentanaReservaConfirmada(evento);
 	}
 }

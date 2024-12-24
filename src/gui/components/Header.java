@@ -1,9 +1,17 @@
-package gui;
+package gui.components;
 
-import BiblioTech.Admin;
-import BiblioTech.Cliente;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
+import domain.Admin;
+import domain.Cliente;
+import domain.Seccion;
+import domain.Usuario;
+import gui.VentanaBiblioteca;
+import gui.VentanaEventos;
+import gui.VentanaInformacionUsuario;
+import gui.VentanaIniciarSesion;
+import gui.VentanaPortada;
+import gui.VentanaSeleccionarSalaPublicaPrivada;
+import utils.Utils;
+
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -14,13 +22,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import utils.Utils;
 
 public class Header extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1102784202811827191L;
 	private static boolean tieneImagen = true; 
 
@@ -61,7 +65,7 @@ public class Header extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 System.out.println("Texto clickeado");
-                Portada ventanaPortada = new Portada(usuario);
+                VentanaPortada ventanaPortada = new VentanaPortada();
                 ventanaPortada.setVisible(true);
                 // Aquí puedes agregar la lógica que necesites
                 ventana.dispose();
@@ -88,11 +92,11 @@ public class Header extends JPanel {
             public void mouseClicked(MouseEvent e) {
 				switch(nombreIconoUsuario) {
 					case "user.png":
-						new IniciarSesion(ventana);
+						new VentanaIniciarSesion(ventana);
 						ventana.setVisible(false);
 						break;
 					default:
-						new VentanaInformacionUsuario(usuario);
+						new VentanaInformacionUsuario();
 						break;
 				}	
             }
@@ -136,14 +140,14 @@ public class Header extends JPanel {
 		JFrame nuevaVentana = null;
 		switch (seccion) {
 		case BIBLIOTECA:
-			nuevaVentana = new VentanaBiblioteca(usuario);
+			nuevaVentana = new VentanaBiblioteca();
 			
 			break;
 		case EVENTOS:
-			nuevaVentana = new VentanaEventos(usuario);
+			nuevaVentana = new VentanaEventos();
 			break;
 		case SALAS_DE_ESTUDIO: 
-			nuevaVentana = new SeleccionarSalaPublicaPrivada(usuario);
+			nuevaVentana = new VentanaSeleccionarSalaPublicaPrivada();
 			break;
 		}
 		nuevaVentana.setVisible(true);

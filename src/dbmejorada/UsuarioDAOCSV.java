@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import BiblioTech.Cliente;
-import BiblioTech.Usuario;
+import domain.Cliente;
+import domain.Usuario;
 
 public class UsuarioDAOCSV implements UsuarioDAOInterface {
 

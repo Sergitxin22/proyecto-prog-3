@@ -11,29 +11,33 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import BiblioTech.Admin;
+import dbmejorada.UsuarioDTO;
+import domain.Admin;
+import domain.Cliente;
+import domain.Libro;
+import domain.Review;
 import main.Main;
 
-public class IniciarSesion extends JFrame {	
+public class VentanaIniciarSesion extends JFrame {	
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
-	public IniciarSesion(JFrame previousWindow) {
+	public VentanaIniciarSesion(JFrame previousWindow) {
 		setTitle("Iniciar Sesión");
 		setSize(650, 500);
 		setLocationRelativeTo(null);
@@ -44,7 +48,6 @@ public class IniciarSesion extends JFrame {
                         previousWindow.setVisible(true);
 						dispose();
                     }
-			
 		});
 		
 		// Texto superior
@@ -55,33 +58,32 @@ public class IniciarSesion extends JFrame {
 		// Cuerpo de la ventana
 		JPanel body = new JPanel();
 		body.setLayout(new BoxLayout(body, BoxLayout.Y_AXIS));
-		
-			
-		JLabel textUsuarioEmail = new JLabel("Usuario/Email");
-		textUsuarioEmail.setFont(topText.getFont().deriveFont(Font.PLAIN, 20));
+				
+		JLabel textDNI = new JLabel("DNI");
+		textDNI.setFont(topText.getFont().deriveFont(Font.PLAIN, 20));
 		JLabel textContrasena = new JLabel("Contraseña");
 		textContrasena.setFont(topText.getFont().deriveFont(Font.PLAIN, 20));
 		
-		JTextField tfUsuarioEmail = new JTextField();
+		JTextField tfDNI = new JTextField();
 		JPasswordField tfContrasena = new JPasswordField();
 		
-		tfUsuarioEmail.setPreferredSize(new Dimension(125, 25));
+		tfDNI.setPreferredSize(new Dimension(125, 25));
 		tfContrasena.setPreferredSize(new Dimension(125, 25));
 		
-		JPanel tfUsuarioEmailPanel = new JPanel();
+		JPanel tfDNIPanel = new JPanel();
 		JPanel tfContrasenaPanel = new JPanel();
 	
-		tfUsuarioEmailPanel.add(tfUsuarioEmail);
+		tfDNIPanel.add(tfDNI);
 		tfContrasenaPanel.add(tfContrasena);
 
 		
-		textUsuarioEmail.setAlignmentX(CENTER_ALIGNMENT);
+		textDNI.setAlignmentX(CENTER_ALIGNMENT);
 		textContrasena.setAlignmentX(CENTER_ALIGNMENT);
-		tfUsuarioEmail.setAlignmentX(CENTER_ALIGNMENT);
+		tfDNI.setAlignmentX(CENTER_ALIGNMENT);
 		tfContrasena.setAlignmentX(CENTER_ALIGNMENT);
 		
-		body.add(textUsuarioEmail);
-		body.add(tfUsuarioEmailPanel);
+		body.add(textDNI);
+		body.add(tfDNIPanel);
 		body.add(textContrasena);
 		body.add(tfContrasenaPanel);
 		
@@ -89,18 +91,36 @@ public class IniciarSesion extends JFrame {
 		JButton iniciarSesionButton = new JButton("Iniciar sesión");
 		iniciarSesionButton.addActionListener(e -> {
 			// TODO: COMPROBACIÓN DE QUE EL USUARIO EXISTE
-			Main.usuario = new Admin("daa", "dasas", "adsdsaas", LocalDateTime.now(), "das", null);
+			String dni = tfDNI.getText();
+			String password = new String(tfContrasena.getPassword());
 			
-//			Instanciar una nueva ventana Madre
-			try {
-				previousWindow.getClass().getConstructor().newInstance();
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			if (Main.getUsuarioDAO().getUsuario(dni, password) == null) { // El usuario no existe en la BD
+				JOptionPane.showMessageDialog(this, "Este usuario no existe o la contraseña es incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
+				tfDNI.setText("");
+				tfContrasena.setText("");
+			} else { // El usuario existe en la BD
+				
+				UsuarioDTO usuarioLogueado = new UsuarioDTO(); // getUsuario
+				// getDatosAdicionales
+				if (usuarioLogueado.isAdmin()) {
+					Main.setUsuario(new Admin(usuarioLogueado.getDni(), dni, "email", LocalDateTime.now(), password, new ArrayList<String>()));
+				} else {
+					Main.setUsuario(new Cliente(usuarioLogueado.getDni(), dni, null, null, password,
+							null, null, usuarioLogueado.getAmonestaciones()));
+				}
+				
+//				Instanciar una nueva ventana Madre
+				try {
+					previousWindow.getClass().getConstructor().newInstance();
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				dispose();
 			}
-			previousWindow.repaint();
-			dispose();
+			
 
 		});
 
@@ -138,7 +158,7 @@ public class IniciarSesion extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		new IniciarSesion(null);	
+		new VentanaIniciarSesion(null);	
 	}
 
 }

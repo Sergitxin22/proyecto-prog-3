@@ -1,12 +1,12 @@
 package gui;
 
-import BiblioTech.Cliente;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
-import domain.ButtonCellEditor;
-import domain.ButtonCellRenderer;
-import domain.ImageCellEditor;
-import domain.ImageCellRenderer;
+import gui.components.Header;
+import gui.renderers.*;
+import main.Main;
+import domain.Cliente;
+import domain.Seccion;
+import domain.Usuario;
+
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,18 +15,17 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class VentanaHistorialUsuario extends JFrame{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
+	private Usuario usuario = Main.getUsuario();
 
-	public VentanaHistorialUsuario(Usuario usuario) {
+	public VentanaHistorialUsuario() {
 		if (!(usuario instanceof Cliente)) {
 			return ;
 		}
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(640,480);
-		setTitle("BiblioTech - Historial");
+		setTitle("Historial de libros");
 		setLocationRelativeTo(null);
 		
 		//panel arriba
@@ -67,7 +66,7 @@ public class VentanaHistorialUsuario extends JFrame{
 	}
 	
 	public static void main(String[] args) {
-		new VentanaHistorialUsuario(new Cliente());
+		new VentanaHistorialUsuario();
 	}
 
 }

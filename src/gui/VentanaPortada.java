@@ -1,8 +1,8 @@
 package gui;
 
-import BiblioTech.Admin;
-import BiblioTech.Cliente;
-import BiblioTech.Usuario;
+import domain.Admin;
+import domain.Cliente;
+import domain.Usuario;
 import main.Main;
 
 import java.awt.BorderLayout;
@@ -20,21 +20,17 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import utils.Utils;
 
-public class Portada extends JFrame {	
+public class VentanaPortada extends JFrame {	
 
 	// Para poder darle el argumento de la ventana a IniciarSesion() al darle al botón de usuario
-	private JFrame currentWindow = null; 
+	private JFrame currentWindow = this;
+	private Usuario usuario = Main.getUsuario();
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7861052196761464371L;
 
-	public Portada() {
-		Usuario usuario = Main.usuario;
-		currentWindow = this;
+	public VentanaPortada() {
 
-		setTitle("BiblioTech - Portada");
+		setTitle("Portada");
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -66,9 +62,9 @@ public class Portada extends JFrame {
             public void mouseClicked(MouseEvent e) {
 				if (usuario == null) {
 
-					new IniciarSesion(currentWindow);
+					new VentanaIniciarSesion(currentWindow);
 				} else {
-					new VentanaInformacionUsuario(usuario);
+					new VentanaInformacionUsuario();
 				}	
             }
 		});
@@ -109,21 +105,21 @@ public class Portada extends JFrame {
 		JButton bibliotecaButton = new JButton("Biblioteca");
 
 		bibliotecaButton.addActionListener(e -> {
-                    new VentanaBiblioteca(usuario);
+                    new VentanaBiblioteca();
 					dispose();
                 });
 
 		JButton salasButton = new JButton("Salas");
 
 		salasButton.addActionListener(e -> {
-                    new SeleccionarSalaPublicaPrivada(usuario);
+                    new VentanaSeleccionarSalaPublicaPrivada();
 					dispose();
 		});
 
 		JButton eventosButton = new JButton("Eventos");
 
 		eventosButton.addActionListener(e -> {
-			new VentanaEventos(usuario);
+			new VentanaEventos();
 			dispose();
 		});
 		
@@ -178,7 +174,7 @@ public class Portada extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		new Portada();
+		new VentanaPortada();
 		
 	}
 }

@@ -1,8 +1,10 @@
 package gui;
 
-import BiblioTech.Cliente;
-import BiblioTech.SalaPrivada;
-import BiblioTech.Usuario;
+import domain.Cliente;
+import domain.SalaPrivada;
+import domain.Usuario;
+import main.Main;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
@@ -17,13 +19,12 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 public class VentanaConfirmacionReservaSalaPrivada extends JFrame{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
+	private Usuario usuario = Main.getUsuario();
 
-	public VentanaConfirmacionReservaSalaPrivada(SalaPrivada sala, Usuario usuario) {
-		setTitle("Reserva de Sala :" + sala.getId());
+	public VentanaConfirmacionReservaSalaPrivada(SalaPrivada sala) {
+		setTitle("Reserva de Sala " + sala.getId());
 		setSize(600, 600);
 		setLocationRelativeTo(null);
 
@@ -102,6 +103,6 @@ public class VentanaConfirmacionReservaSalaPrivada extends JFrame{
 	}
 
 	public static void main(String[] args) {
-		new VentanaConfirmacionReservaSalaPrivada(new SalaPrivada(5, 14, 2, new ArrayList<>(), new ArrayList<>()), new Cliente("3", "ane", "a", LocalDateTime.now(), "a", new ArrayList<>(), new ArrayList<>(), 1));
+		new VentanaConfirmacionReservaSalaPrivada(new SalaPrivada(5, 14, 2, new ArrayList<>(), new ArrayList<>()));
 	}
 }

@@ -1,10 +1,12 @@
 package gui;
 
-import BiblioTech.Admin;
-import BiblioTech.Cliente;
-import BiblioTech.SalaPublica;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
+import domain.Admin;
+import domain.Cliente;
+import domain.SalaPublica;
+import domain.Seccion;
+import domain.Usuario;
+import gui.components.Header;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -23,12 +25,10 @@ import utils.Utils;
 
 public class VentanaSalaPublica extends JFrame {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	private Usuario usuario = Main.getUsuario();
 
-	public VentanaSalaPublica(Usuario usuario)  { 
+	public VentanaSalaPublica()  { 
 
         SalaPublica salaPublica = Main.getSalaPublica();
         
@@ -152,7 +152,7 @@ public class VentanaSalaPublica extends JFrame {
     }
 
     public static void main(String[] args) {
-        new VentanaSalaPublica((Usuario) new Cliente("8483483", "Juah", "a", LocalDateTime.now(), "a", new ArrayList<>(), new ArrayList<>(), 2));
+        new VentanaSalaPublica();
     }
     
 }

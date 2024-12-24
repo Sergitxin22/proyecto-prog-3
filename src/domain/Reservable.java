@@ -1,4 +1,4 @@
-package BiblioTech;
+package domain;
 
 public interface Reservable {
 

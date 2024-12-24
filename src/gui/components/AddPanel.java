@@ -1,9 +1,11 @@
-package utils;
+package gui.components;
 
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
+import domain.Seccion;
+import domain.Usuario;
 import gui.VentanaCrearEvento;
 import gui.VentanaCrearSalaPrivada;
+import utils.Utils;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
@@ -14,9 +16,6 @@ import javax.swing.JPanel;
 
 public class AddPanel extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 		public AddPanel(Seccion seccion, Usuario usuario) {
@@ -49,11 +48,11 @@ public class AddPanel extends JPanel {
 				}
 
 				if (seccion.equals(Seccion.SALAS_DE_ESTUDIO)) {
-					new VentanaCrearSalaPrivada(usuario);
+					new VentanaCrearSalaPrivada();
 				}
 
 				if (seccion.equals(Seccion.EVENTOS)) {
-					new VentanaCrearEvento(usuario);
+					new VentanaCrearEvento();
 				}
         	}
 	    });

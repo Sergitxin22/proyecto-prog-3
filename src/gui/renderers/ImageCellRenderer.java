@@ -1,4 +1,4 @@
-package domain;
+package gui.renderers;
 
 import java.awt.Component;
 

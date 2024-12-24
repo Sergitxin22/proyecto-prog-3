@@ -23,19 +23,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import BiblioTech.Cliente;
-import BiblioTech.Libro;
-import BiblioTech.Seccion;
+import domain.Cliente;
+import domain.Libro;
+import domain.Seccion;
+import gui.components.Header;
 
 public class VentanaConfirmaciónDeReserva extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5490640345084381273L;
 	public VentanaConfirmaciónDeReserva(Libro libro) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setTitle("BiblioTech - Confirmación de reserva");
+		setTitle("Confirmación de reserva");
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
 		
@@ -103,7 +101,7 @@ public class VentanaConfirmaciónDeReserva extends JFrame {
         
         //panel boton
 		JPanel botonesPanel = new JPanel(new GridBagLayout());
-		JButton botonConfirmar = new JButton("Confirmar reservar");
+		JButton botonConfirmar = new JButton("Confirmar reserva");
 		botonesPanel.setPreferredSize(new Dimension(100,100));
 		botonesPanel.setBackground(Color.WHITE);
 		
@@ -120,7 +118,7 @@ public class VentanaConfirmaciónDeReserva extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {				 
-				ReservaConfirmada nuevaVentana = new ReservaConfirmada(libro, new Cliente());
+				VentanaReservaConfirmada nuevaVentana = new VentanaReservaConfirmada(libro);
 				nuevaVentana.setVisible(true);
 			}
 		});
