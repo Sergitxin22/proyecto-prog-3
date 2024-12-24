@@ -1,8 +1,10 @@
 package gui;
 
-import BiblioTech.Cliente;
-import BiblioTech.Libro;
-import BiblioTech.Review;
+import domain.Cliente;
+import domain.Libro;
+import domain.Review;
+import main.Main;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -21,17 +23,14 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import utils.Utils;
 
-public class AñadirReview extends JFrame {
+public class VentanaAñadirReview extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
+	private Cliente cliente = (Cliente) Main.getUsuario();
 	private int rating = 0;
 	private String comment = "";
 
-	public AñadirReview(Libro libro, Cliente cliente) {
+	public VentanaAñadirReview(Libro libro) {
 		
 		setTitle("Anadir review");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -96,7 +95,7 @@ public class AñadirReview extends JFrame {
 			// TODO: Añadir función para añadir review a la BD.
 
 			dispose();
-			InformacionRecurso redirectWindow = new InformacionRecurso(libro, cliente);
+			VentanaInformacionRecurso redirectWindow = new VentanaInformacionRecurso(libro);
 			JOptionPane.showMessageDialog(redirectWindow, "Gracias por tu review!", "Review publicada correctamente", JOptionPane.INFORMATION_MESSAGE);
 		});
 		
@@ -140,7 +139,7 @@ public class AñadirReview extends JFrame {
 	public static void main(String[] args) {
 		ImageIcon foto = Utils.loadImage("books/9780006514855" + ".jpg", 128, 200);
 		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, foto, new ArrayList<Review>());
-		new AñadirReview(libro, new Cliente("032", "Juan", "aa@aa.aa", null, null, null, null, 2));
+		new VentanaAñadirReview(libro);
 	}
 
 }

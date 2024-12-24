@@ -18,25 +18,23 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import BiblioTech.Cliente;
-import BiblioTech.Evento;
-//import BiblioTech.Genero;
-//import BiblioTech.LibroLectura;
-//import BiblioTech.LibroLectura;
-import BiblioTech.SalaEventos;
-import BiblioTech.Seccion;
-//import BiblioTech.SalaPrivada;
-import BiblioTech.TipoEvento;
-import BiblioTech.Usuario;
+import domain.Cliente;
+import domain.Evento;
+import domain.SalaEventos;
+import domain.Seccion;
+import domain.TipoEvento;
+import domain.Usuario;
+import gui.components.Header;
+import main.Main;
+
 import java.time.LocalDate;
 //import utils.Utils;
 
 public class VentanaConfirmacionReservaEvento extends JFrame{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1647556562163809896L;
 	private JPanel pOeste, pEste, pCentro, pSur, pHeader;
+	private Usuario usuario = Main.getUsuario();
 	
 public void setMainWindowProperties() {
 		
@@ -69,10 +67,10 @@ public void setMainWindowProperties() {
 		
 	}
 	
-	public VentanaConfirmacionReservaEvento (Evento evento, Usuario usuario) {
+	public VentanaConfirmacionReservaEvento(Evento evento) {
 		
 		setMainWindowProperties();
-    	setTitle("BiblioTech - Confirmar reserva");
+    	setTitle("Confirmar reserva del " + evento.getTitulo());
 	    
 	    JPanel panelPrincipal = new JPanel();
 	    panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
@@ -120,11 +118,12 @@ public void setMainWindowProperties() {
         
         pOeste.setBorder(new EmptyBorder(0, 0, 10, 0));
 	    pOeste.add(panelPrincipal);
-	    BotonConfirmarReservar(usuario, evento);
+	    BotonConfirmarReservar(evento);
     
 		setVisible (true);
 	}
-	private void BotonConfirmarReservar(Usuario usuario, Evento evento) {
+	
+	private void BotonConfirmarReservar(Evento evento) {
     	
  	    pEste.setLayout(new BorderLayout());
  	    
@@ -146,16 +145,14 @@ public void setMainWindowProperties() {
 	        dispose();
 	        // Abrir Venatana de ConfirmacionReserva
 	        
-            new ReservaConfirmada(evento, usuario);
+            new VentanaReservaConfirmada(evento);
 		}   
  	   });
     }
 	public static void main(String[] args) {	
 		Evento evento = new Evento(12, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), new SalaEventos(100, 2, 4, new ArrayList<Cliente>(), new Evento()), LocalDate.now(), 19);
 		
-		new VentanaConfirmacionReservaEvento(evento, new Usuario() {
-			
-		});
+		new VentanaConfirmacionReservaEvento(evento);
 
 		
 	}

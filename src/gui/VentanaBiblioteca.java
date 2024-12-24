@@ -23,31 +23,29 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import BiblioTech.Admin;
-import BiblioTech.Libro;
-import BiblioTech.MetodosDeOrdenamiento;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
+import domain.Admin;
+import domain.Libro;
+import domain.MetodosDeOrdenamiento;
+import domain.Seccion;
+import domain.Usuario;
+import gui.components.AddPanel;
+import gui.components.Header;
 import io.InputUtils;
-import utils.AddPanel;
+import main.Main;
 
 public class VentanaBiblioteca extends JFrame {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private final ArrayList<Libro> listaLibros = InputUtils.cargarLibros();
-	private Usuario usuario;
 	private ArrayList<Libro> listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
+	private Usuario usuario = Main.getUsuario();
 	
-	public VentanaBiblioteca(Usuario user) {
+	public VentanaBiblioteca() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.usuario = user;
 		if (usuario == null) {
-			setTitle("Bibliotech - No logueado");			
+			setTitle("Biblioteca - No logueado");			
 		} else {			
-			setTitle("Bibliotech - logueado" + usuario.getClass().toString());
+			setTitle("Biblioteca - logueado" + usuario.getClass().toString());
 		}
 		
 		setSize(1280,720);
@@ -191,7 +189,7 @@ public class VentanaBiblioteca extends JFrame {
 	private void abrirVentanaInformacionLibro(Libro libro) {
 		// TODO descomentar cuando se actualice el constructor de la ventana InformacionRecurso
 		//InformacionRecurso ventanaInformacionLibro = new InformacionRecurso(libro, this);
-		InformacionRecurso ventanaInformacionLibro = new InformacionRecurso(libro, usuario);
+		VentanaInformacionRecurso ventanaInformacionLibro = new VentanaInformacionRecurso(libro);
 		ventanaInformacionLibro.setVisible(true);
 		this.setVisible(false);
 	}
@@ -215,9 +213,7 @@ public class VentanaBiblioteca extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		new VentanaBiblioteca(null);
-//		VentanaBiblioteca ventana2 = new VentanaBiblioteca(new Cliente());
-//		VentanaBiblioteca ventana3 = new VentanaBiblioteca(new Admin());
+		new VentanaBiblioteca();
 	}
 
 }
