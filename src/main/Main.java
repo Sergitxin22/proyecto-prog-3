@@ -1,17 +1,13 @@
 package main;
 
-import db.GestorDB;
+import dbmejorada.ReservaSalaDAOBBDD;
+import dbmejorada.ReservaSalaDAOInterface;
 import dbmejorada.UsuarioDAOBBDD;
-import dbmejorada.UsuarioDAOCSV;
 import dbmejorada.UsuarioDAOInterface;
-import dbmejorada.UsuarioDTO;
-import domain.Admin;
-import domain.Cliente;
 import domain.SalaPublica;
 import domain.Usuario;
 import gui.VentanaPortada;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Main {
@@ -19,14 +15,23 @@ public class Main {
 
 	//	Declaración de los DAO
 	private static UsuarioDAOInterface usuarioDAO = new UsuarioDAOBBDD("bibliotech");
+	private static ReservaSalaDAOInterface reservaSalaDAO = new ReservaSalaDAOBBDD("bibliotech");
 	private static SalaPublica salaPublica = new SalaPublica(250, 0, 1, new ArrayList<>());
 
-	 public static UsuarioDAOInterface getUsuarioDAO() {
-			return usuarioDAO;
-		}
+	public static UsuarioDAOInterface getUsuarioDAO() {
+		return usuarioDAO;
+	}
 
 	public static void setUsuarioDAO(UsuarioDAOInterface usuarioDAO) {
 		Main.usuarioDAO = usuarioDAO;
+	}
+	
+	public static ReservaSalaDAOInterface getReservaSalaDAO() {
+		return reservaSalaDAO;
+	}
+
+	public static void setReservaSalaDAO(ReservaSalaDAOInterface reservaSalaDAO) {
+		Main.reservaSalaDAO = reservaSalaDAO;
 	}
 
 	public static void setSalaPublica(SalaPublica salaPublica) {
