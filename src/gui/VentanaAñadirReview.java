@@ -21,6 +21,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
+import dbmejorada.UsuarioDAO;
+import dbmejorada.UsuarioDTO;
 import utils.Utils;
 
 public class VentanaAñadirReview extends JFrame {
@@ -90,7 +93,14 @@ public class VentanaAñadirReview extends JFrame {
 
 		publicarButton.addActionListener(e -> {
 			comment = comentarioTextArea.getText();
-			Review review = new Review(libro, cliente, comment, rating);
+			UsuarioDTO clienteDTO = new UsuarioDTO();
+			
+			clienteDTO.setAdmin(false);
+			clienteDTO.setAmonestaciones(cliente.getAmonestaciones());
+			clienteDTO.setDni(cliente.getDni());
+			clienteDTO.setNombre(cliente.getNombre());
+			
+			Review review = new Review(libro, clienteDTO, comment, rating);
 			libro.getReviews().add(review);
 			// TODO: Añadir función para añadir review a la BD.
 

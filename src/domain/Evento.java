@@ -1,8 +1,10 @@
 package domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
+
+import dbmejorada.SalaDTO;
 
 public class Evento {
 
@@ -10,9 +12,8 @@ public class Evento {
 	private String titulo;
 	private TipoEvento tipoEvento;
 	private ArrayList<Cliente> asistentes;
-	private SalaEventos sala;
-	private LocalDate fecha;
-	private int hora;
+	private SalaDTO sala;
+	private LocalDateTime fechaHora;
 
     public int getId() {
         return id;
@@ -46,39 +47,30 @@ public class Evento {
 		this.asistentes = asistentes;
 	}
 	
-	public SalaEventos getSala() {
+	public SalaDTO getSala() {
 		return sala;
 	}
 	
-	public void setSala(SalaEventos sala) {
+	public void setSala(SalaDTO sala) {
 		this.sala = sala;
 	}
 
-    public LocalDate getFecha() {
-        return fecha;
+    public LocalDateTime getFechaHora() {
+        return fechaHora;
     }
 
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
-    public int getHora() {
-        return hora;
-    }
-
-    public void setHora(int hora) {
-        this.hora = hora;
+    public void setFechaHora(LocalDateTime fechaHora) {
+        this.fechaHora = fechaHora;
     }
 	
-	public Evento(int id, String titulo, TipoEvento tipoEvento, ArrayList<Cliente> asistentes, SalaEventos sala, LocalDate fecha, int hora) {
+	public Evento(int id, String titulo, TipoEvento tipoEvento, ArrayList<Cliente> asistentes, SalaDTO sala, LocalDateTime fechaHora) {
 		super();
 		this.id = id;
 		this.titulo = titulo;
 		this.tipoEvento = tipoEvento;
 		this.asistentes = asistentes;
 		this.sala = sala;
-		this.fecha = fecha;
-		this.hora = hora;
+		this.fechaHora = fechaHora;
 	}
 	
 	public Evento() {
@@ -88,8 +80,7 @@ public class Evento {
 		this.tipoEvento = null;
 		this.asistentes = new ArrayList<>();
 		this.sala = null;
-		this.fecha = null;
-		this.hora = 0;
+		this.fechaHora = LocalDateTime.now();
 	}
 	
 	@Override
@@ -107,6 +98,6 @@ public class Evento {
 
 	@Override
 	public String toString() {
-		return "Evento [id=" + id + ", tipoEvento=" + tipoEvento + ", asistentes=" + asistentes + ", sala=" + sala + ", fecha=" + fecha + ", hora=" + hora + "]";
+		return "Evento [id=" + id + ", tipoEvento=" + tipoEvento + ", asistentes=" + asistentes + ", sala=" + sala + ", fecha=" + fechaHora + "]";
 	}
 }

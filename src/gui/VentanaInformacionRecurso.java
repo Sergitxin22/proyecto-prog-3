@@ -24,6 +24,8 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import dbmejorada.UsuarioDAO;
+import dbmejorada.UsuarioDTO;
 import domain.Admin;
 import domain.Cliente;
 import domain.Evento;
@@ -479,11 +481,8 @@ public class VentanaInformacionRecurso extends JFrame {
 		ImageIcon foto = Utils.loadImage("books/9780006514855" + ".jpg", 128, 200);
 		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, foto, new ArrayList<Review>());
 
-		libro.getReviews().add(new Review(libro, new Cliente("e", "Ane", "s", LocalDateTime.now(), "a", new ArrayList<>(), new ArrayList<>(), 2), "Buen libro", 3));
-		libro.getReviews().add(new Review(libro, new Cliente("e", "Ander", "s", LocalDateTime.now(), "a", new ArrayList<>(), new ArrayList<>(), 2), "Mal libro", 10));
 
-
-		Evento evento = new Evento(12, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), new SalaEventos(100, 2, 4, new ArrayList<Cliente>(), new Evento()), LocalDate.now(), 19);		
+		Evento evento = new Evento(12, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), new SalaEventos(100, 2, 4, new Evento()), LocalDate.now(), 19);		
 		
 		//new InformacionRecurso(sala, new Cliente());
 		new VentanaInformacionRecurso(evento);
