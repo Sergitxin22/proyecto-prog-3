@@ -1,50 +1,53 @@
 package dbmejorada;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.sqlite.SQLiteException;
-
-import domain.Admin;
-import domain.Cliente;
 import domain.Reserva;
-import domain.Usuario;
+import main.Main;
 
-public class ReservaSalaDAOBBDD implements ReservaSalaDAOInterface {
+public class ReservaSalaDAO implements ReservaSalaDAOInterface {
 
 	private Connection conexionBD;
-    private Logger logger = null;
+    private Logger logger;
 
-    public ReservaSalaDAOBBDD(String nombreBD) {
-    	nombreBD = "resources/db/" + nombreBD;
-        try {
-            Class.forName("org.sqlite.JDBC");
-            Connection con = DriverManager.getConnection("jdbc:sqlite:" + nombreBD + ".db");
-            logger = Logger.getLogger("GestorPersistencia-" + nombreBD);
-            conexionBD = con;
-        } catch (ClassNotFoundException | SQLException | NullPointerException e) {
-            conexionBD = null;
-            if (logger != null)
-                logger.log(Level.SEVERE, "Error en conexión de base de datos " + nombreBD + ".db", e);
-        }
-        
+    public ReservaSalaDAO() {
+       	conexionBD = Main.getConexionBD();
+      	logger = Main.getLogger();
         pruebas();
     }
 	
 	// nuevos
 	@Override
 	public boolean addReservaSala(Reserva reserva) {
-		// TODO Auto-generated method stub
-		return false;
+		String insertSQLReservaSalaPrivada = "INSERT INTO ReservaSala(fecha_entrada, fecha_salida, fecha_reserva, dni_cliente, id_sala) VALUES (?, ?, ?, ?, ?)";
+
+    	PreparedStatement preparedStmtReservaSalaPrivada;
+		try {
+			preparedStmtReservaSalaPrivada = conexionBD.prepareStatement(insertSQLReservaSalaPrivada);
+			preparedStmtReservaSalaPrivada.setString(1, reserva.getHoraEntrada().toString());
+	   		preparedStmtReservaSalaPrivada.setString(2, reserva.getHoraSalida().toString());
+	   		preparedStmtReservaSalaPrivada.setString(3, reserva.getFechaReserva().toString());
+	    	preparedStmtReservaSalaPrivada.setString(4, reserva.getClienteReserva().getDni());
+	    	preparedStmtReservaSalaPrivada.setInt(5, reserva.getSala().getId());
+	    		
+	    	preparedStmtReservaSalaPrivada.executeUpdate();
+		} catch (SQLException e) {
+			if (logger != null)
+                logger.log(Level.SEVERE, "Error al añadir la reserva: ", e);
+            return false;
+		}
+		
+		return true;
 	}
+    
 
 	@Override
 	public Reserva getReservaSalaById(int idSala) {

@@ -16,25 +16,16 @@ import org.sqlite.SQLiteException;
 import domain.Admin;
 import domain.Cliente;
 import domain.Usuario;
+import main.Main;
 
-public class UsuarioDAOBBDD implements UsuarioDAOInterface {
+public class UsuarioDAO implements UsuarioDAOInterface {
 
 	private Connection conexionBD;
     private Logger logger = null;
 
-    public UsuarioDAOBBDD(String nombreBD) {
-    	nombreBD = "resources/db/" + nombreBD;
-        try {
-            Class.forName("org.sqlite.JDBC");
-            Connection con = DriverManager.getConnection("jdbc:sqlite:" + nombreBD + ".db");
-            logger = Logger.getLogger("GestorPersistencia-" + nombreBD);
-            conexionBD = con;
-        } catch (ClassNotFoundException | SQLException | NullPointerException e) {
-            conexionBD = null;
-            if (logger != null)
-                logger.log(Level.SEVERE, "Error en conexión de base de datos " + nombreBD + ".db", e);
-        }
-        
+    public UsuarioDAO() {
+       	conexionBD = Main.getConexionBD();
+      	logger = Main.getLogger();
         pruebas();
     }
     
@@ -77,7 +68,7 @@ public class UsuarioDAOBBDD implements UsuarioDAOInterface {
 	}
 
 	@Override
-	public UsuarioDTO getUsuario(String dni, String password) {
+	public UsuarioDTO getUsuario(String dni, String password) { // Se usa para el inicio de sesiones
 		UsuarioDTO usuario = null;
 		
 		String insertSQL = "SELECT nombre FROM Usuario WHERE dni = ? AND contrasena = ?";
@@ -97,13 +88,44 @@ public class UsuarioDAOBBDD implements UsuarioDAOInterface {
                     usuario.setNombre(nombre);
                 }
                 System.out.println("Usuario recuperado correctamente");
+                return usuario;
             }
 	        	        
 		} catch (SQLException e) {
-			if (logger != null)
-                logger.log(Level.SEVERE, "Error al recuperar el usuario: ", e);
-            return usuario;
+			if (logger != null) {
+				logger.log(Level.SEVERE, "Error al recuperar el usuario: ", e);
+			}
+			return usuario;
 		}
+	}
+		
+		@Override
+		public UsuarioDTO getUsuario(String dni) { // Se usa para el inicio de sesiones
+			UsuarioDTO usuario = null;
+			
+			String insertSQL = "SELECT nombre FROM Usuario WHERE dni = ?";
+	        PreparedStatement preparedStmt;
+			try {
+				preparedStmt = conexionBD.prepareStatement(insertSQL);
+				preparedStmt.setString(1, dni);
+
+		        try (ResultSet rs = preparedStmt.executeQuery()) {
+	                
+	                while (rs.next()) {
+	                    String nombre = rs.getString("nombre");
+	                    
+	                    usuario = new UsuarioDTO();
+	                    usuario.setDni(dni);
+	                    usuario.setNombre(nombre);
+	                }
+	                System.out.println("Usuario recuperado correctamente");
+	            }
+		        	        
+			} catch (SQLException e) {
+				if (logger != null)
+	                logger.log(Level.SEVERE, "Error al recuperar el usuario: ", e);
+	            return usuario;
+			}
         
 		if (usuario != null) {
 			getDatosAdicionalesUsuario(usuario);
