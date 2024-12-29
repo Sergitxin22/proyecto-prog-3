@@ -150,7 +150,7 @@ public void setMainWindowProperties() {
  	   });
     }
 	public static void main(String[] args) {	
-		Evento evento = new Evento(12, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), new SalaEventos(100, 2, 4, new ArrayList<Cliente>(), new Evento()), LocalDate.now(), 19);
+		Evento evento = new Evento(12, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), new SalaEventos(100, 2, 4, new Evento()), LocalDate.now(), 19);
 		
 		new VentanaConfirmacionReservaEvento(evento);
 

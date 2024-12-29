@@ -20,6 +20,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.ImageIcon;
+
+import dbmejorada.UsuarioDTO;
 import utils.Utils;
 
 public class InputUtils {
@@ -92,7 +94,7 @@ public class InputUtils {
 				
 					
 				if (fields[3].equals("PUBLICA")) {
-					sala = new SalaPublica(capacidad, id, piso, new ArrayList<>());
+					sala = new SalaPublica(capacidad, id, piso);
 				} 
 
 				if (fields[3].equals("PRIVADA")) {
@@ -115,11 +117,11 @@ public class InputUtils {
 						}
 					}
 
-					sala = new SalaPrivada(capacidad, id, piso, new ArrayList<>(), recursos);
+					sala = new SalaPrivada(capacidad, id, piso, recursos, new ArrayList<>());
 				}
 
 				if (fields[3].equals("EVENTOS")) {
-					sala = new SalaEventos(capacidad, id, piso, new ArrayList<>(), new Evento());
+					sala = new SalaEventos(capacidad, id, piso, new Evento());
 				}
 				
 				result.add(sala);
@@ -215,7 +217,14 @@ public class InputUtils {
                         
                         if (usuario != null && usuario instanceof Cliente) {
                            
-                            Review review = new Review(libro, (Cliente) usuario, comentario, rating);
+                        	UsuarioDTO usuarioDTO = new UsuarioDTO();
+                        	
+                        	usuarioDTO.setAdmin(false);
+                        	usuarioDTO.setAmonestaciones(((Cliente) usuario).getAmonestaciones());
+                        	usuarioDTO.setDni(((Cliente) usuario).getDni());
+                        	usuarioDTO.setNombre(((Cliente) usuario).getNombre());
+                        	
+                            Review review = new Review(libro, usuarioDTO, comentario, rating);
                             
                             // Añadir la review al libro
                             libro.agregarReview(review);

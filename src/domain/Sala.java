@@ -1,21 +1,18 @@
 package domain;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public abstract class Sala implements Reservable {
 	private int capacidad;
 	private int id;
 	private int piso;
-	private ArrayList<Cliente> listaClientes;
 	
 	
-	public Sala(int capacidad, int id, int piso, ArrayList<Cliente> listaClientes) {
+	public Sala(int capacidad, int id, int piso) {
 		super();
 		this.capacidad = capacidad;
 		this.id = id;
 		this.piso = piso;
-		this.listaClientes = listaClientes;
 	}
 	
 	public Sala() {
@@ -23,7 +20,6 @@ public abstract class Sala implements Reservable {
 		this.capacidad = 0;
 		this.id = 0;
 		this.piso = 0;
-		this.listaClientes = new ArrayList<Cliente>();
 	}
 
 	public int getCapacidad() {
@@ -50,14 +46,6 @@ public abstract class Sala implements Reservable {
 		this.piso = piso;
 	}
 
-	public ArrayList<Cliente> getListaClientes() {
-		return listaClientes;
-	}
-
-	public void setListaClientes(ArrayList<Cliente> listaClientes) {
-		this.listaClientes = listaClientes;
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -77,8 +65,7 @@ public abstract class Sala implements Reservable {
 
 	@Override
 	public String toString() {
-		return "Sala [capacidad=" + capacidad + ", ID=" + id + ", piso=" + piso + ", listaClientes=" + listaClientes
-				+ "]";
+		return "Sala [capacidad=" + capacidad + ", ID=" + id + ", piso=" + piso + "]";
 	}
 	
 	

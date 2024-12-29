@@ -2,10 +2,12 @@ package domain;
 
 import java.util.Objects;
 
+import dbmejorada.UsuarioDTO;
+
 public class Review {
 
 	private Libro libro;
-	private Cliente cliente;
+	private UsuarioDTO cliente;
 	private String comentario;
 	private int rating;
 	
@@ -15,10 +17,10 @@ public class Review {
 	public void setLibro(Libro libro) {
 		this.libro = libro;
 	}
-	public Cliente getCliente() {
+	public UsuarioDTO getCliente() {
 		return cliente;
 	}
-	public void setCliente(Cliente cliente) {
+	public void setCliente(UsuarioDTO cliente) {
 		this.cliente = cliente;
 	}
 	public String getComentario() {
@@ -34,7 +36,7 @@ public class Review {
 		this.rating = rating;
 	}
 	
-	public Review(Libro libro, Cliente cliente, String comentario, int rating) {
+	public Review(Libro libro, UsuarioDTO cliente, String comentario, int rating) {
 		super();
 		this.libro = libro;
 		this.cliente = cliente;
@@ -45,7 +47,7 @@ public class Review {
 	public Review() {
 		super();
 		this.libro = new Libro();
-		this.cliente = new Cliente();
+		this.cliente = new UsuarioDTO();
 		this.comentario = "";
 		this.rating = 0;
 	}
