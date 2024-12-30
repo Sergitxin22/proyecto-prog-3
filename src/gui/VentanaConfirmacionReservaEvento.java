@@ -4,50 +4,37 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Image;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import BiblioTech.Cliente;
-import BiblioTech.Evento;
-//import BiblioTech.Genero;
-import BiblioTech.Libro;
-//import BiblioTech.LibroLectura;
-//import BiblioTech.LibroLectura;
-import BiblioTech.Sala;
-import BiblioTech.SalaEventos;
-import BiblioTech.SalaPrivada;
-import BiblioTech.Seccion;
-//import BiblioTech.SalaPrivada;
-import BiblioTech.TipoEvento;
-import BiblioTech.Usuario;
+import domain.Cliente;
+import domain.Evento;
+import domain.SalaEventos;
+import domain.Seccion;
+import domain.TipoEvento;
+import domain.Usuario;
+import gui.components.Header;
+import main.Main;
+
 import java.time.LocalDate;
-import utils.Utils;
 //import utils.Utils;
 
 public class VentanaConfirmacionReservaEvento extends JFrame{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1647556562163809896L;
 	private JPanel pOeste, pEste, pCentro, pSur, pHeader;
+	private Usuario usuario = Main.getUsuario();
 	
 public void setMainWindowProperties() {
 		
@@ -80,10 +67,10 @@ public void setMainWindowProperties() {
 		
 	}
 	
-	public VentanaConfirmacionReservaEvento (Evento evento, Usuario usuario) {
+	public VentanaConfirmacionReservaEvento(Evento evento) {
 		
 		setMainWindowProperties();
-    	setTitle("BiblioTech - Confirmar reserva");
+    	setTitle("Confirmar reserva del " + evento.getTitulo());
 	    
 	    JPanel panelPrincipal = new JPanel();
 	    panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
@@ -131,11 +118,12 @@ public void setMainWindowProperties() {
         
         pOeste.setBorder(new EmptyBorder(0, 0, 10, 0));
 	    pOeste.add(panelPrincipal);
-	    BotonConfirmarReservar(usuario, evento);
+	    BotonConfirmarReservar(evento);
     
 		setVisible (true);
 	}
-	private void BotonConfirmarReservar(Usuario usuario, Evento evento) {
+	
+	private void BotonConfirmarReservar(Evento evento) {
     	
  	    pEste.setLayout(new BorderLayout());
  	    
@@ -157,16 +145,14 @@ public void setMainWindowProperties() {
 	        dispose();
 	        // Abrir Venatana de ConfirmacionReserva
 	        
-            new ReservaConfirmada(evento, usuario);
+            new VentanaReservaConfirmada(evento);
 		}   
  	   });
     }
 	public static void main(String[] args) {	
-		Evento evento = new Evento(12, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), new SalaEventos(100, 2, 4, new ArrayList<Cliente>(), new Evento()), LocalDate.now(), 19);
+		Evento evento = new Evento(12, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), new SalaEventos(100, 2, 4, new Evento()), LocalDate.now(), 19);
 		
-		new VentanaConfirmacionReservaEvento(evento, new Usuario() {
-			
-		});
+		new VentanaConfirmacionReservaEvento(evento);
 
 		
 	}

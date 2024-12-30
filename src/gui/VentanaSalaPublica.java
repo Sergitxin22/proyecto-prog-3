@@ -1,9 +1,12 @@
 package gui;
 
-import BiblioTech.Cliente;
-import BiblioTech.SalaPublica;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
+import domain.Admin;
+import domain.Cliente;
+import domain.SalaPublica;
+import domain.Seccion;
+import domain.Usuario;
+import gui.components.Header;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -22,7 +25,10 @@ import utils.Utils;
 
 public class VentanaSalaPublica extends JFrame {
 
-    public VentanaSalaPublica(Usuario usuario)  { 
+	private static final long serialVersionUID = 1L;
+	private Usuario usuario = Main.getUsuario();
+
+	public VentanaSalaPublica()  { 
 
         SalaPublica salaPublica = Main.getSalaPublica();
         
@@ -65,18 +71,20 @@ public class VentanaSalaPublica extends JFrame {
             JOptionPane.showMessageDialog(this, "- Se recuerda a las personas usuarias que no está permitido comer dentro de ninguna sala de estudio.\n- Se ruega reducir al máximo el volumen de las actividades realizadas en la sala.\n- La asignación de bloque es obligatoria para evitar malentendidos y sobrecarga.\n- A la hora de abandonar la sala, asegúrese de desasignar su bloque para que pueda ser utilizado por otra persona.\n- Procurar dejar los bloques en el mismo estado en los que se han encontrado.", "Más información y normas", JOptionPane.INFORMATION_MESSAGE);
 
         });
-
-        boolean clienteEnSala = clienteEnSalaPublica((Cliente) usuario);
+        boolean clienteEnSala = clienteEnSalaPublica(usuario);
         JButton asignarBloqueButton = new JButton();
 
+            
+    
         if (usuario == null) {
             asignarBloqueButton.setEnabled(false);
         }
         if (clienteEnSala) {
-            asignarBloqueButton.setText("Desasignar bloque");
+             asignarBloqueButton.setText("Desasignar bloque");
         } else {
-            asignarBloqueButton.setText("Asignar bloque");
+              asignarBloqueButton.setText("Asignar bloque");
         }
+      
 
         asignarBloqueButton.addActionListener(e -> {
 
@@ -100,6 +108,11 @@ public class VentanaSalaPublica extends JFrame {
             }
         });
 
+        if (usuario instanceof Admin) {
+            masInformacionButton.setEnabled(false);
+            asignarBloqueButton.setEnabled(false);
+        }
+        
         buttonPanel.add(masInformacionButton);
         buttonPanel.add(asignarBloqueButton);
 
@@ -120,17 +133,17 @@ public class VentanaSalaPublica extends JFrame {
 	    setVisible(true);
     }
 
-    public static boolean clienteEnSalaPublica(Cliente cliente) {
+    public static boolean clienteEnSalaPublica(Usuario usuario) {
 
         SalaPublica sala = Main.getSalaPublica();
 
-        if (cliente == null) {
+        if (usuario == null) {
             return false;
         }
 
         for (Integer i: sala.getClientesPorBloque().keySet()) {
             if (sala.getClientesPorBloque().get(i) != null) {
-                if (sala.getClientesPorBloque().get(i).equals(cliente)) {
+                if (sala.getClientesPorBloque().get(i).equals(usuario)) {
                     return true;
                 }
             }   
@@ -139,7 +152,7 @@ public class VentanaSalaPublica extends JFrame {
     }
 
     public static void main(String[] args) {
-        new VentanaSalaPublica((Usuario) new Cliente("8483483", "Juah", "a", LocalDateTime.now(), "a", new ArrayList<>(), new ArrayList<>(), 2));
+        new VentanaSalaPublica();
     }
     
 }

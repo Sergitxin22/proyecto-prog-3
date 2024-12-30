@@ -2,10 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -26,31 +23,29 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import BiblioTech.Admin;
-import BiblioTech.Libro;
-import BiblioTech.MetodosDeOrdenamiento;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
+import domain.Admin;
+import domain.Libro;
+import domain.MetodosDeOrdenamiento;
+import domain.Seccion;
+import domain.Usuario;
+import gui.components.AddPanel;
+import gui.components.Header;
 import io.InputUtils;
-import utils.Utils;
+import main.Main;
 
 public class VentanaBiblioteca extends JFrame {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private final ArrayList<Libro> listaLibros = InputUtils.cargarLibros();
-	private Usuario usuario;
 	private ArrayList<Libro> listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
+	private Usuario usuario = Main.getUsuario();
 	
-	public VentanaBiblioteca(Usuario user) {
+	public VentanaBiblioteca() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.usuario = user;
 		if (usuario == null) {
-			setTitle("Bibliotech - No logueado");			
+			setTitle("Biblioteca - No logueado");			
 		} else {			
-			setTitle("Bibliotech - logueado" + usuario.getClass().toString());
+			setTitle("Biblioteca - logueado" + usuario.getClass().toString());
 		}
 		
 		setSize(1280,720);
@@ -91,7 +86,7 @@ public class VentanaBiblioteca extends JFrame {
 		
 		// Añadir libro
 		if (usuario instanceof Admin) {
-			JPanel panelAddLibro = createPanelAddLibro();
+			JPanel panelAddLibro = new AddPanel(Seccion.BIBLIOTECA, usuario);
 	        subPanelContenido1.add(panelAddLibro, BorderLayout.WEST);
 		}		
 		
@@ -175,31 +170,6 @@ public class VentanaBiblioteca extends JFrame {
 		return panelCentrarLibro;
 	}
 
-	private JPanel createPanelAddLibro() {
-		JPanel panelAddLibro = new JPanel(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(0, -5, 0, 5); // Margen entre componentes (icono y texto)
-	    gbc.anchor = GridBagConstraints.CENTER; // Centrar verticalmente y horizontalmente
-	    
-		ImageIcon iconoAddLibro = Utils.loadImage("add.png",36,36);
-	    JLabel iconLabel = new JLabel(iconoAddLibro);
-	     
-	    JLabel textLabel = new JLabel("Añadir libro");
-     
-	    // Añadir mouse listener para el panel
-	    panelAddLibro.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-        	System.out.println("Panel clickeado");
-        	// Aquí puedes agregar la lógica que necesites
-        	}
-	    });
-	    
-	    panelAddLibro.add(iconLabel, gbc);
-	    gbc.gridx = 1; // Segunda columna
-	    panelAddLibro.add(textLabel, gbc);
-	    return panelAddLibro;
-	}
 	private void recargarPanelContenido(JPanel subPanelContenido2) {
 	    subPanelContenido2.removeAll(); // Eliminar todos los componentes actuales.
 
@@ -219,7 +189,7 @@ public class VentanaBiblioteca extends JFrame {
 	private void abrirVentanaInformacionLibro(Libro libro) {
 		// TODO descomentar cuando se actualice el constructor de la ventana InformacionRecurso
 		//InformacionRecurso ventanaInformacionLibro = new InformacionRecurso(libro, this);
-		InformacionRecurso ventanaInformacionLibro = new InformacionRecurso(libro, usuario);
+		VentanaInformacionRecurso ventanaInformacionLibro = new VentanaInformacionRecurso(libro);
 		ventanaInformacionLibro.setVisible(true);
 		this.setVisible(false);
 	}
@@ -243,9 +213,7 @@ public class VentanaBiblioteca extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		new VentanaBiblioteca(null);
-//		VentanaBiblioteca ventana2 = new VentanaBiblioteca(new Cliente());
-//		VentanaBiblioteca ventana3 = new VentanaBiblioteca(new Admin());
+		new VentanaBiblioteca();
 	}
 
 }

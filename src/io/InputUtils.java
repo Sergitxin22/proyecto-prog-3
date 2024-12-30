@@ -1,5 +1,17 @@
 package io;
 
+import domain.Cliente;
+import domain.Evento;
+import domain.Libro;
+import domain.Recurso;
+import domain.Review;
+import domain.Sala;
+import domain.SalaEventos;
+import domain.SalaPrivada;
+import domain.SalaPublica;
+import domain.TipoEvento;
+import domain.Usuario;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
@@ -7,20 +19,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import javax.swing.ImageIcon;
 
-import BiblioTech.Cliente;
-import BiblioTech.Evento;
-import BiblioTech.Libro;
-import BiblioTech.Recurso;
-import BiblioTech.Review;
-import BiblioTech.Sala;
-import BiblioTech.SalaEventos;
-import BiblioTech.SalaPrivada;
-import BiblioTech.SalaPublica;
-import BiblioTech.TipoEvento;
-import BiblioTech.Usuario;
+import dbmejorada.UsuarioDTO;
 import utils.Utils;
 
 public class InputUtils {
@@ -43,7 +44,7 @@ public class InputUtils {
 	                String genero = datos[5];
 	                String sinopsis = datos[7];
 	                int fecha_publicacion = Integer.parseInt(datos[8]);
-	                int rating = Integer.parseInt(datos[9]);
+	                int rating = (Integer.parseInt(datos[9]) * 2) / 100;
 	                int numeroDePaginas = Integer.parseInt(datos[10]);
 
 	                ImageIcon foto = Utils.loadImage("books/" + isbn + ".jpg", 98, 151);
@@ -93,7 +94,7 @@ public class InputUtils {
 				
 					
 				if (fields[3].equals("PUBLICA")) {
-					sala = new SalaPublica(capacidad, id, piso, new ArrayList<>());
+					sala = new SalaPublica(capacidad, id, piso);
 				} 
 
 				if (fields[3].equals("PRIVADA")) {
@@ -116,11 +117,11 @@ public class InputUtils {
 						}
 					}
 
-					sala = new SalaPrivada(capacidad, id, piso, new ArrayList<>(), recursos);
+					sala = new SalaPrivada(capacidad, id, piso, recursos, new ArrayList<>());
 				}
 
 				if (fields[3].equals("EVENTOS")) {
-					sala = new SalaEventos(capacidad, id, piso, new ArrayList<>(), new Evento());
+					sala = new SalaEventos(capacidad, id, piso, new Evento());
 				}
 				
 				result.add(sala);
@@ -216,7 +217,14 @@ public class InputUtils {
                         
                         if (usuario != null && usuario instanceof Cliente) {
                            
-                            Review review = new Review(libro, (Cliente) usuario, comentario, rating);
+                        	UsuarioDTO usuarioDTO = new UsuarioDTO();
+                        	
+                        	usuarioDTO.setAdmin(false);
+                        	usuarioDTO.setAmonestaciones(((Cliente) usuario).getAmonestaciones());
+                        	usuarioDTO.setDni(((Cliente) usuario).getDni());
+                        	usuarioDTO.setNombre(((Cliente) usuario).getNombre());
+                        	
+                            Review review = new Review(libro, usuarioDTO, comentario, rating);
                             
                             // Añadir la review al libro
                             libro.agregarReview(review);

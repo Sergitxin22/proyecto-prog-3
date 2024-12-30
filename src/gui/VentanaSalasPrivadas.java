@@ -1,11 +1,15 @@
 package gui;
 
-import BiblioTech.Admin;
-import BiblioTech.Sala;
-import BiblioTech.SalaPrivada;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
+import domain.Admin;
+import domain.Sala;
+import domain.SalaPrivada;
+import domain.Seccion;
+import domain.Usuario;
+import gui.components.AddPanel;
+import gui.components.Header;
 import io.InputUtils;
+import main.Main;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -18,7 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import utils.AddPanel;
 
 
 // BASADO EN EL CÓDIGO DE VentanaBiblioteca
@@ -26,14 +29,12 @@ import utils.AddPanel;
 
 public class VentanaSalasPrivadas extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	private Usuario usuario = Main.getUsuario();
 
 	private List<SalaPrivada> salas;
 
-	public VentanaSalasPrivadas(Usuario usuario) {
+	public VentanaSalasPrivadas() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
@@ -50,9 +51,9 @@ public class VentanaSalasPrivadas extends JFrame {
 		salas = salasPrivadas;
 		
 		if (usuario == null) {
-			setTitle("Bibliotech - No logueado");			
+			setTitle("Salas Privadas - No logueado");			
 		} else {			
-			setTitle("Bibliotech - logueado" + usuario.getClass().toString());
+			setTitle("Salas Privadas - logueado" + usuario.getClass().toString());
 		}
 		
 		// Header
@@ -66,7 +67,7 @@ public class VentanaSalasPrivadas extends JFrame {
 	
 		// Añadir sala (solo para Admins)
 		if (usuario instanceof Admin) {
-			JPanel panelAddLibro = new AddPanel(Seccion.SALAS_DE_ESTUDIO);
+			JPanel panelAddLibro = new AddPanel(Seccion.SALAS_DE_ESTUDIO, usuario);
 	        subPanelContenido1.add(panelAddLibro, BorderLayout.WEST);
 		}		
 		
@@ -89,7 +90,7 @@ public class VentanaSalasPrivadas extends JFrame {
 			JButton jButton = new JButton();
 			final int j = i;
 			jButton.addActionListener(e -> {
-				new InformacionRecurso(salas.get(j), usuario);
+				new VentanaInformacionRecurso(salas.get(j));
 				dispose();
 			});
 
@@ -108,6 +109,6 @@ public class VentanaSalasPrivadas extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		new VentanaSalasPrivadas(new Admin());
+		new VentanaSalasPrivadas();
 	}
 }

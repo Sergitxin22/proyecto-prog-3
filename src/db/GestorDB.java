@@ -7,23 +7,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.PropertyPermission;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import BiblioTech.Cliente;
-import BiblioTech.Libro;
-import BiblioTech.Reserva;
-import BiblioTech.Review;
-import BiblioTech.Sala;
-import BiblioTech.SalaPrivada;
-import BiblioTech.SalaPublica;
-import BiblioTech.Usuario;
+import domain.Cliente;
+import domain.Libro;
+import domain.Reserva;
+import domain.Review;
+import domain.Sala;
+import domain.SalaPrivada;
+import domain.SalaPublica;
+import domain.Usuario;
 
 public class GestorDB {
 
     private Connection conexionBD = null;
-    private Statement sentenciaBD = null;
     private Logger logger = null;
 
     public Connection init(String nombreBD) {
@@ -261,7 +259,7 @@ public class GestorDB {
            	preparedStmt.setString(1, reservaSala.getHoraEntrada().toString());
            	preparedStmt.setString(2, reservaSala.getHoraSalida().toString());
            	preparedStmt.setString(3, reservaSala.getFechaReserva().toString());
-           	preparedStmt.setString(4, reservaSala.getClientesReserva().get(0).getDni()); //TODO iterar los clientes
+           	preparedStmt.setString(4, reservaSala.getClienteReserva().getDni()); //TODO iterar los clientes
            	preparedStmt.setInt(5, reservaSala.getSala().getId());
 
             int filas = preparedStmt.executeUpdate();

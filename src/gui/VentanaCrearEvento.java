@@ -1,8 +1,11 @@
 package gui;
 
-import BiblioTech.Admin;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
+import domain.Admin;
+import domain.Seccion;
+import domain.Usuario;
+import gui.components.Header;
+import main.Main;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -18,14 +21,13 @@ import javax.swing.JTextField;
 
 public class VentanaCrearEvento extends JFrame{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3996159568028430335L;
-	public VentanaCrearEvento(Usuario usuario) {
+	private Admin usuario = (Admin) Main.getUsuario();
+	
+	public VentanaCrearEvento() {
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setTitle("Bibliotech - Crear evento");
+		setTitle("Crear evento");
 		setSize(1280,720);
 		setLocationRelativeTo(null);
 		
@@ -93,6 +95,6 @@ public class VentanaCrearEvento extends JFrame{
 		}
 	}
 	public static void main(String[] args) {
-		VentanaCrearEvento ventana = new VentanaCrearEvento(new Admin());
+		new VentanaCrearEvento();
 	}
 }

@@ -14,19 +14,20 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import BiblioTech.Admin;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
+import domain.Admin;
+import domain.Seccion;
+import domain.Usuario;
+import gui.components.Header;
+import main.Main;
 
 public class VentanaCrearSalaPrivada extends JFrame{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2023022345495844787L;
-	public VentanaCrearSalaPrivada(Usuario usuario) {
+	private Usuario usuario = Main.getUsuario();
+	
+	public VentanaCrearSalaPrivada() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setTitle("Bibliotech - Crear sala privada");
+		setTitle("Crear sala privada");
 		setSize(1280,720);
 		setLocationRelativeTo(null);
 		
@@ -96,7 +97,7 @@ public class VentanaCrearSalaPrivada extends JFrame{
 		setVisible(true);
 	}
 	public static void main(String[] args) {
-	VentanaCrearSalaPrivada ventana = new VentanaCrearSalaPrivada(new Admin());
+	new VentanaCrearSalaPrivada();
 	
 }
 }
