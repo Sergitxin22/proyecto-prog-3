@@ -50,13 +50,13 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
     
 
 	@Override
-	public Reserva getReservaSalaById(int idSala) {
-		// TODO Auto-generated method stub
-		return null;
+	public ReservaSalaDTO getReservaSalaById(int idReservaSala) {
+		ReservaSalaDTO reservaSala = null;
+		
 	}
 
 	@Override
-	public Reserva getReservaSalaByUsuarioDTO(UsuarioDTO usuario) {
+	public ReservaSalaDTO getReservaSalaByUsuarioDTO(UsuarioDTO usuario) {
 		// TODO Auto-generated method stub
 		return null;
 	}

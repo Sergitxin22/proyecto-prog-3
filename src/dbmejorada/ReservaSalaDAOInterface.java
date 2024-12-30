@@ -6,8 +6,8 @@ import domain.Reserva;
 
 public interface ReservaSalaDAOInterface {
 	boolean addReservaSala(Reserva reserva);
-	Reserva getReservaSalaById(int idSala);
-	Reserva getReservaSalaByUsuarioDTO(UsuarioDTO usuario);
+	ReservaSalaDTO getReservaSalaById(int idReservaSala);
+	ReservaSalaDTO getReservaSalaByUsuarioDTO(UsuarioDTO usuario);
 	boolean deleteReservaSalaById(int idSala);
 	boolean isSalaReservable(Reserva reserva);
 	boolean updateReservaSala(Reserva reserva);
