@@ -5,7 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,6 +54,35 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
 	public ReservaSalaDTO getReservaSalaById(int idReservaSala) {
 		ReservaSalaDTO reservaSala = null;
 		
+		String insertSQL = "SELECT * FROM ReservaSala WHERE id=?;";
+        PreparedStatement preparedStmt;
+		try {
+			preparedStmt = conexionBD.prepareStatement(insertSQL);
+			preparedStmt.setInt(1, idReservaSala);
+			
+	        try (ResultSet rs = preparedStmt.executeQuery()) {
+                
+                while (rs.next()) {
+                	//int id, LocalDateTime horaEntrada, LocalDateTime horaSalida, LocalDate fechaReserva,String dniCliente, int idSala
+                   int id = rs.getInt("id");
+                   String horaEntrada = rs.getString("fecha_entrada");
+                   String horaSalida = rs.getString("fecha_salida");
+                   String fechaReserva = rs.getString("fecha_reserva");
+                   String dniCliente = rs.getString("dni_cliente");
+                   int idSala = rs.getInt("id_sala");
+                   
+                   reservaSala = new ReservaSalaDTO(id, LocalDateTime.parse(horaEntrada), LocalDateTime.parse(horaSalida), LocalDate.parse(fechaReserva), dniCliente, idSala);
+                }
+                System.out.println("Reserva sala sin fallos");
+                return reservaSala;
+            }
+	        	        
+		} catch (SQLException e) {
+			if (logger != null) {
+				logger.log(Level.SEVERE, "Error al recuperar la reserva sala: ", e);
+			}
+			return reservaSala;
+		}
 	}
 
 	@Override
@@ -161,7 +191,10 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
 //        uDTO = getUsuario("00000000A", "contraseña cambiada");
 //        System.out.println(uDTO);
 	
-		ArrayList<Integer> salas = getIdSalasDisponiblesEntreFechas("2024-12-05T21:48:00.492987900", "2024-12-08T21:48:00.492987900");
-		System.out.println(salas);
+//		ArrayList<Integer> salas = getIdSalasDisponiblesEntreFechas("2024-12-05T21:48:00.492987900", "2024-12-08T21:48:00.492987900");
+//		System.out.println(salas);
+		
+		ReservaSalaDTO reserva = getReservaSalaById(1);
+		System.out.println(reserva);
 	}
 }
