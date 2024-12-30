@@ -86,9 +86,41 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
 	}
 
 	@Override
-	public ReservaSalaDTO getReservaSalaByUsuarioDTO(UsuarioDTO usuario) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<ReservaSalaDTO> getReservasSalaByUsuarioDTO(UsuarioDTO usuario) {
+		//SELECT * FROM ReservaSala where dni_cliente = '00000000A';
+		ArrayList<ReservaSalaDTO> reservasSala = new ArrayList<ReservaSalaDTO>();
+		
+		String insertSQL = "SELECT * FROM ReservaSala WHERE dni_cliente=?;";
+        PreparedStatement preparedStmt;
+		try {
+			preparedStmt = conexionBD.prepareStatement(insertSQL);
+			preparedStmt.setString(1, usuario.getDni());
+			
+	        try (ResultSet rs = preparedStmt.executeQuery()) {
+                
+                while (rs.next()) {
+                	ReservaSalaDTO reserva = null;
+                	//int id, LocalDateTime horaEntrada, LocalDateTime horaSalida, LocalDate fechaReserva,String dniCliente, int idSala
+                   int id = rs.getInt("id");
+                   String horaEntrada = rs.getString("fecha_entrada");
+                   String horaSalida = rs.getString("fecha_salida");
+                   String fechaReserva = rs.getString("fecha_reserva");
+                   String dniCliente = rs.getString("dni_cliente");
+                   int idSala = rs.getInt("id_sala");
+                   
+                   reserva = new ReservaSalaDTO(id, LocalDateTime.parse(horaEntrada), LocalDateTime.parse(horaSalida), LocalDate.parse(fechaReserva), dniCliente, idSala);
+                   reservasSala.add(reserva);
+                }
+                System.out.println("Reserva sala sin fallos");
+                return reservasSala;
+            }
+	        	        
+		} catch (SQLException e) {
+			if (logger != null) {
+				logger.log(Level.SEVERE, "Error al recuperar la reserva sala: ", e);
+			}
+			return reservasSala;
+		}
 	}
 
 	@Override
@@ -194,7 +226,16 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
 //		ArrayList<Integer> salas = getIdSalasDisponiblesEntreFechas("2024-12-05T21:48:00.492987900", "2024-12-08T21:48:00.492987900");
 //		System.out.println(salas);
 		
-		ReservaSalaDTO reserva = getReservaSalaById(1);
-		System.out.println(reserva);
+//		ReservaSalaDTO reserva = getReservaSalaById(1);
+//		System.out.println(reserva);
+		
+		UsuarioDTO usuario = new UsuarioDTO();
+		usuario.setDni("00000000A");
+		ArrayList<ReservaSalaDTO> reservaUsuario = getReservasSalaByUsuarioDTO(usuario);
+		System.out.println(reservaUsuario);
+		
+		usuario.setDni("00000001A");
+		ArrayList<ReservaSalaDTO> reservaUsuario1 = getReservasSalaByUsuarioDTO(usuario);
+		System.out.println(reservaUsuario1);
 	}
 }
