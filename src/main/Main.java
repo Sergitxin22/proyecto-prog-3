@@ -1,6 +1,8 @@
 package main;
 
 import db.GestorDB;
+import dbmejorada.LibroDAO;
+import dbmejorada.LibroDAOInterface;
 import dbmejorada.ReservaSalaDAO;
 import dbmejorada.ReservaSalaDAOInterface;
 import dbmejorada.ReviewDAO;
@@ -35,12 +37,14 @@ public class Main {
 	private static SalaPublica salaPublica;
 	private static Connection conexionBD;
 	private static Logger logger;
+	private static Libro libro;
 	
 	//	Declaración de los DAO
 	private static UsuarioDAOInterface usuarioDAO;
 	private static SalaDAOInterface salaDAO;
 	private static ReservaSalaDAOInterface reservaSalaDAO;
 	private static ReviewDAOInterface reviewDAO;
+	private static LibroDAOInterface libroDAO;
 
 	public static UsuarioDAOInterface getUsuarioDAO() {
 		return usuarioDAO;
@@ -90,6 +94,15 @@ public class Main {
 		Main.usuario = usuario;
 	}
 	
+	public static LibroDAOInterface getLibroDAO() {
+		return libroDAO;
+	}
+	
+	public static void setLibroDAO(LibroDAOInterface libroDAO) {
+		Main.libroDAO = libroDAO;
+	}
+		
+
 	public static Connection getConexionBD() {
 		return conexionBD;
 	}
@@ -130,6 +143,7 @@ public class Main {
         salaDAO = new SalaDAO();
         reservaSalaDAO = new ReservaSalaDAO();
         reviewDAO = new ReviewDAO();
+        libroDAO = new LibroDAO();
         
         SalaPrivada sala = new SalaPrivada(5, 12, 2, null, null);
         
