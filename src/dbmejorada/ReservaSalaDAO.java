@@ -136,9 +136,26 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
 	}
 
 	@Override
-	public boolean updateReservaSala(Reserva reserva) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateReservaSala(ReservaSalaDTO reserva) {
+		try {
+            String insertSQL = "UPDATE ReservaSala SET fecha_entrada=?,fecha_salida=?,fecha_reserva=?,dni_cliente=?,id_sala=? WHERE id=?;";
+            PreparedStatement preparedStmt = conexionBD.prepareStatement(insertSQL);
+            preparedStmt.setString(1,reserva.getHoraEntrada().toString());
+            preparedStmt.setString(2,reserva.getHoraSalida().toString());
+            preparedStmt.setString(3,reserva.getFechaReserva().toString());
+            preparedStmt.setString(4,reserva.getDniCliente());
+            preparedStmt.setInt(5,reserva.getIdSala());
+            preparedStmt.setInt(6,reserva.getId());
+            
+            int filas = preparedStmt.executeUpdate();
+            System.out.println("Filas modificadas: " + filas);
+
+            return (filas > 0) ? true : false;
+        } catch (SQLException e) {
+            if (logger != null)
+                logger.log(Level.SEVERE, "Error al actualizar la reserva de la sala: ", e);
+            return false;
+        }
 	}
 
 	@Override
