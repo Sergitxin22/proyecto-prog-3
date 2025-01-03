@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import dbmejorada.ReservaSalaDTO;
+import dbmejorada.UsuarioDTO;
+import main.Main;
+
 public class Reserva {
 
 	private Sala sala;
@@ -12,6 +16,38 @@ public class Reserva {
 	private LocalDateTime horaSalida;
 	private Cliente cliente;
 	
+	public Reserva(Sala sala, LocalDate fechaReserva, LocalDateTime horaEntrada, LocalDateTime horaSalida,
+			Cliente cliente) {
+		super();
+		this.sala = sala;
+		this.fechaReserva = fechaReserva;
+		this.horaEntrada = horaEntrada;
+		this.horaSalida = horaSalida;
+		this.cliente = cliente;
+	}
+
+	public Reserva() {
+		super();
+		this.sala = null;
+		this.fechaReserva = LocalDate.now();
+		this.horaEntrada = null;
+		this.horaSalida = null;
+		this.cliente = new Cliente();
+	}
+
+	
+	public Reserva(ReservaSalaDTO reserva) {
+		super();
+		this.sala = Main.getSalaDAO().getSala(reserva.getIdSala());
+		this.fechaReserva = reserva.getFechaReserva();
+		this.horaEntrada = reserva.getHoraEntrada();
+		this.horaSalida = reserva.getHoraSalida();
+		UsuarioDTO usuarioDTO = Main.getUsuarioDAO().getUsuario(reserva.getDniCliente());
+		if (!usuarioDTO.isAdmin()) {
+			this.cliente = new Cliente(usuarioDTO);
+		}
+	}
+
 	public Sala getSala() {
 		return sala;
 	}
@@ -51,30 +87,12 @@ public class Reserva {
 	public void setClienteReserva(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	
-	public Reserva(Sala sala, LocalDate fechaReserva, LocalDateTime horaEntrada, LocalDateTime horaSalida,
-			Cliente cliente) {
-		super();
-		this.sala = sala;
-		this.fechaReserva = fechaReserva;
-		this.horaEntrada = horaEntrada;
-		this.horaSalida = horaSalida;
-		this.cliente = cliente;
-	}
-
-	public Reserva() {
-		super();
-		this.sala = null;
-		this.fechaReserva = LocalDate.now();
-		this.horaEntrada = null;
-		this.horaSalida = null;
-		this.cliente = new Cliente();
-	}
-	
+		
 	@Override
 	public int hashCode() {
 		return Objects.hash(cliente, fechaReserva, horaEntrada, horaSalida);
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
