@@ -11,6 +11,7 @@ public interface ReservaSalaDAOInterface {
 	boolean deleteReservaSalaById(int idSala);
 	boolean isSalaReservable(ReservaSalaDTO reserva);
 	boolean updateReservaSala(ReservaSalaDTO reserva);
+	ArrayList<ReservaSalaDTO> getReservasSalaByIdSala(int idSala);
 	// TODO Refactorizar para recibir LocalDateTime
 	ArrayList<Integer> getIdSalasDisponiblesEntreFechas(String fechaI, String fechaF);
 	void borrarRegistros();

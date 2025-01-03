@@ -45,7 +45,6 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
                 logger.log(Level.SEVERE, "Error al añadir la reserva: ", e);
             return false;
 		}
-		
 		return true;
 	}
     
@@ -132,7 +131,10 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
 
 	@Override
 	public boolean isSalaReservable(ReservaSalaDTO reserva) {
-		// TODO Auto-generated method stub
+		ArrayList<Integer> salasDisponibles = getIdSalasDisponiblesEntreFechas(reserva.getHoraEntrada().toString(), reserva.getHoraSalida().toString());
+		if (salasDisponibles.contains(reserva.getIdSala())) {
+			return true;
+		}
 		return false;
 	}
 
@@ -196,6 +198,13 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
 		
 		return salasDisponibles;
 	}
+	
+
+	@Override
+	public ArrayList<ReservaSalaDTO> getReservasSalaByIdSala(int idSala) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public void borrarRegistros() {
@@ -256,4 +265,5 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
 		ArrayList<ReservaSalaDTO> reservaUsuario1 = getReservasSalaByUsuarioDTO(usuario);
 		System.out.println(reservaUsuario1);
 	}
+
 }
