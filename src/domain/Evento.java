@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import dbmejorada.EventoDTO;
 import dbmejorada.SalaDTO;
+import main.Main;
 
 public class Evento {
 
@@ -12,7 +14,7 @@ public class Evento {
 	private String titulo;
 	private TipoEvento tipoEvento;
 	private ArrayList<Cliente> asistentes;
-	private SalaDTO sala;
+	private Sala sala;
 	private LocalDateTime fechaHora;
 
     public int getId() {
@@ -47,11 +49,11 @@ public class Evento {
 		this.asistentes = asistentes;
 	}
 	
-	public SalaDTO getSala() {
+	public Sala getSala() {
 		return sala;
 	}
 	
-	public void setSala(SalaDTO sala) {
+	public void setSala(Sala sala) {
 		this.sala = sala;
 	}
 
@@ -63,7 +65,7 @@ public class Evento {
         this.fechaHora = fechaHora;
     }
 	
-	public Evento(int id, String titulo, TipoEvento tipoEvento, ArrayList<Cliente> asistentes, SalaDTO sala, LocalDateTime fechaHora) {
+	public Evento(int id, String titulo, TipoEvento tipoEvento, ArrayList<Cliente> asistentes, Sala sala, LocalDateTime fechaHora) {
 		super();
 		this.id = id;
 		this.titulo = titulo;
@@ -83,6 +85,23 @@ public class Evento {
 		this.fechaHora = LocalDateTime.now();
 	}
 	
+
+	public Evento(EventoDTO eventoDTO) {
+		super();
+		this.id = eventoDTO.getId();
+		this.titulo = eventoDTO.getTitulo();
+		this.tipoEvento = eventoDTO.getTipoEvento();
+		this.asistentes = new ArrayList<>();
+		SalaDTO sala = Main.getSalaDAO().getSala(eventoDTO.getIdSala());
+		this.sala = new SalaEventos(sala);
+		this.fechaHora = eventoDTO.getFechaHora();
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -92,8 +111,7 @@ public class Evento {
 		if (getClass() != obj.getClass())
 			return false;
 		Evento other = (Evento) obj;
-		return Objects.equals(asistentes, other.asistentes) && Objects.equals(sala, other.sala)
-				&& tipoEvento == other.tipoEvento;
+		return id == other.id;
 	}
 
 	@Override
