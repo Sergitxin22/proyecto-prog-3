@@ -1,6 +1,8 @@
 package main;
 
 import db.GestorDB;
+import dbmejorada.LibroDAO;
+import dbmejorada.LibroDAOInterface;
 import dbmejorada.ReservaSalaDAO;
 import dbmejorada.ReservaSalaDAOInterface;
 import dbmejorada.ReviewDAO;
@@ -35,12 +37,14 @@ public class Main {
 	private static SalaPublica salaPublica;
 	private static Connection conexionBD;
 	private static Logger logger;
+	private static Libro libro;
 	
 	//	Declaración de los DAO
 	private static UsuarioDAOInterface usuarioDAO;
 	private static SalaDAOInterface salaDAO;
 	private static ReservaSalaDAOInterface reservaSalaDAO;
 	private static ReviewDAOInterface reviewDAO;
+	private static LibroDAOInterface libroDAO;
 
 	public static UsuarioDAOInterface getUsuarioDAO() {
 		return usuarioDAO;
@@ -90,6 +94,15 @@ public class Main {
 		Main.usuario = usuario;
 	}
 	
+	public static LibroDAOInterface getLibroDAO() {
+		return libroDAO;
+	}
+	
+	public static void setLibroDAO(LibroDAOInterface libroDAO) {
+		Main.libroDAO = libroDAO;
+	}
+		
+
 	public static Connection getConexionBD() {
 		return conexionBD;
 	}
@@ -111,7 +124,7 @@ public class Main {
     	usuario = null;
     	salaPublica = new SalaPublica(250, 0, 1);
     	
-    	String nombreBD = "resources/db/bibliotech";
+    	String nombreBD = "resources/db/bibliotech-prueba";
     	
 
     	// Comprobación del .jar e inicialización de Conexión y Logger
@@ -130,6 +143,7 @@ public class Main {
         salaDAO = new SalaDAO();
         reservaSalaDAO = new ReservaSalaDAO();
         reviewDAO = new ReviewDAO();
+        libroDAO = new LibroDAO();
         
         SalaPrivada sala = new SalaPrivada(5, 12, 2, null, null);
         
@@ -143,7 +157,7 @@ public class Main {
         sala.setRecursos(recursos);
         sala.setReservas(reservas);
         
-        salaDAO.addSala(sala);
+//        salaDAO.addSala(sala);
         
         UsuarioDTO usuarioDTO = new UsuarioDTO();
         
@@ -153,7 +167,7 @@ public class Main {
         usuarioDTO.setNombre("Ander");
         
         Review review = new Review(new Libro(129, "Libro 2", "Yo",  12, "Sinopsis", "Fantasia",  5, 2003, null, new ArrayList<>()), usuarioDTO, "Comentarioo", 5);
-    	reviewDAO.addReview(review);
+//    	reviewDAO.addReview(review);
         
         
     	new VentanaPortada();
