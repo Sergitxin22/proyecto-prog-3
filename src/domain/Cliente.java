@@ -3,6 +3,9 @@ package domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import dbmejorada.UsuarioDTO;
+import main.Main;
+
 public class Cliente extends Usuario {
 
 	private ArrayList<Libro> historial;
@@ -22,6 +25,15 @@ public class Cliente extends Usuario {
 		this.historial = new ArrayList<Libro>();
 		this.listaReviews = new ArrayList<Review>();
 		this.amonestaciones = 0;
+	}
+	
+	public Cliente(UsuarioDTO usuario) {
+		super(usuario.getDni(), usuario.getNombre(), usuario.getEmail(), usuario.getFechaCreacion(), usuario.getContrasena());
+//		this.historial = null;
+//		this.listaReviews = null;
+		this.historial = null;
+		this.listaReviews = Main.getReviewDAO().getReviewsUsuario(this); //TODO: solo hay que pasar el dni
+		this.amonestaciones = usuario.getAmonestaciones();
 	}
 
 	public ArrayList<Libro> getHistorial() {
