@@ -10,7 +10,7 @@ public class EventoDTO {
 	private int id;
 	private String titulo;
 	private TipoEvento tipoEvento;
-	private SalaDTO sala;
+	private int idSala;
 	private LocalDateTime fechaHora;
 	private int hora;
 
@@ -38,12 +38,12 @@ public class EventoDTO {
 		this.tipoEvento = tipoEvento;
 	}
 	
-	public SalaDTO getSala() {
-		return sala;
+	public int getIdSala() {
+		return idSala;
 	}
 	
-	public void setSala(SalaDTO sala) {
-		this.sala = sala;
+	public void setIdSala(int idSala) {
+		this.idSala = idSala;
 	}
 	
 	public LocalDateTime getFechaHora() {
@@ -64,7 +64,7 @@ public class EventoDTO {
 
 	@Override
 	public String toString() {
-		return "EventoDTO [id=" + id + ", titulo=" + titulo + ", tipoEvento=" + tipoEvento + ", sala=" + sala
+		return "EventoDTO [id=" + id + ", titulo=" + titulo + ", tipoEvento=" + tipoEvento + ", idSala=" + idSala
 				+ ", fecha=" + fechaHora + ", hora=" + hora + "]";
 	}
 	

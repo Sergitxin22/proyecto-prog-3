@@ -5,7 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +27,7 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
 	
 	// nuevos
 	@Override
-	public boolean addReservaSala(Reserva reserva) {
+	public boolean addReservaSala(ReservaSalaDTO reserva) {
 		String insertSQLReservaSalaPrivada = "INSERT INTO ReservaSala(fecha_entrada, fecha_salida, fecha_reserva, dni_cliente, id_sala) VALUES (?, ?, ?, ?, ?)";
 
     	PreparedStatement preparedStmtReservaSalaPrivada;
@@ -35,8 +36,8 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
 			preparedStmtReservaSalaPrivada.setString(1, reserva.getHoraEntrada().toString());
 	   		preparedStmtReservaSalaPrivada.setString(2, reserva.getHoraSalida().toString());
 	   		preparedStmtReservaSalaPrivada.setString(3, reserva.getFechaReserva().toString());
-	    	preparedStmtReservaSalaPrivada.setString(4, reserva.getClienteReserva().getDni());
-	    	preparedStmtReservaSalaPrivada.setInt(5, reserva.getSala().getId());
+	    	preparedStmtReservaSalaPrivada.setString(4, reserva.getDniCliente());
+	    	preparedStmtReservaSalaPrivada.setInt(5, reserva.getIdSala());
 	    		
 	    	preparedStmtReservaSalaPrivada.executeUpdate();
 		} catch (SQLException e) {
@@ -44,39 +45,120 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
                 logger.log(Level.SEVERE, "Error al añadir la reserva: ", e);
             return false;
 		}
-		
 		return true;
 	}
     
 
 	@Override
-	public Reserva getReservaSalaById(int idSala) {
-		// TODO Auto-generated method stub
-		return null;
+	public ReservaSalaDTO getReservaSalaById(int idReservaSala) {
+		ReservaSalaDTO reservaSala = null;
+		
+		String insertSQL = "SELECT * FROM ReservaSala WHERE id=?;";
+        PreparedStatement preparedStmt;
+		try {
+			preparedStmt = conexionBD.prepareStatement(insertSQL);
+			preparedStmt.setInt(1, idReservaSala);
+			
+	        try (ResultSet rs = preparedStmt.executeQuery()) {
+                
+                while (rs.next()) {
+                	//int id, LocalDateTime horaEntrada, LocalDateTime horaSalida, LocalDate fechaReserva,String dniCliente, int idSala
+                   int id = rs.getInt("id");
+                   String horaEntrada = rs.getString("fecha_entrada");
+                   String horaSalida = rs.getString("fecha_salida");
+                   String fechaReserva = rs.getString("fecha_reserva");
+                   String dniCliente = rs.getString("dni_cliente");
+                   int idSala = rs.getInt("id_sala");
+                   
+                   reservaSala = new ReservaSalaDTO(id, LocalDateTime.parse(horaEntrada), LocalDateTime.parse(horaSalida), LocalDate.parse(fechaReserva), dniCliente, idSala);
+                }
+                System.out.println("Reserva sala sin fallos");
+                return reservaSala;
+            }
+	        	        
+		} catch (SQLException e) {
+			if (logger != null) {
+				logger.log(Level.SEVERE, "Error al recuperar la reserva sala: ", e);
+			}
+			return reservaSala;
+		}
 	}
 
 	@Override
-	public Reserva getReservaSalaByUsuarioDTO(UsuarioDTO usuario) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<ReservaSalaDTO> getReservasSalaByUsuarioDTO(UsuarioDTO usuario) {
+		//SELECT * FROM ReservaSala where dni_cliente = '00000000A';
+		ArrayList<ReservaSalaDTO> reservasSala = new ArrayList<ReservaSalaDTO>();
+		
+		String insertSQL = "SELECT * FROM ReservaSala WHERE dni_cliente=?;";
+        PreparedStatement preparedStmt;
+		try {
+			preparedStmt = conexionBD.prepareStatement(insertSQL);
+			preparedStmt.setString(1, usuario.getDni());
+			
+	        try (ResultSet rs = preparedStmt.executeQuery()) {
+                
+                while (rs.next()) {
+                	ReservaSalaDTO reserva = null;
+                	//int id, LocalDateTime horaEntrada, LocalDateTime horaSalida, LocalDate fechaReserva,String dniCliente, int idSala
+                   int id = rs.getInt("id");
+                   String horaEntrada = rs.getString("fecha_entrada");
+                   String horaSalida = rs.getString("fecha_salida");
+                   String fechaReserva = rs.getString("fecha_reserva");
+                   String dniCliente = rs.getString("dni_cliente");
+                   int idSala = rs.getInt("id_sala");
+                   
+                   reserva = new ReservaSalaDTO(id, LocalDateTime.parse(horaEntrada), LocalDateTime.parse(horaSalida), LocalDate.parse(fechaReserva), dniCliente, idSala);
+                   reservasSala.add(reserva);
+                }
+                System.out.println("Reserva sala sin fallos");
+                return reservasSala;
+            }
+	        	        
+		} catch (SQLException e) {
+			if (logger != null) {
+				logger.log(Level.SEVERE, "Error al recuperar la reserva sala: ", e);
+			}
+			return reservasSala;
+		}
 	}
 
 	@Override
 	public boolean deleteReservaSalaById(int idSala) {
-		// TODO Auto-generated method stub
+		// DELETE FROM ReservaSala where id = 1;
+		
 		return false;
 	}
 
 	@Override
-	public boolean isSalaReservable(Reserva reserva) {
-		// TODO Auto-generated method stub
+	public boolean isSalaReservable(ReservaSalaDTO reserva) {
+		ArrayList<Integer> salasDisponibles = getIdSalasDisponiblesEntreFechas(reserva.getHoraEntrada().toString(), reserva.getHoraSalida().toString());
+		if (salasDisponibles.contains(reserva.getIdSala())) {
+			return true;
+		}
 		return false;
 	}
 
 	@Override
-	public boolean updateReservaSala(Reserva reserva) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateReservaSala(ReservaSalaDTO reserva) {
+		try {
+            String insertSQL = "UPDATE ReservaSala SET fecha_entrada=?,fecha_salida=?,fecha_reserva=?,dni_cliente=?,id_sala=? WHERE id=?;";
+            PreparedStatement preparedStmt = conexionBD.prepareStatement(insertSQL);
+            preparedStmt.setString(1,reserva.getHoraEntrada().toString());
+            preparedStmt.setString(2,reserva.getHoraSalida().toString());
+            preparedStmt.setString(3,reserva.getFechaReserva().toString());
+            preparedStmt.setString(4,reserva.getDniCliente());
+            preparedStmt.setInt(5,reserva.getIdSala());
+            preparedStmt.setInt(6,reserva.getId());
+            
+            int filas = preparedStmt.executeUpdate();
+            System.out.println("Filas modificadas: " + filas);
+
+            return (filas > 0) ? true : false;
+        } catch (SQLException e) {
+            if (logger != null)
+                logger.log(Level.SEVERE, "Error al actualizar la reserva de la sala: ", e);
+            return false;
+        }
 	}
 
 	@Override
@@ -115,6 +197,13 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
 		}
 		
 		return salasDisponibles;
+	}
+	
+
+	@Override
+	public ArrayList<ReservaSalaDTO> getReservasSalaByIdSala(int idSala) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -161,7 +250,20 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
 //        uDTO = getUsuario("00000000A", "contraseña cambiada");
 //        System.out.println(uDTO);
 	
-		ArrayList<Integer> salas = getIdSalasDisponiblesEntreFechas("2024-12-05T21:48:00.492987900", "2024-12-08T21:48:00.492987900");
-		System.out.println(salas);
+//		ArrayList<Integer> salas = getIdSalasDisponiblesEntreFechas("2024-12-05T21:48:00.492987900", "2024-12-08T21:48:00.492987900");
+//		System.out.println(salas);
+		
+//		ReservaSalaDTO reserva = getReservaSalaById(1);
+//		System.out.println(reserva);
+		
+		UsuarioDTO usuario = new UsuarioDTO();
+		usuario.setDni("00000000A");
+		ArrayList<ReservaSalaDTO> reservaUsuario = getReservasSalaByUsuarioDTO(usuario);
+		System.out.println(reservaUsuario);
+		
+		usuario.setDni("00000001A");
+		ArrayList<ReservaSalaDTO> reservaUsuario1 = getReservasSalaByUsuarioDTO(usuario);
+		System.out.println(reservaUsuario1);
 	}
+
 }

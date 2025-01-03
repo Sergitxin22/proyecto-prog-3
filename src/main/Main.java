@@ -1,6 +1,8 @@
 package main;
 
 import db.GestorDB;
+import dbmejorada.EventoDAO;
+import dbmejorada.EventoDAOInterface;
 import dbmejorada.LibroDAO;
 import dbmejorada.LibroDAOInterface;
 import dbmejorada.ReservaSalaDAO;
@@ -45,6 +47,7 @@ public class Main {
 	private static ReservaSalaDAOInterface reservaSalaDAO;
 	private static ReviewDAOInterface reviewDAO;
 	private static LibroDAOInterface libroDAO;
+	private static EventoDAOInterface eventoDAO;
 
 	public static UsuarioDAOInterface getUsuarioDAO() {
 		return usuarioDAO;
@@ -101,7 +104,14 @@ public class Main {
 	public static void setLibroDAO(LibroDAOInterface libroDAO) {
 		Main.libroDAO = libroDAO;
 	}
-		
+	
+	public static EventoDAOInterface getEventoDAO() {
+		return eventoDAO;
+	}
+
+	public static void setEventoDAO(EventoDAOInterface eventoDAO) {
+		Main.eventoDAO = eventoDAO;
+	}
 
 	public static Connection getConexionBD() {
 		return conexionBD;
@@ -144,6 +154,7 @@ public class Main {
         reservaSalaDAO = new ReservaSalaDAO();
         reviewDAO = new ReviewDAO();
         libroDAO = new LibroDAO();
+        eventoDAO = new EventoDAO();
         
         SalaPrivada sala = new SalaPrivada(5, 12, 2, null, null);
         

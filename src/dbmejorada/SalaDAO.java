@@ -55,7 +55,7 @@ public class SalaDAO implements SalaDAOInterface {
             	String insertSQLSalaPrivadaRecurso = "INSERT INTO SalaPrivadaRecurso(id_recurso, id_sala) VALUES (?,?)";
             	for (Recurso recurso : ((SalaPrivada) sala).getRecursos()) {
             		PreparedStatement preparedStmtSalaPrivadaRecurso = conexionBD.prepareStatement(insertSQLSalaPrivadaRecurso);
-            		preparedStmtSalaPrivadaRecurso.setInt(1, getRecursoID(recurso));
+            		preparedStmtSalaPrivadaRecurso.setInt(1, getRecursoId(recurso));
             		preparedStmtSalaPrivadaRecurso.setInt(2, sala.getId());
             		
             		preparedStmtSalaPrivadaRecurso.executeUpdate();
@@ -166,7 +166,7 @@ public class SalaDAO implements SalaDAOInterface {
 	}
 	
 	@Override
-	public int getRecursoID(Recurso recurso) {
+	public int getRecursoId(Recurso recurso) {
 		if (recurso.equals(Recurso.ORDENADORES)) {
 			return 0;
 		} else if (recurso.equals(Recurso.PROYECTOR)) {
@@ -175,6 +175,12 @@ public class SalaDAO implements SalaDAOInterface {
 			return 2;
 		}
 		
+	}
+	
+	@Override
+	public ArrayList<Integer> getIdsRecursosDisponiblesByIdSala(int idSala) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	@Override
@@ -194,6 +200,8 @@ public class SalaDAO implements SalaDAOInterface {
 		
 		return result;
 	}
+
+	
 
 	
 	
