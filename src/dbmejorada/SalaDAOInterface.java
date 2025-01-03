@@ -3,6 +3,7 @@ package dbmejorada;
 import domain.Recurso;
 import domain.Sala;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import domain.Cliente;
@@ -13,7 +14,8 @@ public interface SalaDAOInterface {
 	void getDatosAdicionalesSala(SalaDTO sala);
 	int getTipoSalaId(String tipoSala);
 	String getTipoSala(int id);
-	int getRecursoID(Recurso recurso);
+	int getRecursoId(Recurso recurso);
+	ArrayList<Integer> getIdsRecursosDisponiblesByIdSala(int idSala);
 	Recurso getRecurso(int id);
 	HashMap<Integer, Cliente> getClientesPorBloque();
 }
