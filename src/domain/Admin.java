@@ -3,6 +3,9 @@ package domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import dbmejorada.UsuarioDTO;
+import main.Main;
+
 public class Admin extends Usuario {
 
 	private ArrayList<String> logAcciones;
@@ -15,6 +18,11 @@ public class Admin extends Usuario {
 	public Admin() {
 		super();
 		this.logAcciones = new ArrayList<>();
+	}
+	
+	public Admin(UsuarioDTO usuarioDTO) {
+		super(usuarioDTO.getDni(), usuarioDTO.getNombre(), usuarioDTO.getEmail(), usuarioDTO.getFechaCreacion(), usuarioDTO.getContrasena());
+//		this.logAcciones = Main.getUsuarioDAO().getLogAccionesByAdminDni(usuarioDTO.getDni()); TODO: crearlo en usuarioDAO
 	}
 
 	public ArrayList<String> getLogAcciones() {

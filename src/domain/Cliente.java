@@ -27,13 +27,13 @@ public class Cliente extends Usuario {
 		this.amonestaciones = 0;
 	}
 	
-	public Cliente(UsuarioDTO usuario) {
-		super(usuario.getDni(), usuario.getNombre(), usuario.getEmail(), usuario.getFechaCreacion(), usuario.getContrasena());
+	public Cliente(UsuarioDTO usuarioDTO) {
+		super(usuarioDTO.getDni(), usuarioDTO.getNombre(), usuarioDTO.getEmail(), usuarioDTO.getFechaCreacion(), usuarioDTO.getContrasena());
 //		this.historial = null;
 //		this.listaReviews = null;
 		this.historial = null;
 		this.listaReviews = Main.getReviewDAO().getReviewsUsuario(this); //TODO: solo hay que pasar el dni
-		this.amonestaciones = usuario.getAmonestaciones();
+		this.amonestaciones = usuarioDTO.getAmonestaciones();
 	}
 
 	public ArrayList<Libro> getHistorial() {

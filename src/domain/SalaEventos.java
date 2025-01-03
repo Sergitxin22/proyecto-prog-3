@@ -1,5 +1,9 @@
 package domain;
 
+import dbmejorada.EventoDTO;
+import dbmejorada.SalaDTO;
+import main.Main;
+
 public class SalaEventos extends Sala {
 	private Evento evento;
 
@@ -11,6 +15,12 @@ public class SalaEventos extends Sala {
 	public SalaEventos(Evento evento) {
 		super();
 		this.evento = evento;
+	}
+	
+	public SalaEventos(SalaDTO salaDTO) {
+		super(salaDTO.getCapacidad(),salaDTO.getId(),salaDTO.getPiso());
+		EventoDTO evento = Main.getEventoDAO().getEvento(salaDTO.getId());
+		this.evento = new Evento(evento);
 	}
 
 	public Evento getEvento() {
