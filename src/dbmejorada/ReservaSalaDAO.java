@@ -27,7 +27,7 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
 	
 	// nuevos
 	@Override
-	public boolean addReservaSala(Reserva reserva) {
+	public boolean addReservaSala(ReservaSalaDTO reserva) {
 		String insertSQLReservaSalaPrivada = "INSERT INTO ReservaSala(fecha_entrada, fecha_salida, fecha_reserva, dni_cliente, id_sala) VALUES (?, ?, ?, ?, ?)";
 
     	PreparedStatement preparedStmtReservaSalaPrivada;
@@ -36,8 +36,8 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
 			preparedStmtReservaSalaPrivada.setString(1, reserva.getHoraEntrada().toString());
 	   		preparedStmtReservaSalaPrivada.setString(2, reserva.getHoraSalida().toString());
 	   		preparedStmtReservaSalaPrivada.setString(3, reserva.getFechaReserva().toString());
-	    	preparedStmtReservaSalaPrivada.setString(4, reserva.getClienteReserva().getDni());
-	    	preparedStmtReservaSalaPrivada.setInt(5, reserva.getSala().getId());
+	    	preparedStmtReservaSalaPrivada.setString(4, reserva.getDniCliente());
+	    	preparedStmtReservaSalaPrivada.setInt(5, reserva.getIdSala());
 	    		
 	    	preparedStmtReservaSalaPrivada.executeUpdate();
 		} catch (SQLException e) {
@@ -125,12 +125,13 @@ public class ReservaSalaDAO implements ReservaSalaDAOInterface {
 
 	@Override
 	public boolean deleteReservaSalaById(int idSala) {
-		// TODO Auto-generated method stub
+		// DELETE FROM ReservaSala where id = 1;
+		
 		return false;
 	}
 
 	@Override
-	public boolean isSalaReservable(Reserva reserva) {
+	public boolean isSalaReservable(ReservaSalaDTO reserva) {
 		// TODO Auto-generated method stub
 		return false;
 	}
