@@ -102,7 +102,7 @@ public class VentanaAñadirReview extends JFrame {
 			
 			Review review = new Review(libro, clienteDTO, comment, rating);
 			libro.getReviews().add(review);
-			// TODO: Añadir función para añadir review a la BD.
+			Main.getReviewDAO().addReview(review);
 
 			dispose();
 			VentanaInformacionRecurso redirectWindow = new VentanaInformacionRecurso(libro);

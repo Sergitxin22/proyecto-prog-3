@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.ImageIcon;
 
+import dbmejorada.SalaDTO;
 import dbmejorada.UsuarioDTO;
 import utils.Utils;
 
@@ -152,7 +153,8 @@ public class InputUtils {
 				int idEvento = Integer.parseInt(fields[0]);
 				String tipoString = fields[1];
 				String titulo = fields[2];
-				LocalDate fecha = LocalDate.parse(fields[3], DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+				//LocalDateTime fecha = LocalDateTime.parse(fields[3], DateTimeFormatter.ofPattern("dd-MM-yyyy")); TODO: Esto está mal, corregir
+				LocalDateTime fecha = LocalDateTime.now();
 				int hora = Integer.parseInt(fields[4]);
 				int idSala = Integer.parseInt(fields[5]);
 
@@ -175,14 +177,12 @@ public class InputUtils {
 						break;
 				}
 
-				SalaEventos salaEvento = null;
-				for (SalaEventos sala : salasEventos) {
-					if (sala.getId() == idSala) {
-						salaEvento = sala;
-						break;
-					}
-				}
-				evento = new Evento(idEvento, titulo, tipoEvento, new ArrayList<>(), salaEvento, fecha, hora);
+				
+				
+				SalaDTO salaDTO = new SalaDTO();
+				salaDTO.setId(idSala);
+				
+				evento = new Evento(idEvento, titulo, tipoEvento, new ArrayList<Cliente> (), salaDTO, fecha);
 
 				result.add(evento);
 				

@@ -24,12 +24,15 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import dbmejorada.SalaDTO;
 import dbmejorada.UsuarioDAO;
 import dbmejorada.UsuarioDTO;
 import domain.Admin;
 import domain.Cliente;
 import domain.Evento;
 import domain.Libro;
+import domain.Recurso;
+import domain.Reserva;
 import domain.Review;
 import domain.Sala;
 import domain.SalaEventos;
@@ -101,11 +104,15 @@ public class VentanaInformacionRecurso extends JFrame {
 		//PANEL DE IMAGEN DEL LIBRO
 		JPanel panelimagenLibro= new JPanel();
 		panelimagenLibro.setBackground(Color.WHITE);
+		panelimagenLibro.setAlignmentX(CENTER_ALIGNMENT);
+		panelimagenLibro.setBorder(new EmptyBorder (0,65,0,0));
 		JLabel imagenDelLibro = new JLabel();
 		imagenDelLibro.setPreferredSize(new Dimension(275,500));
 		Image imagen = libro.getFoto().getImage().getScaledInstance(200, 350, Image.SCALE_SMOOTH);
 		ImageIcon imagenEscalada = new ImageIcon(imagen);
 		imagenDelLibro.setIcon(imagenEscalada);
+		imagenDelLibro.setAlignmentX(CENTER_ALIGNMENT);
+		
 		panelimagenLibro.add(imagenDelLibro);
 		pOeste.add(panelimagenLibro);
 		
@@ -173,8 +180,9 @@ public class VentanaInformacionRecurso extends JFrame {
 		
 		reviews.setBackground(Color.WHITE);
 		
-		JLabel tituloReviews = new JLabel ("Reviews");
+		JLabel tituloReviews = new JLabel ("REVIEWS");
 		tituloReviews.setFont(new Font("Arial", Font.BOLD, 16));
+		tituloReviews.setAlignmentX(CENTER_ALIGNMENT);
 		reviews.add(tituloReviews);
 		
 		String stringReviews = "";
@@ -195,8 +203,8 @@ public class VentanaInformacionRecurso extends JFrame {
         reviewsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         reviewsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         reviewsScrollPane.setPreferredSize(new Dimension(200, 100));
-        reviewsScrollPane.setBorder(null);
         reviewsScrollPane.setPreferredSize(new Dimension(400, 150));
+      
 
         reviews.add(reviewsScrollPane);
        
@@ -204,23 +212,23 @@ public class VentanaInformacionRecurso extends JFrame {
 		
 		//PANEL BOTONES
 		
-		JPanel botonesPanel = new JPanel(new GridBagLayout());
+		JPanel botonesPanel = new JPanel();
 		
-		botonesPanel.setPreferredSize(new Dimension(100,100));
+		
 		botonesPanel.setBackground(Color.WHITE);
+		botonesPanel.setBorder(new EmptyBorder(110,0,45, 0));
 		
-		GridBagConstraints gbc = new GridBagConstraints();
+		/*GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(10, 10, 10, 10);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.CENTER;
-        
+        */
+		
 		JButton botonReview = new JButton("Añadir review");
 		JButton botonReservar = new JButton("Reservar");
-		botonReview.setFont(new Font("Arial", Font.BOLD, 17));
-		botonReview.setPreferredSize(new Dimension(200, 50));
+		botonReview.setFont(new Font("Arial", Font.BOLD, 17));		
 		botonReservar.setFont(new Font("Arial", Font.BOLD, 17));
-		botonReservar.setPreferredSize(new Dimension(200, 50));
         
         if (usuario == null) {
 			botonReview.setEnabled(false);
@@ -293,6 +301,9 @@ public class VentanaInformacionRecurso extends JFrame {
 			}
 		});
 		
+		pOeste.setBorder(new EmptyBorder(0,20,0,0));
+		pCentro.setBorder(new EmptyBorder(70, 50, 0, 0));
+		
 		botonReservar.addActionListener(new ActionListener() {
 
 			@Override
@@ -316,11 +327,11 @@ public class VentanaInformacionRecurso extends JFrame {
 	    
 	    JLabel tituloSala = new JLabel("Sala " + Integer.toString(sala.getId()), SwingConstants.CENTER);
 	    tituloSala.setFont(new Font("Arial", Font.BOLD, 40));
-	    tituloSala.setHorizontalAlignment(SwingConstants.CENTER); // Centra el texto horizontalmente
-	    tituloSala.setVerticalAlignment(SwingConstants.CENTER);
+	    tituloSala.setAlignmentX(CENTER_ALIGNMENT);
 	    tituloSala.setBackground(Color.WHITE);
 	    panelPrincipal.add(tituloSala, BorderLayout.NORTH);
-
+	    
+	    
 	    List<JTextArea> areas = new ArrayList<>();
 		//int capacidad, int id, int piso, ArrayList<Cliente> listaClientes
 
@@ -333,7 +344,7 @@ public class VentanaInformacionRecurso extends JFrame {
 		areas.add(taRecursos);
 
 		for (JTextArea area : areas) {
-			area.setFont(new Font("Arial", Font.BOLD, 38));
+			area.setFont(new Font("Arial", Font.BOLD, 16));
  	        area.setLineWrap(true); 
     	    area.setWrapStyleWord(true); 
         	area.setEditable(false); 
@@ -344,21 +355,42 @@ public class VentanaInformacionRecurso extends JFrame {
 		panelPrincipal.add(taRecursos, BorderLayout.CENTER);
 		
 	    pOeste.add(panelPrincipal);
-	    pEste.setLayout(new BorderLayout());
+	    
+	    //panel JTextArea de SalasPrivadas
+	    JTextArea taDescripcion = new JTextArea(
+	    	    "BiblioTech ofrece salas privadas para estudiantes interesados/as en un entorno de estudio para trabajos grupales. " +
+	    	    "Con diferentes recursos, cada sala ofrece diferentes posibilidades de trabajo para los alumnos/as.\n\n" +
+	    	    "Para reservar una sala, el interesado/a tiene que tener una cuenta en BiblioTech. Pulsa el botón de reserva y sigue las instrucciones.\n\n" +
+	    	    "NORMAS:\n" +
+	    	    "- No está permitido comer en las salas.\n" +
+	    	    "- Se deben respetar los horarios de entrada y salida de reserva.\n" +
+	    	    "- Se ruega tratar con cuidado los recursos de cada sala\n" +
+	    	    "- En caso de encontrar alguna anomalía en los recursos o en el estado de la sala, contactar con la recepción."
+	    	);
+	    taDescripcion.setFont(new Font("Arial", Font.ITALIC, 16));
+	    taDescripcion.setLineWrap(true); 
+	    taDescripcion.setWrapStyleWord(true); 
+	    taDescripcion.setEditable(false);
+	    
+	    pCentro.setLayout(new BorderLayout());
+	    //Panel Boton
+	    JPanel panelboton = new JPanel();
+	    panelboton.setBackground(Color.WHITE);
 	    JButton reservarButton = new JButton("Reservar");
 		if (usuario == null) {
 			reservarButton.setEnabled(false);
 		}
 	    reservarButton.setFont(new Font("Arial", Font.BOLD, 20));
-        reservarButton.setPreferredSize(new Dimension(200, 50));
- 
+	    panelboton.add(reservarButton);
+	    
         
-        pEste.setBorder(new EmptyBorder(0, 0, 10, 15));
-        pOeste.setBorder(new EmptyBorder(0, 15, 10, 0));
-	    pEste.add(reservarButton, BorderLayout.SOUTH);
+        pCentro.setBorder(new EmptyBorder(160, 100, 30, 15));
+        pOeste.setBorder(new EmptyBorder(140, 15, 10, 0));
+        pCentro.add(taDescripcion);
+	    pCentro.add(panelboton, BorderLayout.SOUTH);
 
-	    // Asegúrate de que pEste esté agregado al JFrame
-	    getContentPane().add(pEste, BorderLayout.EAST);
+	    // Asegúrate de que pCentrpesté agregado al JFrame
+	    
 
 	    reservarButton.addActionListener(new ActionListener() {
 		    @Override
@@ -374,7 +406,101 @@ public class VentanaInformacionRecurso extends JFrame {
 	}
 	
     public VentanaInformacionRecurso(Evento evento) {
-        this.evento = evento;
+    	
+    	setMainWindowProperties(null);
+	    setTitle(" Evento " + Integer.toString(evento.getId()));
+	    
+	    JPanel panelPrincipal = new JPanel();
+	    panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
+	    panelPrincipal.setBackground(Color.WHITE);
+	    
+	    JLabel tituloEvento = new JLabel( evento.getTitulo(), SwingConstants.CENTER);
+	    tituloEvento.setFont(new Font("Arial", Font.BOLD, 40));
+	    tituloEvento.setAlignmentX(CENTER_ALIGNMENT);
+	    tituloEvento.setBackground(Color.WHITE);
+	    panelPrincipal.add(tituloEvento, BorderLayout.NORTH);
+	    
+	    
+	    List<JTextArea> areas = new ArrayList<>();
+		//int id, String titulo, TipoEvento tipoEvento, ArrayList<Cliente> asistentes, SalaDTO sala, LocalDateTime fechaHora
+
+
+        JTextArea taTipoEvento = new JTextArea("Tipo: " + evento.getTipoEvento());
+        JTextArea taSala = new JTextArea("Numero de sala: " + Integer.toString(evento.getSala().getId()));
+        JTextArea taFecha = new JTextArea("Fecha: " + evento.getFechaHora().getDayOfMonth() + "/" + evento.getFechaHora().getMonthValue() + "/" + evento.getFechaHora().getYear());
+        JTextArea taHora = new JTextArea("Hora: " + evento.getFechaHora().getHour() + ":" + evento.getFechaHora().getMinute());
+		
+
+
+		areas.add(taTipoEvento);
+		areas.add(taSala);
+		areas.add(taFecha);
+		areas.add(taHora);
+		
+
+		for (JTextArea area : areas) {
+			area.setFont(new Font("Arial", Font.BOLD, 16));
+ 	        area.setLineWrap(true); 
+    	    area.setWrapStyleWord(true); 
+        	area.setEditable(false); 
+		}
+
+		panelPrincipal.add(taTipoEvento, BorderLayout.CENTER);
+		panelPrincipal.add(taSala, BorderLayout.CENTER);
+		panelPrincipal.add(taFecha, BorderLayout.CENTER);
+		panelPrincipal.add(taHora, BorderLayout.CENTER);
+		
+	    pOeste.add(panelPrincipal);
+	    
+	    //panel JTextArea de SalasPrivadas
+	    JTextArea taDescripcion = new JTextArea(
+	    	    "BiblioTech organiza en ciertos días unos eventos sobre diferentes temáticas. Desde charlas hasta talleres, " +
+	    	    "BiblioTech invita a expertos/as de diferentes disciplinas para todas las audiencias. Para poder participar en un evento, " +
+	    	    "pulsa el botón de \"Reservar\" para reservar una plaza de asistencia al evento. Los eventos son de asistencia gratuita a los usuarios/as registrados en la plataforma.\n\n" +
+	    	    "NORMAS:\n" +
+	    	    "- La reserva para asistir a un evento es obligatoria.\n" +
+	    	    "- Se ruega no alterar las salas de eventos.\n" +
+	    	    "- Trata con respeto a los y las asistentes del evento, al igual que a los organizadores.\n" +
+	    	    "- Se ruega a el/la asistente puntualidad a la hora de asistir, para no interrumpir el entorno del evento."
+	    	);
+	    taDescripcion.setFont(new Font("Arial", Font.ITALIC, 16));
+	    taDescripcion.setLineWrap(true); 
+	    taDescripcion.setWrapStyleWord(true); 
+	    taDescripcion.setEditable(false);
+	    
+	    pCentro.setLayout(new BorderLayout());
+	    //Panel Boton
+	    JPanel panelboton = new JPanel();
+	    panelboton.setBackground(Color.WHITE);
+	    JButton reservarButton = new JButton("Reservar");
+		if (usuario == null) {
+			reservarButton.setEnabled(false);
+		}
+	    reservarButton.setFont(new Font("Arial", Font.BOLD, 20));
+	    panelboton.add(reservarButton);
+	    
+        
+        pCentro.setBorder(new EmptyBorder(160, 100, 30, 15));
+        pOeste.setBorder(new EmptyBorder(140, 15, 10, 0));
+        pCentro.add(taDescripcion);
+	    pCentro.add(panelboton, BorderLayout.SOUTH);
+
+	    // Asegúrate de que pCentrpesté agregado al JFrame
+	    
+
+	    reservarButton.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        // Cerrar la ventana actual
+		        vInformacionRecurso.dispose();
+		        // Abrir Venatana de ConfirmacionReserva
+		        VentanaConfirmacionReservaEvento ventanaConfirmacionReservaEvento = new VentanaConfirmacionReservaEvento(evento);
+		    }
+		});
+	   
+	    setVisible(true);
+    }
+        /*this.evento = evento;
     	setMainWindowProperties(Seccion.EVENTOS);
     	setTitle("Eventos: " + evento.getTitulo());
 	    
@@ -396,13 +522,13 @@ public class VentanaInformacionRecurso extends JFrame {
 	    
 	    JTextArea taTipoEvento = new JTextArea("Tipo del Evento: " + evento.getTipoEvento().toString());
 		JTextArea taSala = new JTextArea("Sala: " + evento.getSala().getId());
-		JTextArea taFecha = new JTextArea("Fecha: " + evento.getFecha().toString());
-		JTextArea taHora = new JTextArea("Hora: " + evento.getHora());
+		JTextArea taFecha = new JTextArea("Fecha: " + evento.getFechaHora().toString());
+	
 
 		areas.add(taTipoEvento);
 		areas.add(taSala);
 		areas.add(taFecha);
-		areas.add(taHora);
+
 
 		for (JTextArea area : areas) {
 			area.setFont(new Font("Arial", Font.BOLD, 38));
@@ -415,7 +541,7 @@ public class VentanaInformacionRecurso extends JFrame {
         panelPrincipal.add(taTipoEvento, BorderLayout.CENTER);
 		panelPrincipal.add(taSala, BorderLayout.CENTER);
 		panelPrincipal.add(taFecha, BorderLayout.CENTER);
-		panelPrincipal.add(taHora, BorderLayout.CENTER);
+
 	    
 
         // Añadir el panel principal al JFrame
@@ -470,24 +596,55 @@ public class VentanaInformacionRecurso extends JFrame {
 		    }
  	    });
     }
-	
+	*/
 	public LocalDate calcularDiasParaDevolver(int paginas) { // TODO
 		LocalDate fechaDevolucion = LocalDate.now();
 		int dias = Math.round(paginas / 10);
 		return fechaDevolucion.plusDays(dias);
 	}
-
+	
 	public static void main(String[] args) {
 		ImageIcon foto = Utils.loadImage("books/9780006514855" + ".jpg", 128, 200);
 		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, foto, new ArrayList<Review>());
 
-
-		Evento evento = new Evento(12, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), new SalaEventos(100, 2, 4, new Evento()), LocalDate.now(), 19);		
+		SalaDTO salaDTO = new SalaDTO();
+		salaDTO.setId(110);
+		salaDTO.setCapacidad(100);
+		salaDTO.setEvento(null);
+		salaDTO.setPiso(10);
+		salaDTO.setRecursos(null);
+		salaDTO.setTipo("EVENTOS");
 		
-		//new InformacionRecurso(sala, new Cliente());
+		Evento evento = new Evento(12, "Charla sobre el Veganismo", TipoEvento.CHARLA, new ArrayList<Cliente>(), salaDTO, LocalDateTime.now());
+		
+		UsuarioDTO usuarioDTO = new UsuarioDTO();
+		usuarioDTO.setAdmin(isDefaultLookAndFeelDecorated());
+		usuarioDTO.setAmonestaciones(12);
+		usuarioDTO.setDni("73291756J");
+		usuarioDTO.setNombre("Jorge");
+		
+		Review review1 = new Review ( libro, usuarioDTO ,"Mala pelicula" , 2);
+		Review review2 = new Review ( libro, usuarioDTO, "Buenisima pelicula", 5);
+		Review review3 = new Review (libro, usuarioDTO , "Lamentable", 1);
+		libro.agregarReview(review1);
+		libro.agregarReview(review2);
+		libro.agregarReview(review3);
+		
+		ArrayList<Recurso>recursos = new ArrayList<>();
+		recursos.add(Recurso.ORDENADORES);
+		recursos.add(Recurso.PIZARRA);
+		recursos.add(Recurso.PROYECTOR);
+		
+		Sala sala = new SalaPrivada(100, 987, 2, recursos, new ArrayList<Reserva> ());
+		
+		
+		
+		
+		
+		//new VentanaInformacionRecurso(sala);
 		new VentanaInformacionRecurso(evento);
 		//new InformacionRecurso(sala, new Cliente());
-		//new InformacionRecurso(libro, new Cliente());
+		//new VentanaInformacionRecurso(libro);
 		
 	}
 
