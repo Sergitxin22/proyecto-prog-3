@@ -12,6 +12,7 @@ import main.Main;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -22,6 +23,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 //import BiblioTech.TipoEvento;
 //import utils.Utils;
+
+import dbmejorada.SalaDTO;
 
 public class VentanaReservaConfirmada extends JFrame {
 
@@ -185,7 +188,14 @@ public class VentanaReservaConfirmada extends JFrame {
 		
 		// RECURSOS DE PRUEBA
 //		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, null, new ArrayList<Review>());	
-		Evento evento = new Evento(239, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<>(), new SalaEventos(null), LocalDate.now(), 10);
+		SalaDTO salaDTO = new SalaDTO();
+		salaDTO.setCapacidad(100);
+		salaDTO.setEvento(null);
+		salaDTO.setId(124);
+		salaDTO.setPiso(3);
+		salaDTO.setRecursos(null);
+		salaDTO.setTipo("Cursillo");
+		Evento evento = new Evento(13, "Evento sobre agricultura", TipoEvento.CURSILLO, new ArrayList<Cliente> (),salaDTO, LocalDateTime.now());
 //		SalaPrivada sala = new SalaPrivada(2, 110, 2, null, null);		
 		
 //		int id, String titulo, TipoEvento tipoEvento, ArrayList<Cliente> asistentes, SalaEventos sala, LocalDate fecha, int hora
