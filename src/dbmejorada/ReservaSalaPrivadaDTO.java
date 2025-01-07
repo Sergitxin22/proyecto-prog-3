@@ -3,7 +3,7 @@ package dbmejorada;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class ReservaSalaDTO {
+public class ReservaSalaPrivadaDTO {
 	private int id;
 	private LocalDateTime horaEntrada;
 	private LocalDateTime horaSalida;
@@ -11,7 +11,7 @@ public class ReservaSalaDTO {
 	private String dniCliente;
 	private int idSala;
 	
-	public ReservaSalaDTO(int id, LocalDateTime horaEntrada, LocalDateTime horaSalida, LocalDate fechaReserva,
+	public ReservaSalaPrivadaDTO(int id, LocalDateTime horaEntrada, LocalDateTime horaSalida, LocalDate fechaReserva,
 			String dniCliente, int idSala) {
 		super();
 		this.id = id;

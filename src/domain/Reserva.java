@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import dbmejorada.ReservaSalaDTO;
+import dbmejorada.ReservaSalaPrivadaDTO;
 import dbmejorada.SalaDTO;
 import dbmejorada.UsuarioDTO;
 import main.Main;
@@ -37,7 +37,7 @@ public class Reserva {
 	}
 
 	
-	public Reserva(ReservaSalaDTO reserva) {
+	public Reserva(ReservaSalaPrivadaDTO reserva) {
 		super();
 		SalaDTO salaDTO = Main.getSalaDAO().getSala(reserva.getIdSala());
 		this.sala = new SalaPrivada(salaDTO);

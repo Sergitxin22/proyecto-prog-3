@@ -5,8 +5,8 @@ import dbmejorada.EventoDAO;
 import dbmejorada.EventoDAOInterface;
 import dbmejorada.LibroDAO;
 import dbmejorada.LibroDAOInterface;
-import dbmejorada.ReservaSalaDAO;
-import dbmejorada.ReservaSalaDAOInterface;
+import dbmejorada.ReservaSalaPrivadaDAO;
+import dbmejorada.ReservaSalaPrivadaDAOInterface;
 import dbmejorada.ReviewDAO;
 import dbmejorada.ReviewDAOInterface;
 import dbmejorada.SalaDAO;
@@ -49,7 +49,7 @@ public class Main {
 	//	Declaración de los DAO
 	private static UsuarioDAOInterface usuarioDAO;
 	private static SalaDAOInterface salaDAO;
-	private static ReservaSalaDAOInterface reservaSalaDAO;
+	private static ReservaSalaPrivadaDAOInterface reservaSalaPrivadaDAO;
 	private static ReviewDAOInterface reviewDAO;
 	private static LibroDAOInterface libroDAO;
 	private static EventoDAOInterface eventoDAO;
@@ -70,12 +70,12 @@ public class Main {
 		Main.salaDAO = salaDAO;
 	}
 
-	public static ReservaSalaDAOInterface getReservaSalaDAO() {
-		return reservaSalaDAO;
+	public static ReservaSalaPrivadaDAOInterface getReservaSalaPrivadaDAO() {
+		return reservaSalaPrivadaDAO;
 	}
 
-	public static void setReservaSalaDAO(ReservaSalaDAOInterface reservaSalaDAO) {
-		Main.reservaSalaDAO = reservaSalaDAO;
+	public static void setReservaSalaPrivadaDAO(ReservaSalaPrivadaDAOInterface reservaSalaPrivadaDAO) {
+		Main.reservaSalaPrivadaDAO = reservaSalaPrivadaDAO;
 	}
 	
 	public static ReviewDAOInterface getReviewDAO() {
@@ -165,7 +165,7 @@ public class Main {
         // Inicialización de DAOs
         usuarioDAO = new UsuarioDAO();
         salaDAO = new SalaDAO();
-        reservaSalaDAO = new ReservaSalaDAO();
+        reservaSalaPrivadaDAO = new ReservaSalaPrivadaDAO();
         reviewDAO = new ReviewDAO();
         libroDAO = new LibroDAO();
         eventoDAO = new EventoDAO();
