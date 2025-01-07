@@ -25,16 +25,21 @@ import domain.SalaPublica;
 import domain.Usuario;
 import gui.VentanaPortada;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Main {
+	private final static String PROPERTIES_FILE = "src/dbmejorada/app.properties";
+	
 	private static Usuario usuario;
 	private static SalaPublica salaPublica;
 	private static Connection conexionBD;
@@ -134,13 +139,22 @@ public class Main {
     	usuario = null;
     	salaPublica = new SalaPublica(250, 0, 1);
     	
-    	String nombreBD = "resources/db/bibliotech-prueba";
+    	Properties properties = new Properties();
+		try {
+			properties.load(new FileReader(PROPERTIES_FILE));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		String driver = properties.getProperty("driver");
+		String connection = properties.getProperty("connection");
+		String nombreBD = properties.getProperty("dbName");
     	
 
     	// Comprobación del .jar e inicialización de Conexión y Logger
         try {
-            Class.forName("org.sqlite.JDBC");
-            conexionBD = DriverManager.getConnection("jdbc:sqlite:" + nombreBD + ".db");
+            Class.forName(driver);
+            conexionBD = DriverManager.getConnection(connection);
             logger = Logger.getLogger("GestorPersistencia-" + nombreBD);
         } catch (ClassNotFoundException | SQLException | NullPointerException e) {
             conexionBD = null;
