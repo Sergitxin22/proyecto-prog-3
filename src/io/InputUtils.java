@@ -33,8 +33,13 @@ public class InputUtils {
 		try {
 			Scanner sc = new Scanner(f);
 			
+			if (sc.hasNextLine()) {
+	            sc.nextLine(); // Esta línea se usa para saltarse la primera línea (encabezados)
+	        }
+			
 			int contador = 0;
 			while (sc.hasNextLine() && contador<35) {
+				
 				String linea = sc.nextLine();
 				String[] datos = linea.split(";");
 				
