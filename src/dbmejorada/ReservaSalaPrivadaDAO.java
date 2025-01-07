@@ -25,24 +25,23 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
         pruebas();
     }
 	
-	// nuevos
 	@Override
-	public boolean addReservaSalaPrivada(ReservaSalaPrivadaDTO reserva) {
+	public boolean addReservaSalaPrivada(ReservaSalaPrivadaDTO reservaSalaPrivada) {
 		String insertSQLReservaSalaPrivada = "INSERT INTO ReservaSalaPrivada(fecha_entrada, fecha_salida, fecha_reserva, dni_cliente, id_sala) VALUES (?, ?, ?, ?, ?)";
 
     	PreparedStatement preparedStmtReservaSalaPrivada;
 		try {
 			preparedStmtReservaSalaPrivada = conexionBD.prepareStatement(insertSQLReservaSalaPrivada);
-			preparedStmtReservaSalaPrivada.setString(1, reserva.getHoraEntrada().toString());
-	   		preparedStmtReservaSalaPrivada.setString(2, reserva.getHoraSalida().toString());
-	   		preparedStmtReservaSalaPrivada.setString(3, reserva.getFechaReserva().toString());
-	    	preparedStmtReservaSalaPrivada.setString(4, reserva.getDniCliente());
-	    	preparedStmtReservaSalaPrivada.setInt(5, reserva.getIdSala());
+			preparedStmtReservaSalaPrivada.setString(1, reservaSalaPrivada.getHoraEntrada().toString());
+	   		preparedStmtReservaSalaPrivada.setString(2, reservaSalaPrivada.getHoraSalida().toString());
+	   		preparedStmtReservaSalaPrivada.setString(3, reservaSalaPrivada.getFechaReserva().toString());
+	    	preparedStmtReservaSalaPrivada.setString(4, reservaSalaPrivada.getDniCliente());
+	    	preparedStmtReservaSalaPrivada.setInt(5, reservaSalaPrivada.getIdSala());
 	    		
 	    	preparedStmtReservaSalaPrivada.executeUpdate();
 		} catch (SQLException e) {
 			if (logger != null)
-                logger.log(Level.SEVERE, "Error al añadir la reserva: ", e);
+                logger.log(Level.SEVERE, "Error al añadir la reserva de la sala privada: ", e);
             return false;
 		}
 		return true;
@@ -50,14 +49,14 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
     
 
 	@Override
-	public ReservaSalaPrivadaDTO getReservaSalaPrivadaById(int idReservaSala) {
-		ReservaSalaPrivadaDTO reservaSala = null;
+	public ReservaSalaPrivadaDTO getReservaSalaPrivadaById(int idReservaSalaPrivada) {
+		ReservaSalaPrivadaDTO reservaSalaPrivada = null;
 		
 		String insertSQL = "SELECT * FROM ReservaSalaPrivada WHERE id=?;";
         PreparedStatement preparedStmt;
 		try {
 			preparedStmt = conexionBD.prepareStatement(insertSQL);
-			preparedStmt.setInt(1, idReservaSala);
+			preparedStmt.setInt(1, idReservaSalaPrivada);
 			
 	        try (ResultSet rs = preparedStmt.executeQuery()) {
                 
@@ -70,23 +69,23 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
                    String dniCliente = rs.getString("dni_cliente");
                    int idSala = rs.getInt("id_sala");
                    
-                   reservaSala = new ReservaSalaPrivadaDTO(id, LocalDateTime.parse(horaEntrada), LocalDateTime.parse(horaSalida), LocalDate.parse(fechaReserva), dniCliente, idSala);
+                   reservaSalaPrivada = new ReservaSalaPrivadaDTO(id, LocalDateTime.parse(horaEntrada), LocalDateTime.parse(horaSalida), LocalDate.parse(fechaReserva), dniCliente, idSala);
                 }
-                System.out.println("Reserva sala sin fallos");
-                return reservaSala;
+                System.out.println("Reserva sala privada sin fallos");
+                return reservaSalaPrivada;
             }
 	        	        
 		} catch (SQLException e) {
 			if (logger != null) {
-				logger.log(Level.SEVERE, "Error al recuperar la reserva sala: ", e);
+				logger.log(Level.SEVERE, "Error al recuperar la reserva de sala privada: ", e);
 			}
-			return reservaSala;
+			return reservaSalaPrivada;
 		}
 	}
 
 	@Override
 	public ArrayList<ReservaSalaPrivadaDTO> getReservasSalaPrivadaByUsuarioDTO(UsuarioDTO usuario) {
-		ArrayList<ReservaSalaPrivadaDTO> reservasSala = new ArrayList<ReservaSalaPrivadaDTO>();
+		ArrayList<ReservaSalaPrivadaDTO> reservasSalaPrivada = new ArrayList<ReservaSalaPrivadaDTO>();
 		
 		String insertSQL = "SELECT * FROM ReservaSalaPrivada WHERE dni_cliente=?;";
         PreparedStatement preparedStmt;
@@ -107,17 +106,17 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
                    int idSala = rs.getInt("id_sala");
                    
                    reserva = new ReservaSalaPrivadaDTO(id, LocalDateTime.parse(horaEntrada), LocalDateTime.parse(horaSalida), LocalDate.parse(fechaReserva), dniCliente, idSala);
-                   reservasSala.add(reserva);
+                   reservasSalaPrivada.add(reserva);
                 }
-                System.out.println("Reserva sala sin fallos");
-                return reservasSala;
+                System.out.println("Reserva sala privada sin fallos");
+                return reservasSalaPrivada;
             }
 	        	        
 		} catch (SQLException e) {
 			if (logger != null) {
-				logger.log(Level.SEVERE, "Error al recuperar la reserva sala: ", e);
+				logger.log(Level.SEVERE, "Error al recuperar la reserva sala privada: ", e);
 			}
-			return reservasSala;
+			return reservasSalaPrivada;
 		}
 	}
 
@@ -134,7 +133,7 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
             return (filas > 0) ? true : false;
         } catch (SQLException e) {
             if (logger != null)
-                logger.log(Level.SEVERE, "Error al eliminar la reserva de la sala: ", e);
+                logger.log(Level.SEVERE, "Error al eliminar la reserva de la sala privada: ", e);
             return false;
         }
 	}
@@ -166,7 +165,7 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
             return (filas > 0) ? true : false;
         } catch (SQLException e) {
             if (logger != null)
-                logger.log(Level.SEVERE, "Error al actualizar la reserva de la sala: ", e);
+                logger.log(Level.SEVERE, "Error al actualizar la reserva de la sala privada: ", e);
             return false;
         }
 	}
@@ -196,13 +195,13 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
                     
                     salasDisponibles.add(idSala);
                 }
-                System.out.println("Ids de salas recuperados correctamente");
+                System.out.println("Ids de salas privadas recuperados correctamente");
             }
 	        	        
 		} catch (SQLException e) {
 			if (logger != null)
 				System.out.println(insertSQL);
-                logger.log(Level.SEVERE, "Error al recuperar los Ids de salas: ", e);
+                logger.log(Level.SEVERE, "Error al recuperar los Ids de salas privadas: ", e);
             return salasDisponibles;
 		}
 		
@@ -234,13 +233,13 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
                    reserva = new ReservaSalaPrivadaDTO(id, LocalDateTime.parse(horaEntrada), LocalDateTime.parse(horaSalida), LocalDate.parse(fechaReserva), dniCliente, idSala);
                    reservasSalaPrivada.add(reserva);
                 }
-                System.out.println("Reserva sala sin fallos");
+                System.out.println("Reserva sala privada sin fallos");
                 return reservasSalaPrivada;
             }
 	        	        
 		} catch (SQLException e) {
 			if (logger != null) {
-				logger.log(Level.SEVERE, "Error al recuperar la reserva sala: ", e);
+				logger.log(Level.SEVERE, "Error al recuperar la reserva sala privada: ", e);
 			}
 			return reservasSalaPrivada;
 		}
@@ -262,51 +261,15 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
 	}
 	
 	public void pruebas() {
-//		System.out.println("****Borrar registros****");
-//    	//borrarRegistros();
-//    	
-//        Cliente u = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDateTime.now(), "hola", new ArrayList<>(),
-//              new ArrayList<>(), 3);
-//        Admin a = new Admin("11111111B", "Aroa", "aroa@no.com", LocalDateTime.now(), "aroa2003", new ArrayList<>());
-//        
-//        System.out.println("****Añadir usuarios****");
-//        //addUsuario(u);
-//        //addUsuario(a);
-//        
-//        System.out.println("****Recuperar usuarios****");
-//        UsuarioDTO uDTO = getUsuario("00000000A", "hola");
-//        System.out.println(uDTO);
-//        System.out.println(getUsuario("11111111B", "aroa2003"));
-//
-//        System.out.println("****Recuperar usuario incorrecto****");
-//        System.out.println(getUsuario("00000000A", "holas"));
-//        
-//        System.out.println("****Cambiar contraseña y recuperar usuario con la contraseña anterior****");
-//        updatePassword(uDTO, "contraseña cambiada");
-//        uDTO = getUsuario("00000000A", "hola");
-//        System.out.println(uDTO);
-//        
-//        System.out.println("****Recuperar usuario con la contraseña nueva****");
-//        uDTO = getUsuario("00000000A", "contraseña cambiada");
-//        System.out.println(uDTO);
-	
-//		ArrayList<Integer> salas = getIdSalasDisponiblesEntreFechas("2024-12-05T21:48:00.492987900", "2024-12-08T21:48:00.492987900");
-//		System.out.println(salas);
-		
-//		ReservaSalaDTO reserva = getReservaSalaById(1);
-//		System.out.println(reserva);
-//		
-//		UsuarioDTO usuario = new UsuarioDTO();
-//		usuario.setDni("00000000A");
-//		ArrayList<ReservaSalaPrivadaDTO> reservaUsuario = getReservasSalaByUsuarioDTO(usuario);
-//		System.out.println(reservaUsuario);
-//		
-//		usuario.setDni("00000001A");
-//		ArrayList<ReservaSalaPrivadaDTO> reservaUsuario1 = getReservasSalaByUsuarioDTO(usuario);
-//		System.out.println(reservaUsuario1);
-//		
-//		ArrayList<ReservaSalaPrivadaDTO> listaReservaSalas = getReservasSalaPrivadaByIdSala(38);
-//		System.out.println(listaReservaSalas);
+		//TODO: hacer pruebas
+//		boolean addReservaSalaPrivada(ReservaSalaPrivadaDTO reserva);
+//		ReservaSalaPrivadaDTO getReservaSalaPrivadaById(int idReservaSala);
+//		ArrayList<ReservaSalaPrivadaDTO> getReservasSalaPrivadaByUsuarioDTO(UsuarioDTO usuario);
+//		boolean deleteReservaSalaPrivadaById(int idReservaSala);
+//		boolean isSalaPrivadaReservable(ReservaSalaPrivadaDTO reserva);
+//		boolean updateReservaSalaPrivada(ReservaSalaPrivadaDTO reserva);
+//		ArrayList<ReservaSalaPrivadaDTO> getReservasSalaPrivadaByIdSala(int idSala);
+//		ArrayList<Integer> getIdSalasPrivadasDisponiblesEntreFechas(String fechaI, String fechaF);
 	}
 
 }

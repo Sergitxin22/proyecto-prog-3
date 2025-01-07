@@ -7,6 +7,8 @@ import dbmejorada.LibroDAO;
 import dbmejorada.LibroDAOInterface;
 import dbmejorada.ReservaSalaPrivadaDAO;
 import dbmejorada.ReservaSalaPrivadaDAOInterface;
+import dbmejorada.ReservaSalaPublicaDAO;
+import dbmejorada.ReservaSalaPublicaDAOInterface;
 import dbmejorada.ReviewDAO;
 import dbmejorada.ReviewDAOInterface;
 import dbmejorada.SalaDAO;
@@ -50,6 +52,7 @@ public class Main {
 	private static UsuarioDAOInterface usuarioDAO;
 	private static SalaDAOInterface salaDAO;
 	private static ReservaSalaPrivadaDAOInterface reservaSalaPrivadaDAO;
+	private static ReservaSalaPublicaDAOInterface reservaSalaPublicaDAO;
 	private static ReviewDAOInterface reviewDAO;
 	private static LibroDAOInterface libroDAO;
 	private static EventoDAOInterface eventoDAO;
@@ -78,6 +81,14 @@ public class Main {
 		Main.reservaSalaPrivadaDAO = reservaSalaPrivadaDAO;
 	}
 	
+	public static ReservaSalaPublicaDAOInterface getReservaSalaPublicaDAO() {
+		return reservaSalaPublicaDAO;
+	}
+
+	public static void setReservaSalaPublicaDAO(ReservaSalaPublicaDAOInterface reservaSalaPublicaDAO) {
+		Main.reservaSalaPublicaDAO = reservaSalaPublicaDAO;
+	}
+
 	public static ReviewDAOInterface getReviewDAO() {
 		return reviewDAO;
 	}
@@ -166,6 +177,7 @@ public class Main {
         usuarioDAO = new UsuarioDAO();
         salaDAO = new SalaDAO();
         reservaSalaPrivadaDAO = new ReservaSalaPrivadaDAO();
+        reservaSalaPublicaDAO = new ReservaSalaPublicaDAO();
         reviewDAO = new ReviewDAO();
         libroDAO = new LibroDAO();
         eventoDAO = new EventoDAO();
@@ -195,6 +207,6 @@ public class Main {
 //    	reviewDAO.addReview(review);
         
         
-    	new VentanaPortada();
+//    	new VentanaPortada();
     }
 }
