@@ -91,7 +91,7 @@ public class Header extends JPanel {
 			@Override
             public void mouseClicked(MouseEvent e) {
 				switch(nombreIconoUsuario) {
-					case "user.png":
+					case "noUser.png":
 						new VentanaIniciarSesion(ventana);
 						ventana.setVisible(false);
 						break;

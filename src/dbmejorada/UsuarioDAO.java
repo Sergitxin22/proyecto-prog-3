@@ -26,7 +26,7 @@ public class UsuarioDAO implements UsuarioDAOInterface {
     public UsuarioDAO() {
        	conexionBD = Main.getConexionBD();
       	logger = Main.getLogger();
-        pruebas();
+//        pruebas();
     }
     
     @Override
@@ -68,7 +68,7 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 	}
 
 	@Override
-	public UsuarioDTO getUsuario(String dni, String password) { // Se usa para el inicio de sesiones
+	public boolean isUsuarioCorrecto(String dni, String password) { // Se usa para el inicio de sesiones
 		UsuarioDTO usuario = null;
 		
 		String insertSQL = "SELECT nombre FROM Usuario WHERE dni = ? AND contrasena = ?";
@@ -88,14 +88,18 @@ public class UsuarioDAO implements UsuarioDAOInterface {
                     usuario.setNombre(nombre);
                 }
                 System.out.println("Usuario recuperado correctamente");
-                return usuario;
+                return (usuario != null) ? true : false;  
             }
+	        catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
 	        	        
 		} catch (SQLException e) {
 			if (logger != null) {
 				logger.log(Level.SEVERE, "Error al recuperar el usuario: ", e);
 			}
-			return usuario;
+			return false;
 		}
 	}
 		
@@ -127,11 +131,10 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 	            return usuario;
 			}
         
-		if (usuario != null) {
-			getDatosAdicionalesUsuario(usuario);
-		}
-		
-		return usuario;
+			if (usuario != null) {
+				getDatosAdicionalesUsuario(usuario);
+			}
+			return usuario;
 	}
 	
 	@Override
@@ -214,7 +217,13 @@ public class UsuarioDAO implements UsuarioDAOInterface {
         //addUsuario(a);
         
         System.out.println("****Recuperar usuarios****");
-        UsuarioDTO uDTO = getUsuario("00000000A", "hola");
+        boolean existeUsuario = getUsuario("00000000A", "hola");
+        
+        UsuarioDTO uDTO = new UsuarioDTO(); 
+        if (existeUsuario) {
+			uDTO = getUsuario("00000000A");
+		}
+        
         System.out.println(uDTO);
         System.out.println(getUsuario("11111111B", "aroa2003"));
 
@@ -223,11 +232,11 @@ public class UsuarioDAO implements UsuarioDAOInterface {
         
         System.out.println("****Cambiar contraseña y recuperar usuario con la contraseña anterior****");
         updatePassword(uDTO, "contraseña cambiada");
-        uDTO = getUsuario("00000000A", "hola");
+//        uDTO = getUsuario("00000000A", "hola");
         System.out.println(uDTO);
         
         System.out.println("****Recuperar usuario con la contraseña nueva****");
-        uDTO = getUsuario("00000000A", "contraseña cambiada");
+//        uDTO = getUsuario("00000000A", "contraseña cambiada");
         System.out.println(uDTO);
 	}
 }
