@@ -94,19 +94,17 @@ public class VentanaIniciarSesion extends JFrame {
 			String dni = tfDNI.getText();
 			String password = new String(tfContrasena.getPassword());
 			
-			if (Main.getUsuarioDAO().getUsuario(dni, password) == null) { // El usuario no existe en la BD
+			if (!Main.getUsuarioDAO().isUsuarioCorrecto(dni, password)) { // El usuario no existe en la BD
 				JOptionPane.showMessageDialog(this, "Este usuario no existe o la contraseña es incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
 				tfDNI.setText("");
 				tfContrasena.setText("");
 			} else { // El usuario existe en la BD
-				
-				UsuarioDTO usuarioLogueado = new UsuarioDTO(); // getUsuario
+				UsuarioDTO usuarioLogueado = Main.getUsuarioDAO().getUsuario(dni); // getUsuario
 				// getDatosAdicionales
 				if (usuarioLogueado.isAdmin()) {
-					Main.setUsuario(new Admin(usuarioLogueado.getDni(), dni, "email", LocalDateTime.now(), password, new ArrayList<String>()));
+					Main.setUsuario(new Admin(usuarioLogueado));
 				} else {
-					Main.setUsuario(new Cliente(usuarioLogueado.getDni(), dni, null, null, password,
-							null, null, usuarioLogueado.getAmonestaciones()));
+					Main.setUsuario(new Cliente(usuarioLogueado));
 				}
 				
 //				Instanciar una nueva ventana Madre
