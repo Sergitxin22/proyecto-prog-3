@@ -32,6 +32,7 @@ import gui.components.AddPanel;
 import gui.components.Header;
 import io.InputUtils;
 import main.Main;
+import utils.Utils;
 
 public class VentanaBiblioteca extends JFrame {
 	
@@ -195,20 +196,21 @@ public class VentanaBiblioteca extends JFrame {
 	}
 
 	private void ordenarLibros(MetodosDeOrdenamiento item, JPanel subPanelContenido2) {
-		switch (item) {
-		case TITULO:
-			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getTitulo().compareTo(o2.getTitulo()));
-			break;
-		case AUTOR:
-			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getAutor().compareTo(o2.getAutor()));
-			break;
-		case FECHA:
-			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getFechaPublicacion() - o2.getFechaPublicacion());
-			break;
-		default:
-			listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
-			break;
-		}
+//		switch (item) {
+//		case TITULO:
+//			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getTitulo().compareTo(o2.getTitulo()));
+//			break;
+//		case AUTOR:
+//			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getAutor().compareTo(o2.getAutor()));
+//			break;
+//		case FECHA:
+//			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getFechaPublicacion() - o2.getFechaPublicacion());
+//			break;
+//		default:
+//			listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
+//			break;
+//		}
+		listaLibrosRenderizada = Utils.sortArrayMetodoDeOrdenamiento(listaLibrosRenderizada, item, listaLibrosRenderizada.size());
 		recargarPanelContenido(subPanelContenido2);
 	}
 	
