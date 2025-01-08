@@ -11,7 +11,7 @@ public class SalaDTO {
 	private int id;
 	private int piso;
 	private ArrayList<Recurso> recursos;
-	private Evento evento;
+	private int idEvento;
 	private String tipo;
 	
 	public int getCapacidad() {
@@ -46,12 +46,12 @@ public class SalaDTO {
 		this.recursos = recursos;
 	}
 	
-	public Evento getEvento() {
-		return evento;
+	public int getIdEvento() {
+		return idEvento;
 	}
 	
-	public void setEvento(Evento evento) {
-		this.evento = evento;
+	public void setEvento(int idEvento) {
+		this.idEvento = idEvento;
 	}
 	
 	public String getTipo() {

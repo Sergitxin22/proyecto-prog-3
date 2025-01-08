@@ -239,7 +239,7 @@ public class GestorDB {
              PreparedStatement preparedStmt = conexionBD.prepareStatement(insertSQL);
              preparedStmt.setString(1, review.getComentario());
              preparedStmt.setInt(2, review.getRating());
-             preparedStmt.setLong(3, review.getLibro().getIsbn());
+             preparedStmt.setLong(3, review.getLibroDTO().getIsbn());
              preparedStmt.setString(4, review.getCliente().getDni());
 
              int filas = preparedStmt.executeUpdate();

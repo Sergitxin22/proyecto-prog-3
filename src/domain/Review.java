@@ -2,20 +2,21 @@ package domain;
 
 import java.util.Objects;
 
+import dbmejorada.LibroDTO;
 import dbmejorada.UsuarioDTO;
 
 public class Review {
 
-	private Libro libro;
+	private LibroDTO libroDTO;
 	private UsuarioDTO cliente;
 	private String comentario;
 	private int rating;
 	
-	public Libro getLibro() {
-		return libro;
+	public LibroDTO getLibroDTO() {
+		return libroDTO;
 	}
-	public void setLibro(Libro libro) {
-		this.libro = libro;
+	public void setLibroDTO(LibroDTO libroDTO) {
+		this.libroDTO = libroDTO;
 	}
 	public UsuarioDTO getCliente() {
 		return cliente;
@@ -36,9 +37,9 @@ public class Review {
 		this.rating = rating;
 	}
 	
-	public Review(Libro libro, UsuarioDTO cliente, String comentario, int rating) {
+	public Review(LibroDTO libroDTO, UsuarioDTO cliente, String comentario, int rating) {
 		super();
-		this.libro = libro;
+		this.libroDTO = libroDTO;
 		this.cliente = cliente;
 		this.comentario = comentario;
 		this.rating = rating;
@@ -46,7 +47,7 @@ public class Review {
 	
 	public Review() {
 		super();
-		this.libro = new Libro();
+		this.libroDTO = new LibroDTO();
 		this.cliente = new UsuarioDTO();
 		this.comentario = "";
 		this.rating = 0;
@@ -62,7 +63,7 @@ public class Review {
 			return false;
 		Review other = (Review) obj;
 		return Objects.equals(cliente, other.cliente) && Objects.equals(comentario, other.comentario)
-				&& Objects.equals(libro, other.libro) && rating == other.rating;
+				&& Objects.equals(libroDTO, other.libroDTO) && rating == other.rating;
 	}
 	
 	@Override

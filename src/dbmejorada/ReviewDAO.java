@@ -31,7 +31,7 @@ public class ReviewDAO implements ReviewDAOInterface {
             PreparedStatement preparedStmt = conexionBD.prepareStatement(insertSQL);
             preparedStmt.setString(1, review.getComentario());
             preparedStmt.setInt(2, review.getRating());
-            preparedStmt.setLong(3, review.getLibro().getIsbn());
+            preparedStmt.setLong(3, review.getLibroDTO().getIsbn());
             preparedStmt.setString(4, review.getCliente().getDni());
 
             int filas = preparedStmt.executeUpdate();
@@ -61,7 +61,8 @@ public class ReviewDAO implements ReviewDAOInterface {
 	        	result = new ArrayList<>();
                 while (rs.next()) {
                    Review review = new Review();
-                   // review.setLibro(Main.getLibroDAO().getLibro(rs.getInt("isbn_libro"))); TODO: Esperando a LibroDAO
+                   
+                   review.setLibroDTO(Main.getLibroDAO().getLibro(rs.getInt("isbn_libro")));
                    review.setCliente(Main.getUsuarioDAO().getUsuario(rs.getString("dni_cliente")));
                    review.setRating(rs.getInt("rating"));
                    review.setComentario(rs.getString("comentario"));
@@ -98,7 +99,7 @@ public class ReviewDAO implements ReviewDAOInterface {
 	        	result = new ArrayList<>();
                 while (rs.next()) {
                    Review review = new Review();
-                   // review.setLibro(Main.getLibroDAO().getLibro(rs.getInt("isbn_libro"))); TODO: Esperando a LibroDAO
+                   review.setLibroDTO(Main.getLibroDAO().getLibro(rs.getInt("isbn_libro")));
                    review.setCliente(Main.getUsuarioDAO().getUsuario(rs.getString("dni_cliente")));
                    review.setRating(rs.getInt("rating"));
                    review.setComentario(rs.getString("comentario"));
