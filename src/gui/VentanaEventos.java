@@ -2,19 +2,15 @@ package gui;
 
 import domain.Admin;
 import domain.Evento;
-import domain.Sala;
-import domain.SalaEventos;
 import domain.Seccion;
 import domain.Usuario;
 import gui.components.AddPanel;
 import gui.components.Header;
-import io.InputUtils;
 import main.Main;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,7 +22,7 @@ import javax.swing.border.EmptyBorder;
 
 // BASADO EN EL CÓDIGO DE VentanaBiblioteca
 
-public class VentanaEventos extends JFrame { // TODO: Falta la funcionalidad de añadir evento
+public class VentanaEventos extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private List<Evento> eventos;
@@ -34,14 +30,7 @@ public class VentanaEventos extends JFrame { // TODO: Falta la funcionalidad de 
 
 	public VentanaEventos() {
 
-		ArrayList<SalaEventos> salasEventos = new ArrayList<>();
-
-		for (Sala sala : InputUtils.cargarSalas()) {
-			if (sala instanceof SalaEventos) {
-				salasEventos.add((SalaEventos) sala);
-			}
-		}
-		eventos = InputUtils.cargarEventos(salasEventos);
+		eventos = Main.getEventoDAO().getEventos();
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1280, 720);
@@ -50,7 +39,7 @@ public class VentanaEventos extends JFrame { // TODO: Falta la funcionalidad de 
 		if (usuario == null) {
 			setTitle("Eventos - No logueado");			
 		} else {			
-			setTitle("Eventos - logueado" + usuario.getNombre());
+			setTitle("Eventos - Logueado" + usuario.getNombre());
 		}
 		
 		// Header
@@ -64,7 +53,7 @@ public class VentanaEventos extends JFrame { // TODO: Falta la funcionalidad de 
 	
 		// Añadir evento (solo para Admins)
 		if (usuario instanceof Admin) {
-			JPanel panelAddLibro = new AddPanel(Seccion.EVENTOS, usuario);
+			JPanel panelAddLibro = new AddPanel(this, Seccion.EVENTOS, usuario);
 	        subPanelContenido1.add(panelAddLibro, BorderLayout.WEST);
 		}		
 		

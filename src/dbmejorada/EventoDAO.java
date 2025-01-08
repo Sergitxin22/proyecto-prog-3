@@ -5,11 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import domain.Cliente;
 import domain.Evento;
+import domain.SalaEventos;
 import domain.TipoEvento;
 import main.Main;
 
@@ -26,7 +27,7 @@ public class EventoDAO implements EventoDAOInterface {
 	@Override
 	public boolean addEvento(Evento evento) {
 		try {
-            String insertSQLEvento = "INSERT INTO Evento(id, titulo, id_tipo_evento, id_sala_evento, fecha) VALUES (?, ?, ?, ?, ?)";
+            String insertSQLEvento = "INSERT INTO Evento(id, titulo, id_tipo_evento, id_sala, fecha) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement preparedStmtEvento = conexionBD.prepareStatement(insertSQLEvento);
             preparedStmtEvento.setInt(1, evento.getId());
             preparedStmtEvento.setString(2, evento.getTitulo());
@@ -39,7 +40,7 @@ public class EventoDAO implements EventoDAOInterface {
 
             String insertSQL = "INSERT INTO AsistenciaEvento(id, dni_cliente) VALUES (?, ?)";
             
-            for (Cliente asistente : evento.getAsistentes()) {
+            for (UsuarioDTO asistente : evento.getAsistentes()) {
             	 PreparedStatement preparedStmtAsistenciaEvento = conexionBD.prepareStatement(insertSQL);
                  preparedStmtAsistenciaEvento.setInt(1, evento.getId());
                  preparedStmtAsistenciaEvento.setString(2, asistente.getDni());
@@ -72,10 +73,10 @@ public class EventoDAO implements EventoDAOInterface {
                    evento.setId(rs.getInt("id"));
                    evento.setTitulo(rs.getString("titulo"));
                    evento.setFechaHora(LocalDateTime.parse(rs.getString("fecha"))); // TODO: Comprobar que esto funciona
-                   evento.setIdSala(rs.getInt("id_sala_evento"));
+                   evento.setIdSala(rs.getInt("id_sala"));
                    evento.setTipoEvento(getTipoEvento(rs.getInt("id_tipo_evento")));
                 }
-                System.out.println("Sala recuperada correctamente");
+                System.out.println("Evento recuperado correctamente");
                 
     			preparedStmt.close();
                 
@@ -83,12 +84,69 @@ public class EventoDAO implements EventoDAOInterface {
 	        	        
 		} catch (SQLException e) {
 			if (logger != null) {
-				logger.log(Level.SEVERE, "Error al recuperar la sala: ", e);
+				logger.log(Level.SEVERE, "Error al recuperar el evento: ", e);
 				return evento;
 			}
 		} 
 		
 		return evento;	
+	}
+	
+	@Override
+	public ArrayList<Evento> getEventos() {
+		ArrayList<Evento> result = new ArrayList<>();
+		
+		String selectSQL = "SELECT * FROM Evento";
+        PreparedStatement preparedStmt;
+		try {
+			preparedStmt = conexionBD.prepareStatement(selectSQL);
+
+	        try (ResultSet rs = preparedStmt.executeQuery()) {
+	        	while(rs.next()) {
+                	SalaEventos salaEventos = new SalaEventos(Main.getSalaDAO().getSala(rs.getInt("id_sala")));
+                    Evento evento = new Evento(rs.getInt("id"), rs.getString("titulo"), getTipoEvento(rs.getInt("id_tipo_evento")), getAsistentesEvento(rs.getInt("id")), salaEventos, LocalDateTime.parse(rs.getString("fecha")));
+                    result.add(evento);
+	        	}
+                
+    			preparedStmt.close();
+                
+            }
+	        	        
+		} catch (SQLException e) {
+			if (logger != null) {
+				logger.log(Level.SEVERE, "Error al recuperar un evento: ", e);
+				return result;
+			}
+		} 
+		
+		return result;	
+	}
+	
+	@Override
+	public ArrayList<UsuarioDTO> getAsistentesEvento(int id) {
+		ArrayList<UsuarioDTO> result = new ArrayList<>();
+		
+		String selectSQL = "SELECT * FROM AsistenciaEvento WHERE id_evento = ?";
+		try {
+			PreparedStatement preparedStmt = conexionBD.prepareStatement(selectSQL);
+			preparedStmt.setInt(1, id);
+			
+			ResultSet rs = preparedStmt.executeQuery();
+			
+			while(rs.next()) {
+				result.add(Main.getUsuarioDAO().getUsuario(rs.getString("dni_asistente")));
+			}
+			
+			preparedStmt.close();
+			
+		} catch (SQLException e) {
+			if (logger != null) {
+				logger.log(Level.SEVERE, "Error al recuperar un evento: ", e);
+				return result;
+			}
+		}
+		
+		return result;
 	}
 
 	@Override

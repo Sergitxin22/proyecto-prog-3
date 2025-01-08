@@ -22,7 +22,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import dbmejorada.UsuarioDAO;
+import dbmejorada.LibroDTO;
 import dbmejorada.UsuarioDTO;
 import utils.Utils;
 
@@ -94,13 +94,23 @@ public class VentanaAñadirReview extends JFrame {
 		publicarButton.addActionListener(e -> {
 			comment = comentarioTextArea.getText();
 			UsuarioDTO clienteDTO = new UsuarioDTO();
+			LibroDTO libroDTO = new LibroDTO();
 			
 			clienteDTO.setAdmin(false);
 			clienteDTO.setAmonestaciones(cliente.getAmonestaciones());
 			clienteDTO.setDni(cliente.getDni());
 			clienteDTO.setNombre(cliente.getNombre());
 			
-			Review review = new Review(libro, clienteDTO, comment, rating);
+			libroDTO.setAutor(libro.getAutor());
+			libroDTO.setFechaPublicacion(libro.getFechaPublicacion());
+			libroDTO.setGenero(libro.getGenero());
+			libroDTO.setIsbn(libro.getIsbn());
+			libroDTO.setNumeroDePaginas(libro.getNumeroDePaginas());
+			libroDTO.setRating(libro.getRating());
+			libroDTO.setSinopsis(libro.getSinopsis());
+			libroDTO.setTitulo(libro.getTitulo());
+			
+			Review review = new Review(libroDTO, clienteDTO, comment, rating);
 			libro.getReviews().add(review);
 			Main.getReviewDAO().addReview(review);
 

@@ -11,17 +11,17 @@ import domain.SalaPrivada;
 import domain.SalaPublica;
 import domain.TipoEvento;
 import domain.Usuario;
+import main.Main;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.ImageIcon;
 
-import dbmejorada.SalaDTO;
+import dbmejorada.LibroDTO;
 import dbmejorada.UsuarioDTO;
 import utils.Utils;
 
@@ -142,7 +142,7 @@ public class InputUtils {
 		return result;
 	}
 
-	public static ArrayList<Evento> cargarEventos(ArrayList<SalaEventos> salasEventos) {
+	public static ArrayList<Evento> cargarEventos() {
 		ArrayList<Evento> result = new ArrayList<>();
 
 		File file = new File("resources/data/eventos.csv");
@@ -158,10 +158,12 @@ public class InputUtils {
 				int idEvento = Integer.parseInt(fields[0]);
 				String tipoString = fields[1];
 				String titulo = fields[2];
-				//LocalDateTime fecha = LocalDateTime.parse(fields[3], DateTimeFormatter.ofPattern("dd-MM-yyyy")); TODO: Esto está mal, corregir
-				LocalDateTime fecha = LocalDateTime.now();
+				
 				int hora = Integer.parseInt(fields[4]);
 				int idSala = Integer.parseInt(fields[5]);
+				
+				String horaFormateada = fields[3] + "T" + hora + ":00:00";
+				LocalDateTime fecha = LocalDateTime.parse(horaFormateada, DateTimeFormatter.ofPattern("dd-MM-yyyy'T'HH:mm:ss"));
 
 				TipoEvento tipoEvento = null;
 				switch (tipoString) {
@@ -181,13 +183,8 @@ public class InputUtils {
 						tipoEvento = TipoEvento.TALLER;
 						break;
 				}
-
 				
-				
-				SalaDTO salaDTO = new SalaDTO();
-				salaDTO.setId(idSala);
-				
-				evento = new Evento(idEvento, titulo, tipoEvento, new ArrayList<Cliente> (), salaDTO, fecha);
+				evento = new Evento(idEvento, titulo, tipoEvento, new ArrayList<>(), new SalaEventos(Main.getSalaDAO().getSala(idSala)), fecha);
 
 				result.add(evento);
 				
@@ -229,7 +226,17 @@ public class InputUtils {
                         	usuarioDTO.setDni(((Cliente) usuario).getDni());
                         	usuarioDTO.setNombre(((Cliente) usuario).getNombre());
                         	
-                            Review review = new Review(libro, usuarioDTO, comentario, rating);
+                        	LibroDTO libroDTO = new LibroDTO();
+                        	libroDTO.setAutor(libro.getAutor());
+                        	libroDTO.setFechaPublicacion(libro.getFechaPublicacion());
+                        	libroDTO.setGenero(libro.getGenero());
+                        	libroDTO.setIsbn(libro.getIsbn());
+                        	libroDTO.setNumeroDePaginas(libro.getNumeroDePaginas());
+                        	libroDTO.setRating(libro.getRating());
+                        	libroDTO.setSinopsis(libro.getSinopsis());
+                        	libroDTO.setTitulo(libro.getTitulo());
+                        	
+                            Review review = new Review(libroDTO, usuarioDTO, comentario, rating);
                             
                             // Añadir la review al libro
                             libro.agregarReview(review);

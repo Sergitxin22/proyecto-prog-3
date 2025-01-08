@@ -1,99 +1,241 @@
 package gui;
 
-import domain.Admin;
-import domain.Seccion;
-import domain.Usuario;
-import gui.components.Header;
+import domain.Evento;
+import domain.SalaEventos;
+import domain.TipoEvento;
 import main.Main;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
-public class VentanaCrearEvento extends JFrame{
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
+
+public class VentanaCrearEvento extends JFrame {
 
 	private static final long serialVersionUID = -3996159568028430335L;
-	private Admin usuario = (Admin) Main.getUsuario();
-	
-	public VentanaCrearEvento() {
 		
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setTitle("Crear evento");
-		setSize(1280,720);
-		setLocationRelativeTo(null);
+		private NumberFormat format = NumberFormat.getIntegerInstance();
+	    private NumberFormatter numberFormatter = new NumberFormatter(format);
+	    
+		private int id;
+		private String titulo;
+		private TipoEvento tipoEvento = null;
+		private int idSala;
+		private LocalDateTime fechaHora;
 		
+		private JFormattedTextField tfId = new JFormattedTextField(numberFormatter);
+		private JTextField tfTitulo = new JTextField();
+		private JFormattedTextField tfSala = new JFormattedTextField(numberFormatter);
+		private JFormattedTextField tfFecha;
+		private JFormattedTextField tfHora = new JFormattedTextField(numberFormatter);
 		
-		Header header = new Header(Seccion.EVENTOS, usuario, this);
-		JPanel panelContenido = new JPanel(new BorderLayout());
-		JPanel tituloEvento = new JPanel();
-		JTextField titulo = new JTextField("Titulo");
-		JPanel body = new JPanel(new GridLayout(1,2));
-		JPanel panelTexto = new JPanel();
-//		panelTexto.setBackground(Color.WHITE);
-		JTextArea descripcion = new JTextArea("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in risus sem. Suspendisse mauris magna, rutrum et risus id, aliquet hendrerit massa. Phasellus eu lobortis massa. Nullam scelerisque egestas mollis. Etiam in elit et ante dapibus dignissim ac ullamcorper ipsum. Proin finibus a est ac aliquet. Proin tincidunt nibh finibus pellentesque facilisis. Fusce ut sem elementum, suscipit risus sed, egestas eros.\r\n"
-				+ "\r\n"
-				+ "Fusce vitae turpis id nunc rhoncus sollicitudin cursus at nisl. Suspendisse tincidunt dapibus nunc a blandit. Aenean commodo tincidunt felis, vel finibus mi interdum eget. Proin scelerisque consequat odio, ut hendrerit erat facilisis a. Vestibulum viverra pretium dui, sed euismod ligula elementum sed. Etiam gravida ultricies ipsum, et maximus odio mollis ac. Etiam lacus turpis, pulvinar eu tincidunt sit amet, semper non magna. Mauris consequat mi nec mi aliquet efficitur. Mauris a dui lectus. Nam ipsum enim, dapibus interdum ornare nec, sollicitudin et elit. Mauris in lacus a lectus suscipit fermentum. Donec vitae dapibus massa. In ac volutpat nisi, eu porttitor dolor. Quisque pharetra odio eget urna vulputate vehicula. Sed consequat nibh et turpis ullamcorper, nec accumsan nibh fringilla. Nunc volutpat mi ipsum, a varius ex vestibulum in.\r\n"
-				+ "\r\n"
-				+ "Etiam ac tellus velit. Praesent nunc erat, bibendum sit amet turpis nec, blandit gravida nunc. Donec molestie nibh at leo consectetur sollicitudin. Integer tristique odio augue, laoreet tincidunt metus vehicula non. Curabitur eu ante faucibus, aliquet lectus iaculis, sagittis sapien. Vivamus velit mauris, pellentesque porttitor velit et, convallis tincidunt nisl. Nunc eu rutrum dolor, quis eleifend ligula.\r\n"
-				+ "\r\n"
-				+ "Etiam semper a dolor vel mollis. Ut faucibus finibus augue, egestas accumsan leo scelerisque eu. Sed ac ante id ante auctor convallis. Aenean euismod mattis justo. Proin mattis risus ac justo eleifend, nec varius dui elementum. Phasellus semper, magna quis vulputate hendrerit, justo nisi cursus dui, eget fermentum ex leo eu dolor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.\r\n"
-				+ "\r\n"
-				+ "Nunc pellentesque diam vel dolor tincidunt fermentum. Vivamus placerat diam scelerisque, lacinia sapien in, semper velit. Aliquam facilisis quam libero, vitae sodales sem congue a. Maecenas in rhoncus elit, maximus dapibus erat. Donec blandit ex enim, vitae ultricies elit tristique vel. In congue leo magna, egestas tristique justo sagittis ut. Nunc consectetur enim non libero ultricies, lobortis posuere nisi efficitur. Curabitur ut diam quis elit tempor ultrices ac non magna. Phasellus sed ex quis magna sagittis tincidunt at in metus. In eget hendrerit nunc. Morbi tristique consectetur mi, quis scelerisque lacus semper id. Duis lectus diam, dignissim et urna nec, commodo euismod elit. Quisque ultricies nisi dignissim aliquam eleifend. In euismod consectetur tincidunt.");
-		JPanel panelBoton = new JPanel();
-//		panelBoton.setBackground(Color.DARK_GRAY);
-		JButton botonCrearEvento = new JButton("Crear evento");
+		private JRadioButton charlaRB = new JRadioButton();
+		private JRadioButton debateRB = new JRadioButton();
+		private JRadioButton seminarioRB = new JRadioButton();
+		private JRadioButton cursilloRB = new JRadioButton();
+		private JRadioButton tallerRB = new JRadioButton();
+		private JRadioButton conferenciaRB = new JRadioButton();
 		
+		ButtonGroup bg = new ButtonGroup();
 		
-		Font fuente = new Font("Arial", Font.BOLD, 40);
-		titulo.setFont(fuente);
-		Font fuenteBoton = new Font("Arial",Font.PLAIN,25);
-		botonCrearEvento.setFont(fuenteBoton);
+		public VentanaCrearEvento() {
+			setTitle("Crear evento");
+			setSize(650, 500);
+			setLocationRelativeTo(null);
+			
+			addWindowListener(new WindowAdapter() {
+		        @Override
+		        public void windowClosing(WindowEvent e) {
+		        	new VentanaEventos();
+		        	dispose();
+		        	}
+				});
+			
+			MaskFormatter fechaMask;
+			try {
+				fechaMask = new MaskFormatter("####-##-##");
+				fechaMask.setPlaceholderCharacter('_');
+				tfFecha = new JFormattedTextField(fechaMask);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+			
+			MaskFormatter horaMask;
+			try {
+				horaMask = new MaskFormatter("##:##");
+				horaMask.setPlaceholderCharacter('_');
+				tfHora = new JFormattedTextField(horaMask);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
 		
-		descripcion.setFont(new Font("Arial", Font.PLAIN, 18));
-		descripcion.setEditable(false);
-		descripcion.setLineWrap(true);
-		descripcion.setBorder(null);
-		descripcion.setBorder(BorderFactory.createEmptyBorder());
-		descripcion.setWrapStyleWord(true);
-//		descripcion.setBackground(Color.WHITE);
-		descripcion.setSize(620, 500);
-        
-		add(header,BorderLayout.NORTH);
-		add(panelContenido);
-		tituloEvento.add(titulo);
-		panelContenido.add(tituloEvento, BorderLayout.NORTH);
-		panelContenido.add(body);
-		panelTexto.add(descripcion);
-		body.add(panelTexto);
-		panelBoton.setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-	        gbc.gridx = 1; // Columna
-	        gbc.gridy = 1; // Fila
-	        gbc.weightx = 1.0;
-	        gbc.weighty = 1.0;
-	        gbc.anchor = GridBagConstraints.SOUTHEAST; // Esquina inferior derecha
-	        gbc.insets = new Insets(10, 10, 10, 10);
-		panelBoton.add(botonCrearEvento,gbc);
-		body.add(panelBoton);
+			
+			format.setGroupingUsed(false);
+			numberFormatter.setAllowsInvalid(false);
+		    numberFormatter.setMinimum(0);
+		    
+		    bg.add(charlaRB);
+		    bg.add(debateRB);
+		    bg.add(seminarioRB);
+		    bg.add(cursilloRB);
+		    bg.add(tallerRB);
+		    bg.add(conferenciaRB);
+		    
+		    charlaRB.setText("Charla");
+		    debateRB.setText("Debate");
+		    seminarioRB.setText("Seminario");
+		    cursilloRB.setText("Cursillo");
+		    tallerRB.setText("Taller");
+		    conferenciaRB.setText("Conferencia");
+			
+			// Texto superior
+			JLabel topText = new JLabel("Crear evento", SwingConstants.CENTER); // Label con texto centrado
+			topText.setFont(new Font("Verdana", Font.BOLD, 32));
+				
+				// Cuerpo de la ventana
+			JPanel body = new JPanel();
+			body.setLayout(new BoxLayout(body, BoxLayout.Y_AXIS));
+			
+			JLabel textId = new JLabel("ID");
+			textId.setFont(topText.getFont().deriveFont(Font.PLAIN, 20));
+			JLabel textTitulo = new JLabel("Título");
+			textTitulo.setFont(topText.getFont().deriveFont(Font.PLAIN, 20));
+			JLabel textNumeroSala = new JLabel("Número de sala");
+			textNumeroSala.setFont(topText.getFont().deriveFont(Font.PLAIN, 20));
+			JLabel textTipoEvento = new JLabel("Tipo de evento");
+			textTipoEvento.setFont(topText.getFont().deriveFont(Font.PLAIN, 20));
+			JLabel textFechaHora = new JLabel("Fecha y hora");
+			textFechaHora.setFont(topText.getFont().deriveFont(Font.PLAIN, 20));
+			
+			
+			tfId.setPreferredSize(new Dimension(125, 25));
+			tfTitulo.setPreferredSize(new Dimension(125, 25));
+			tfSala.setPreferredSize(new Dimension(125, 25));
+			tfFecha.setPreferredSize(new Dimension(125, 25));
+			tfHora.setPreferredSize(new Dimension(125, 25));
+			
+			JPanel tfIdPanel = new JPanel();
+			JPanel tfTituloPanel = new JPanel();
+			JPanel tfSalaPanel = new JPanel();
+			JPanel tfFechaPanel = new JPanel();
+			JPanel tipoEventoPanel = new JPanel();
+			JPanel tfHoraPanel = new JPanel();
+			
+			textId.setAlignmentX(CENTER_ALIGNMENT);
+			tfId.setAlignmentX(CENTER_ALIGNMENT);		
+			textTitulo.setAlignmentX(CENTER_ALIGNMENT);
+			tfTitulo.setAlignmentX(CENTER_ALIGNMENT);
+			textNumeroSala.setAlignmentX(CENTER_ALIGNMENT);
+			tfSala.setAlignmentX(CENTER_ALIGNMENT);	
+			textTipoEvento.setAlignmentX(CENTER_ALIGNMENT);
+			textFechaHora.setAlignmentX(CENTER_ALIGNMENT);
+			tfHoraPanel.setAlignmentX(CENTER_ALIGNMENT);
+			
+			tipoEventoPanel.add(charlaRB);
+			tipoEventoPanel.add(debateRB);
+			tipoEventoPanel.add(seminarioRB);
+			tipoEventoPanel.add(cursilloRB);
+			tipoEventoPanel.add(tallerRB);
+			tipoEventoPanel.add(conferenciaRB);
+			
+			tfIdPanel.add(tfId);
+			tfTituloPanel.add(tfTitulo);
+			tfSalaPanel.add(tfSala);
+			tfFechaPanel.add(tfFecha);
+			tfHoraPanel.add(tfHora);
+						
+			body.add(textId);
+			body.add(tfIdPanel);
+			body.add(textTitulo);
+			body.add(tfTituloPanel);
+			body.add(textNumeroSala);
+			body.add(tfSalaPanel);
+			body.add(textFechaHora);
+			body.add(tfFechaPanel);
+			body.add(tfHoraPanel);
+			body.add(textTipoEvento);
+			body.add(tipoEventoPanel);
 		
-		setVisible(true);
+			JButton crearEventoButton = new JButton("Crear evento");
+			crearEventoButton.addActionListener(e -> {
+				try {
+					id = Integer.parseInt(tfId.getText());
+					titulo = tfTitulo.getText();
+					idSala = Integer.parseInt(tfSala.getText());
+					String fechaHoraString = tfFecha.getText() + "T" + tfHora.getText() + ":00.00";
+					fechaHora = LocalDateTime.parse(fechaHoraString);
+					
+					if (charlaRB.isSelected()) {
+						tipoEvento = TipoEvento.CHARLA;
+					} else if (debateRB.isSelected()) {
+						tipoEvento = TipoEvento.DEBATE;
+					} else if (seminarioRB.isSelected()) {
+						tipoEvento = TipoEvento.SEMINARIO;
+					} else if (cursilloRB.isSelected()) {
+						tipoEvento = TipoEvento.CURSILLO;
+					} else if (tallerRB.isSelected()) {
+						tipoEvento = TipoEvento.TALLER;
+					} else if (conferenciaRB.isSelected()) {
+						tipoEvento = TipoEvento.CONFERENCIA;
+					} else {
+						JOptionPane.showMessageDialog(this, "Selecciona un tipo de evento", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+					
+					if (tipoEvento != null) {
+						Evento evento = new Evento(id, titulo, tipoEvento, new ArrayList<>(), new SalaEventos(Main.getSalaDAO().getSala(idSala)), fechaHora);
+						System.out.println(evento);
+						if (Main.getEventoDAO().addEvento(evento)) {
+							// LogAdmin
+							JOptionPane.showMessageDialog(null, "Evento creado correctamente.", "Evento creado", JOptionPane.INFORMATION_MESSAGE);
+							new VentanaEventos();
+							dispose();
+						} else {
+							JOptionPane.showMessageDialog(null, "Error al actualizar la base de datos. Comprueba los datos.", "Evento creado", JOptionPane.INFORMATION_MESSAGE);
+						}
+					}
+					
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(this, "Error en la entrada de datos. Compruébalos.", "Error", JOptionPane.ERROR_MESSAGE);
+					e2.printStackTrace();
+				}
+				
+			});
+			
+			JPanel tail = new JPanel(new GridLayout(2, 1, 0, 0));
+			
+			JPanel añadirLibroButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+			añadirLibroButtonPanel.add(crearEventoButton);
+			
+			tail.add(añadirLibroButtonPanel);
 		
-		if (usuario instanceof Admin){	
-			System.out.println("usuarioAdmin");
-		} else {
-			System.out.println("OtroUsuario");
-			setVisible(false);
-		}
+			add(topText, BorderLayout.NORTH);
+			add(body, BorderLayout.CENTER);
+			add(tail, BorderLayout.SOUTH);
+		
+			setVisible(true);
 	}
+		
 	public static void main(String[] args) {
 		new VentanaCrearEvento();
 	}

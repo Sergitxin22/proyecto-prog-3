@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import dbmejorada.EventoDTO;
 import dbmejorada.SalaDTO;
+import dbmejorada.UsuarioDTO;
 import main.Main;
 
 public class Evento {
@@ -13,7 +14,7 @@ public class Evento {
 	private int id;
 	private String titulo;
 	private TipoEvento tipoEvento;
-	private ArrayList<Cliente> asistentes;
+	private ArrayList<UsuarioDTO> asistentes;
 	private Sala sala;
 	private LocalDateTime fechaHora;
 
@@ -41,11 +42,11 @@ public class Evento {
 		this.tipoEvento = tipoEvento;
 	}
 	
-	public ArrayList<Cliente> getAsistentes() {
+	public ArrayList<UsuarioDTO> getAsistentes() {
 		return asistentes;
 	}
 	
-	public void setAsistentes(ArrayList<Cliente> asistentes) {
+	public void setAsistentes(ArrayList<UsuarioDTO> asistentes) {
 		this.asistentes = asistentes;
 	}
 	
@@ -65,7 +66,7 @@ public class Evento {
         this.fechaHora = fechaHora;
     }
 	
-	public Evento(int id, String titulo, TipoEvento tipoEvento, ArrayList<Cliente> asistentes, Sala sala, LocalDateTime fechaHora) {
+	public Evento(int id, String titulo, TipoEvento tipoEvento, ArrayList<UsuarioDTO> asistentes, Sala sala, LocalDateTime fechaHora) {
 		super();
 		this.id = id;
 		this.titulo = titulo;
@@ -93,7 +94,7 @@ public class Evento {
 		this.tipoEvento = eventoDTO.getTipoEvento();
 		this.asistentes = new ArrayList<>();
 		SalaDTO sala = Main.getSalaDAO().getSala(eventoDTO.getIdSala());
-		this.sala = new SalaEventos(sala);
+		this.sala = new SalaEventos(sala, eventoDTO.getId());
 		this.fechaHora = eventoDTO.getFechaHora();
 	}
 	

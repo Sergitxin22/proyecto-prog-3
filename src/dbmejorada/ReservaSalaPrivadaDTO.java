@@ -11,8 +11,7 @@ public class ReservaSalaPrivadaDTO {
 	private String dniCliente;
 	private int idSala;
 	
-	public ReservaSalaPrivadaDTO(int id, LocalDateTime horaEntrada, LocalDateTime horaSalida, LocalDate fechaReserva,
-			String dniCliente, int idSala) {
+	public ReservaSalaPrivadaDTO(int id, LocalDateTime horaEntrada, LocalDateTime horaSalida, LocalDate fechaReserva, String dniCliente, int idSala) {
 		super();
 		this.id = id;
 		this.horaEntrada = horaEntrada;

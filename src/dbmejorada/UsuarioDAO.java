@@ -1,19 +1,13 @@
 package dbmejorada;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.sqlite.SQLiteException;
-
-import domain.Admin;
 import domain.Cliente;
 import domain.Usuario;
 import main.Main;
@@ -104,7 +98,7 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 	}
 		
 		@Override
-		public UsuarioDTO getUsuario(String dni) { // Se usa para el inicio de sesiones
+		public UsuarioDTO getUsuario(String dni) {
 			UsuarioDTO usuario = null;
 			
 			String insertSQL = "SELECT nombre FROM Usuario WHERE dni = ?";
@@ -208,16 +202,15 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 		System.out.println("****Borrar registros****");
     	//borrarRegistros();
     	
-        Cliente u = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDateTime.now(), "hola", new ArrayList<>(),
-              new ArrayList<>(), 3);
-        Admin a = new Admin("11111111B", "Aroa", "aroa@no.com", LocalDateTime.now(), "aroa2003", new ArrayList<>());
+       // Cliente u = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDateTime.now(), "hola", new ArrayList<>(), new ArrayList<>(), 3);
+        //Admin a = new Admin("11111111B", "Aroa", "aroa@no.com", LocalDateTime.now(), "aroa2003", new ArrayList<>());
         
         System.out.println("****Añadir usuarios****");
         //addUsuario(u);
         //addUsuario(a);
         
         System.out.println("****Recuperar usuarios****");
-        boolean existeUsuario = getUsuario("00000000A", "hola");
+        boolean existeUsuario = isUsuarioCorrecto("00000000A", "hola");
         
         UsuarioDTO uDTO = new UsuarioDTO(); 
         if (existeUsuario) {
@@ -225,10 +218,10 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 		}
         
         System.out.println(uDTO);
-        System.out.println(getUsuario("11111111B", "aroa2003"));
+        System.out.println(isUsuarioCorrecto("11111111B", "aroa2003"));
 
         System.out.println("****Recuperar usuario incorrecto****");
-        System.out.println(getUsuario("00000000A", "holas"));
+        System.out.println(isUsuarioCorrecto("00000000A", "holas"));
         
         System.out.println("****Cambiar contraseña y recuperar usuario con la contraseña anterior****");
         updatePassword(uDTO, "contraseña cambiada");

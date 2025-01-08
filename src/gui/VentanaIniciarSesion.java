@@ -110,6 +110,7 @@ public class VentanaIniciarSesion extends JFrame {
 //				Instanciar una nueva ventana Madre
 				try {
 					previousWindow.getClass().getConstructor().newInstance();
+					previousWindow.dispose();
 				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
 					// TODO Auto-generated catch block

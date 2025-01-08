@@ -8,11 +8,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 import domain.Cliente;
+import domain.Evento;
 import domain.Recurso;
 import domain.Reserva;
 import domain.Sala;
+import domain.SalaEventos;
 import domain.SalaPrivada;
 import domain.SalaPublica;
 import main.Main;
@@ -39,15 +42,18 @@ public class SalaDAO implements SalaDAOInterface {
             if (sala instanceof SalaPublica) {
             	preparedStmtSala.setString(4, "PUBLICA");
             	
-            	String insertSQLAsistenciaSalaPublica = "INSERT INTO SalaPrivadaRecurso VALUES (?,?)";
+            	String insertSQLAsistenciaSalaPublica = "INSERT INTO ReservaSalaPublica(fecha_entrada, dni_cliente, numero_bloque) VALUES (?,?,?)";
             	for (Integer bloque : (((SalaPublica) sala).getClientesPorBloque().keySet())) {
-            		PreparedStatement preparedStmtAsistenciaSalaPublica = conexionBD.prepareStatement(insertSQLAsistenciaSalaPublica);
-            		
-            		preparedStmtAsistenciaSalaPublica.setString(1, ((SalaPublica) sala).getClientesPorBloque().get(bloque).getDni());
-            		preparedStmtAsistenciaSalaPublica.setInt(2, bloque);
-            		
-            		preparedStmtAsistenciaSalaPublica.executeUpdate();
-            		preparedStmtAsistenciaSalaPublica.close();
+            		if (((SalaPublica) sala).getClientesPorBloque().get(bloque) != null) {
+	            		PreparedStatement preparedStmtAsistenciaSalaPublica = conexionBD.prepareStatement(insertSQLAsistenciaSalaPublica);
+	            		
+	            		preparedStmtAsistenciaSalaPublica.setString(1, LocalDateTime.now().toString());
+	            		preparedStmtAsistenciaSalaPublica.setString(2, ((SalaPublica) sala).getClientesPorBloque().get(bloque).getDni());
+	            		preparedStmtAsistenciaSalaPublica.setInt(2, bloque);
+	            		
+	            		preparedStmtAsistenciaSalaPublica.executeUpdate();
+	            		preparedStmtAsistenciaSalaPublica.close();
+            		}
             	}
             } else if (sala instanceof SalaPrivada) {
             	preparedStmtSala.setString(4, "PRIVADA");
@@ -63,13 +69,12 @@ public class SalaDAO implements SalaDAOInterface {
             	}
             	
         	
-        	for (Reserva reserva : ((SalaPrivada) sala).getReservas()) {
-        		Main.getReservaSalaDAO().addReservaSala(reserva);
-        	}
-        	
+            	for (Reserva reserva : ((SalaPrivada) sala).getReservas()) {
+            		Main.getReservaSalaPrivadaDAO().addReservaSalaPrivada(new ReservaSalaPrivadaDTO(0, reserva.getHoraEntrada(), reserva.getHoraSalida(), reserva.getFechaReserva(),  reserva.getClienteReserva().getDni(), reserva.getSala().getId()));
+            	} 
+            	
             } else {
-            	preparedStmtSala.setString(4, "EVENTOS");
-            	// TODO: Asignarle el evento cuando EventoDAO esté hecho
+            	preparedStmtSala.setString(4, "EVENTOS");  	
             }
 
             preparedStmtSala.executeUpdate();
@@ -123,14 +128,14 @@ public class SalaDAO implements SalaDAOInterface {
 	@Override
 	public void getDatosAdicionalesSala(SalaDTO sala) {
 
-		sala.setEvento(null); // TODO
 		ArrayList<Recurso> recursos = new ArrayList<>();
-		String selectSQL = "SELECT id_recurso FROM SalaPrivadaRecurso WHERE id_sala = ?";
+		String selectSQLRecurso = "SELECT id_recurso FROM SalaPrivadaRecurso WHERE id_sala = ?";
+		String selectSQLEvento = "SELECT id FROM Evento WHERE id_sala = ?";
 		try {
-			PreparedStatement preparedStmt = conexionBD.prepareStatement(selectSQL);
-			preparedStmt.setInt(1, sala.getId());
+			PreparedStatement preparedStmtRecurso = conexionBD.prepareStatement(selectSQLRecurso);
+			preparedStmtRecurso.setInt(1, sala.getId());
 			
-			try (ResultSet rs = preparedStmt.executeQuery()) {
+			try (ResultSet rs = preparedStmtRecurso.executeQuery()) {
                 
                 while (rs.next()) {
                    recursos.add(getRecurso(rs.getInt("id_recurso")));
@@ -138,7 +143,15 @@ public class SalaDAO implements SalaDAOInterface {
                 
                 System.out.println("Datos adicionales de la sala recuperados correctamente");
                 sala.setRecursos(recursos);
-                preparedStmt.close();
+                preparedStmtRecurso.close();
+            }
+			
+			PreparedStatement preparedStmtEvento = conexionBD.prepareStatement(selectSQLEvento);
+			preparedStmtEvento.setInt(1, sala.getId());		
+			try (ResultSet rs = preparedStmtEvento.executeQuery()) {
+                while (rs.next()) {
+                	sala.setEvento(rs.getInt("id"));
+                }
             }
 		} catch (SQLException e) {
 			if (logger != null) {
