@@ -407,8 +407,8 @@ public class VentanaInformacionRecurso extends JFrame {
 	
     public VentanaInformacionRecurso(Evento evento) {
     	
-    	setMainWindowProperties(null);
-	    setTitle(" Evento " + Integer.toString(evento.getId()));
+    	setMainWindowProperties(Seccion.EVENTOS);
+	    setTitle(evento.getTitulo());
 	    
 	    JPanel panelPrincipal = new JPanel();
 	    panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));

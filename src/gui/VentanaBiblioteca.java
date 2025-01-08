@@ -46,7 +46,7 @@ public class VentanaBiblioteca extends JFrame {
 		if (usuario == null) {
 			setTitle("Biblioteca - No logueado");			
 		} else {			
-			setTitle("Biblioteca - logueado" + usuario.getClass().toString());
+			setTitle("Biblioteca - Logueado: " + usuario.getNombre());
 		}
 		
 		setSize(1280,720);
@@ -87,7 +87,7 @@ public class VentanaBiblioteca extends JFrame {
 		
 		// Añadir libro
 		if (usuario instanceof Admin) {
-			JPanel panelAddLibro = new AddPanel(Seccion.BIBLIOTECA, usuario);
+			JPanel panelAddLibro = new AddPanel(this, Seccion.BIBLIOTECA, usuario);
 	        subPanelContenido1.add(panelAddLibro, BorderLayout.WEST);
 		}		
 		

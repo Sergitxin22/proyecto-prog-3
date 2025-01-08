@@ -53,7 +53,7 @@ public class VentanaSalasPrivadas extends JFrame {
 		if (usuario == null) {
 			setTitle("Salas Privadas - No logueado");			
 		} else {			
-			setTitle("Salas Privadas - logueado" + usuario.getClass().toString());
+			setTitle("Salas Privadas - Logueado: " + usuario.getNombre());
 		}
 		
 		// Header
@@ -67,7 +67,7 @@ public class VentanaSalasPrivadas extends JFrame {
 	
 		// Añadir sala (solo para Admins)
 		if (usuario instanceof Admin) {
-			JPanel panelAddLibro = new AddPanel(Seccion.SALAS_DE_ESTUDIO, usuario);
+			JPanel panelAddLibro = new AddPanel(this, Seccion.SALAS_DE_ESTUDIO, usuario);
 	        subPanelContenido1.add(panelAddLibro, BorderLayout.WEST);
 		}		
 		
