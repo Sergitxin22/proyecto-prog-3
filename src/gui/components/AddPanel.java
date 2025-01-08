@@ -2,6 +2,7 @@ package gui.components;
 
 import domain.Seccion;
 import domain.Usuario;
+import gui.VentanaCrearLibro;
 import gui.VentanaCrearEvento;
 import gui.VentanaCrearSalaPrivada;
 import utils.Utils;
@@ -11,6 +12,7 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -18,7 +20,7 @@ public class AddPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-		public AddPanel(Seccion seccion, Usuario usuario) {
+		public AddPanel(JFrame window, Seccion seccion, Usuario usuario) {
 		
 		String entidad = "";
 		
@@ -44,15 +46,18 @@ public class AddPanel extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
 	        	if (seccion.equals(Seccion.BIBLIOTECA)) {
-					// TODO: ventana para añadir libros
+					new VentanaCrearLibro();
+					window.dispose();
 				}
 
 				if (seccion.equals(Seccion.SALAS_DE_ESTUDIO)) {
 					new VentanaCrearSalaPrivada();
+					window.dispose();
 				}
 
 				if (seccion.equals(Seccion.EVENTOS)) {
 					new VentanaCrearEvento();
+					window.dispose();
 				}
         	}
 	    });
