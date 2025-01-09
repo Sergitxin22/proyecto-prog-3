@@ -28,7 +28,7 @@ public class Cliente extends Usuario {
 	}
 	
 	public Cliente(UsuarioDTO usuarioDTO) {
-		super(usuarioDTO.getDni(), usuarioDTO.getNombre(), usuarioDTO.getEmail(), usuarioDTO.getFechaCreacion(), usuarioDTO.getContrasena());
+		super(usuarioDTO);
 //		this.historial = null;
 //		this.listaReviews = null;
 		this.historial = null;

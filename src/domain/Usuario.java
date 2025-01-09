@@ -3,6 +3,8 @@ package domain;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import dbmejorada.UsuarioDTO;
+
 public abstract class Usuario {
 
 	private String dni;
@@ -26,6 +28,15 @@ public abstract class Usuario {
 		this.nombre = "";
 		this.email = "";
 		this.fechaCreacion = LocalDateTime.now();
+		this.contrasena = "";
+	}
+	
+	public Usuario(UsuarioDTO usuarioDTO) {
+		super();
+		this.dni = usuarioDTO.getDni();
+		this.nombre = usuarioDTO.getNombre();
+		this.email = usuarioDTO.getEmail();
+		this.fechaCreacion = usuarioDTO.getFechaCreacion();
 		this.contrasena = "";
 	}
 
