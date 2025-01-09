@@ -126,41 +126,6 @@ public class SalaDAO implements SalaDAOInterface {
 	}
 
 	@Override
-	public void getDatosAdicionalesSala(SalaDTO sala) {
-
-		ArrayList<Recurso> recursos = new ArrayList<>();
-		String selectSQLRecurso = "SELECT id_recurso FROM SalaPrivadaRecurso WHERE id_sala = ?";
-		String selectSQLEvento = "SELECT id FROM Evento WHERE id_sala = ?";
-		try {
-			PreparedStatement preparedStmtRecurso = conexionBD.prepareStatement(selectSQLRecurso);
-			preparedStmtRecurso.setInt(1, sala.getId());
-			
-			try (ResultSet rs = preparedStmtRecurso.executeQuery()) {
-                
-                while (rs.next()) {
-                   recursos.add(getRecurso(rs.getInt("id_recurso")));
-                }
-                
-                System.out.println("Datos adicionales de la sala recuperados correctamente");
-                sala.setRecursos(recursos);
-                preparedStmtRecurso.close();
-            }
-			
-			PreparedStatement preparedStmtEvento = conexionBD.prepareStatement(selectSQLEvento);
-			preparedStmtEvento.setInt(1, sala.getId());		
-			try (ResultSet rs = preparedStmtEvento.executeQuery()) {
-                while (rs.next()) {
-                	sala.setEvento(rs.getInt("id"));
-                }
-            }
-		} catch (SQLException e) {
-			if (logger != null) {
-				logger.log(Level.SEVERE, "Error al recuperar los datos adicionales de la sala: ", e);
-			}
-		}
-	}
-
-	@Override
 	public int getTipoSalaId(String tipoSala) {
 		switch(tipoSala) {
 		case "PUBLICA": return 0;
