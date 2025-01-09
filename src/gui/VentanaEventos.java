@@ -39,7 +39,7 @@ public class VentanaEventos extends JFrame {
 		if (usuario == null) {
 			setTitle("Eventos - No logueado");			
 		} else {			
-			setTitle("Eventos - Logueado" + usuario.getNombre());
+			setTitle("Eventos - Logueado: " + usuario.getNombre());
 		}
 		
 		// Header

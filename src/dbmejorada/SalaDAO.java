@@ -14,6 +14,7 @@ import domain.Cliente;
 import domain.Recurso;
 import domain.Reserva;
 import domain.Sala;
+import domain.SalaEventos;
 import domain.SalaPrivada;
 import domain.SalaPublica;
 import main.Main;
@@ -25,7 +26,63 @@ public class SalaDAO implements SalaDAOInterface {
 	
 	public SalaDAO() {
 		conexionBD = Main.getConexionBD();
-		logger = Main.getLogger();
+		logger = Main.getLogger();	
+		
+		try {
+		// Inicialización de los recursos posibles de salas privadas en la BBDD:
+			
+		String insertSQLOrdenadores = "INSERT INTO Recurso VALUES (?, ?)";
+		String insertSQLProyector = "INSERT INTO Recurso VALUES (?, ?)";
+		String insertSQLPizarra = "INSERT INTO Recurso VALUES (?, ?)";
+		
+		PreparedStatement preparedStmtOrdenadores = conexionBD.prepareStatement(insertSQLOrdenadores);
+		PreparedStatement preparedStmtProyector = conexionBD.prepareStatement(insertSQLProyector);
+		PreparedStatement preparedStmtPizarra = conexionBD.prepareStatement(insertSQLPizarra);
+		
+		preparedStmtOrdenadores.setInt(1, 0);
+		preparedStmtOrdenadores.setString(2, "ORDENADORES");
+		preparedStmtProyector.setInt(1, 1);
+		preparedStmtProyector.setString(2, "PROYECTOR");
+		preparedStmtPizarra.setInt(1, 2);
+		preparedStmtPizarra.setString(2, "PIZARRA");
+		
+		preparedStmtOrdenadores.executeUpdate();
+		preparedStmtProyector.executeUpdate();
+		preparedStmtPizarra.executeUpdate();
+		
+		preparedStmtOrdenadores.close();
+		preparedStmtProyector.close();
+		preparedStmtPizarra.close();
+		
+		// Inicialización de los tipos posibles de salas privadas en la BBDD:
+		
+		String insertSQLPublica = "INSERT INTO TipoSala VALUES (?, ?)";
+		String insertSQLPrivada = "INSERT INTO TipoSala VALUES (?, ?)";
+		String insertSQLEventos = "INSERT INTO TipoSala VALUES (?, ?)";
+		
+		PreparedStatement preparedStmtPublica = conexionBD.prepareStatement(insertSQLPublica);
+		PreparedStatement preparedStmtPrivada = conexionBD.prepareStatement(insertSQLPrivada);
+		PreparedStatement preparedStmtEventos = conexionBD.prepareStatement(insertSQLEventos);
+		
+		preparedStmtPublica.setInt(1, 0);
+		preparedStmtPublica.setString(2, "PUBLICA");
+		preparedStmtPrivada.setInt(1, 1);
+		preparedStmtPrivada.setString(2, "PRIVADA");
+		preparedStmtEventos.setInt(1, 2);
+		preparedStmtEventos.setString(2, "EVENTOS");
+		
+		preparedStmtPublica.executeUpdate();
+		preparedStmtPrivada.executeUpdate();
+		preparedStmtEventos.executeUpdate();
+		
+		preparedStmtPublica.close();
+		preparedStmtPrivada.close();
+		preparedStmtEventos.close();
+		
+		} catch (SQLException e) {
+			if (logger != null)
+                logger.log(Level.SEVERE, "Error al añadir los recursos: ", e);
+		}
 	}
 	
 	@Override
@@ -38,23 +95,17 @@ public class SalaDAO implements SalaDAOInterface {
             preparedStmtSala.setInt(3, sala.getCapacidad());
             
             if (sala instanceof SalaPublica) {
-            	preparedStmtSala.setString(4, "PUBLICA");
+            	preparedStmtSala.setInt(4, 0);
             	
-            	String insertSQLAsistenciaSalaPublica = "INSERT INTO ReservaSalaPublica(fecha_entrada, dni_cliente, numero_bloque) VALUES (?,?,?)";
             	for (Integer bloque : (((SalaPublica) sala).getClientesPorBloque().keySet())) {
             		if (((SalaPublica) sala).getClientesPorBloque().get(bloque) != null) {
-	            		PreparedStatement preparedStmtAsistenciaSalaPublica = conexionBD.prepareStatement(insertSQLAsistenciaSalaPublica);
-	            		
-	            		preparedStmtAsistenciaSalaPublica.setString(1, LocalDateTime.now().toString());
-	            		preparedStmtAsistenciaSalaPublica.setString(2, ((SalaPublica) sala).getClientesPorBloque().get(bloque).getDni());
-	            		preparedStmtAsistenciaSalaPublica.setInt(2, bloque);
-	            		
-	            		preparedStmtAsistenciaSalaPublica.executeUpdate();
-	            		preparedStmtAsistenciaSalaPublica.close();
+            			
+            			ReservaSalaPublicaDTO reservaSalaPublicaDTO = new ReservaSalaPublicaDTO(0, LocalDateTime.now(), ((SalaPublica) sala).getClientesPorBloque().get(bloque).getDni(), bloque);
+	            		if (Main.getReservaSalaPublicaDAO().addReservaSalaPublica(reservaSalaPublicaDTO));
             		}
             	}
             } else if (sala instanceof SalaPrivada) {
-            	preparedStmtSala.setString(4, "PRIVADA");
+            	preparedStmtSala.setInt(4, 1);
             	
             	String insertSQLSalaPrivadaRecurso = "INSERT INTO SalaPrivadaRecurso(id_recurso, id_sala) VALUES (?,?)";
             	for (Recurso recurso : ((SalaPrivada) sala).getRecursos()) {
@@ -72,7 +123,7 @@ public class SalaDAO implements SalaDAOInterface {
             	} 
             	
             } else {
-            	preparedStmtSala.setString(4, "EVENTOS");  	
+            	preparedStmtSala.setInt(4, 2);  	
             }
 
             preparedStmtSala.executeUpdate();
@@ -122,6 +173,49 @@ public class SalaDAO implements SalaDAOInterface {
 	}
 
 	@Override
+	public ArrayList<Sala> getSalas() {
+		ArrayList<Sala> result = new ArrayList<>();
+		
+		String selectSQL = "SELECT * FROM Sala";
+		try {
+			PreparedStatement preparedStmt = conexionBD.prepareStatement(selectSQL);
+			try (ResultSet rs = preparedStmt.executeQuery()) {
+				while(rs.next()) {
+							
+					switch (rs.getInt("tipo")) {
+					case 0:
+						SalaPublica salaPublica = new SalaPublica(rs.getInt("capacidad"), 0, rs.getInt("piso"));
+						result.add(salaPublica);
+						break;
+					case 1:
+						ArrayList<Recurso> recursos = new ArrayList<>();
+						for (Integer integer : getIdsRecursosDisponiblesByIdSala(rs.getInt("id"))) {
+							recursos.add(getRecurso(integer));
+						}
+						
+						SalaPrivada salaPrivada = new SalaPrivada(rs.getInt("capacidad"), rs.getInt("id"), rs.getInt("piso"), recursos, new ArrayList<>());
+						result.add(salaPrivada);
+						break;
+					default:
+						SalaEventos salaEventos = new SalaEventos(rs.getInt("capacidad"), rs.getInt("id"), rs.getInt("piso"));
+						result.add(salaEventos);
+						
+					}
+				}
+				
+				preparedStmt.close();
+			}
+			
+		} catch (SQLException e) {
+			if (logger != null) {
+				logger.log(Level.SEVERE, "Error al recuperar alguna sala: ", e);
+				return result;
+			}
+		}
+		return result;
+	}
+	
+	@Override
 	public int getTipoSalaId(String tipoSala) {
 		switch(tipoSala) {
 		case "PUBLICA": return 0;
@@ -152,8 +246,26 @@ public class SalaDAO implements SalaDAOInterface {
 	
 	@Override
 	public ArrayList<Integer> getIdsRecursosDisponiblesByIdSala(int idSala) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Integer> result = new ArrayList<>();
+		
+		String selectSQL = "SELECT id_recurso FROM SalaPrivadaRecurso WHERE id_sala = ?";
+		try {
+			PreparedStatement preparedStmt = conexionBD.prepareStatement(selectSQL);
+			preparedStmt.setInt(1, idSala);
+			
+			ResultSet rs = preparedStmt.executeQuery();
+			while (rs.next()) {
+				result.add(rs.getInt("id_recurso"));
+			}
+			
+		} catch (SQLException e) {
+			if (logger != null) {
+				logger.log(Level.SEVERE, "Error al recuperar algún recurso: ", e);
+				return result;
+			}
+		}
+		
+		return result;
 	}
 	
 	@Override

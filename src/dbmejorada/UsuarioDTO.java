@@ -1,12 +1,12 @@
 package dbmejorada;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class UsuarioDTO {
 	private String dni;
 	private String nombre;
 	private String email;
-	private LocalDateTime fechaCreacion;
+	private LocalDate fechaCreacion;
 	private int amonestaciones;
 	private boolean admin;
 
@@ -15,12 +15,12 @@ public class UsuarioDTO {
 		this.dni = "";
 		this.nombre = "";
 		this.email = "";
-		this.fechaCreacion = LocalDateTime.now();
+		this.fechaCreacion = LocalDate.now();
 		this.amonestaciones = 0;
 		this.admin = false;
 	}
 	
-	public UsuarioDTO(String dni, String nombre, String email, LocalDateTime fechaCreacion, String contrasena,
+	public UsuarioDTO(String dni, String nombre, String email, LocalDate fechaCreacion, String contrasena,
 			int amonestaciones, boolean admin) {
 		super();
 		this.dni = dni;
@@ -55,11 +55,11 @@ public class UsuarioDTO {
 		this.email = email;
 	}
 
-	public LocalDateTime getFechaCreacion() {
+	public LocalDate getFechaCreacion() {
 		return fechaCreacion;
 	}
 
-	public void setFechaCreacion(LocalDateTime fechaCreacion) {
+	public void setFechaCreacion(LocalDate fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
 	}
 

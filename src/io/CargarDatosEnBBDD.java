@@ -23,7 +23,7 @@ public class CargarDatosEnBBDD {
 		ArrayList<Usuario> listaUsuarios = InputUtils.cargarUsuarios();
 		addUsuarios(listaUsuarios);
 		
-		ArrayList<Review> listaReviews = InputUtils.cargarReviews();
+		ArrayList<Review> listaReviews = InputUtils.cargarReviews(listaLibros, listaUsuarios);
 		addReviews(listaReviews);		
 	}
 

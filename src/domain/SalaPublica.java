@@ -2,6 +2,8 @@ package domain;
 
 import java.util.HashMap;
 
+import dbmejorada.SalaDTO;
+
 public class SalaPublica extends Sala {
 	private HashMap<Integer, Cliente> clientesPorBloque;
 	
@@ -25,8 +27,17 @@ public class SalaPublica extends Sala {
 
 		this.clientesPorBloque = mapa;
 	}
+	
+	public SalaPublica(SalaDTO salaDTO) {
+		super(salaDTO.getCapacidad(), salaDTO.getId(), salaDTO.getPiso());
+		HashMap<Integer, Cliente> mapa = new HashMap<>();
+		for (int i = 1; i < 251; i++) {
+			mapa.put(i, null);
+		}
 
-
+		this.clientesPorBloque = mapa;
+	}
+	
 	public HashMap<Integer, Cliente> getClientesPorBloque() {
 		return clientesPorBloque;
 	}

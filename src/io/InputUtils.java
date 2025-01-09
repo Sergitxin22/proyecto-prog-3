@@ -15,6 +15,7 @@ import main.Main;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class InputUtils {
 	        }
 			
 			int contador = 0;
-			while (sc.hasNextLine() && contador<35) {
+			while (sc.hasNextLine() && contador<36) {
 				
 				String linea = sc.nextLine();
 				String[] datos = linea.split(";");
@@ -127,7 +128,7 @@ public class InputUtils {
 				}
 
 				if (fields[3].equals("EVENTOS")) {
-					sala = new SalaEventos(capacidad, id, piso, new Evento());
+					sala = new SalaEventos(capacidad, id, piso);
 				}
 				
 				result.add(sala);
@@ -197,10 +198,13 @@ public class InputUtils {
 
 		return result;
 	}
-	public static void cargarReviews(ArrayList<Libro> libros, ArrayList<Usuario> usuarios) {
-        File file = new File("resources/data/reviews.csv");
+	public static ArrayList<Review> cargarReviews(ArrayList<Libro> libros, ArrayList<Usuario> usuarios) {
+        ArrayList<Review> result = new ArrayList<Review>();
+		
+		File file = new File("resources/data/reviews.csv");
         
         try (Scanner scanner = new Scanner(file)) {
+        	scanner.nextLine();
             while (scanner.hasNextLine()) {
                 String linea = scanner.nextLine();
                 String[] datos = linea.split(";");
@@ -240,6 +244,8 @@ public class InputUtils {
                             
                             // Añadir la review al libro
                             libro.agregarReview(review);
+                            result.add(review);
+                            
                         } else {
                             System.err.println("Usuario no encontrado o no es un cliente para DNI: " + dni);
                         }
@@ -255,6 +261,8 @@ public class InputUtils {
         } catch (FileNotFoundException e) {
             System.err.println("ERROR: Archivo de reviews no encontrado");
         }
+        
+        return result;
     }
 
     // Método para buscar un libro por su ISBN
@@ -279,11 +287,12 @@ public class InputUtils {
 	
     public static ArrayList<Usuario> cargarUsuarios() {
         ArrayList<Usuario> result = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         
         File file = new File("resources/data/usuarios.csv");
         try {
             Scanner scanner = new Scanner(file);
+            scanner.nextLine();
             while (scanner.hasNextLine()) {
                 String linea = scanner.nextLine();
                 String[] datos = linea.split(";");
@@ -292,7 +301,7 @@ public class InputUtils {
                     String dni = datos[0];
                     String nombre = datos[1];
                     String email = datos[2];
-                    LocalDateTime fechaCreacion = LocalDateTime.parse(datos[3], formatter);
+                    LocalDate fechaCreacion = LocalDate.parse(datos[3], formatter);
                     String contrasena = datos[4];
                     
                     //Inicializo con valor por defecto

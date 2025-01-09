@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -263,9 +264,9 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 		System.out.println("****Borrar registros****");
 		 borrarRegistros();
 
-		Cliente u = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDateTime.now(), "hola", new ArrayList<>(),
+		Cliente u = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDate.now(), "hola", new ArrayList<>(),
 				new ArrayList<>(), 3);
-		Admin a = new Admin("11111111B", "Aroa", "aroa@no.com", LocalDateTime.now(), "aroa2003", new ArrayList<>());
+		Admin a = new Admin("11111111B", "Aroa", "aroa@no.com", LocalDate.now(), "aroa2003", new ArrayList<>());
 
 		System.out.println("****Añadir usuarios****");
 		 addUsuario(u);

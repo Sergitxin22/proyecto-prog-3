@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import domain.Cliente;
 import domain.Libro;
 import main.Main;
 
@@ -18,7 +20,6 @@ public class LibroDAO implements LibroDAOInterface{
 	public LibroDAO() {
 		this.conexionBD = Main.getConexionBD();
 		this.logger = Main.getLogger();
-		pruebas();
 	}
 	
 
@@ -86,8 +87,27 @@ public class LibroDAO implements LibroDAOInterface{
 		return libro;
 				
 	}
-	
-	public void pruebas() {
+
+	@Override
+	public void añadirReserva(long isbn, int diasDevolucion, Cliente cliente) {
+		String insertSQL = "INSERT INTO ReservaLibro(fecha_inicio, fecha_fin, isbn, dni_cliente";
+		  PreparedStatement preparedStmt;
+			try {
+				preparedStmt = conexionBD.prepareStatement(insertSQL);
+				preparedStmt.setString(1, LocalDateTime.now().toString());
+				preparedStmt.setString(1, LocalDateTime.now().plusDays(diasDevolucion).toString());
+				preparedStmt.setLong(1, isbn);
+				preparedStmt.setString(1, cliente.getDni());
+				 		
+				preparedStmt.executeUpdate();
+				preparedStmt.close();
+			} catch(SQLException e) {
+				if (logger != null) {
+					logger.log(Level.SEVERE, "Error al realizar la reserva: ", e);
+				}
+			}
+
 		
+			
 	}
 }

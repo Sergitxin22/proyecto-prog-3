@@ -39,7 +39,7 @@ public class VentanaSalasPrivadas extends JFrame {
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
 
-		ArrayList<Sala> salasTotales = InputUtils.cargarSalas();
+		ArrayList<Sala> salasTotales = Main.getSalaDAO().getSalas();
 		ArrayList<SalaPrivada> salasPrivadas = new ArrayList<>();
 
 		for (Sala sala : salasTotales) {

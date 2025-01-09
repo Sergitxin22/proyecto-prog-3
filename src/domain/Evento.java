@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import dbmejorada.EventoDTO;
-import dbmejorada.SalaDTO;
 import dbmejorada.UsuarioDTO;
 import main.Main;
 
@@ -91,11 +90,10 @@ public class Evento {
 		super();
 		this.id = eventoDTO.getId();
 		this.titulo = eventoDTO.getTitulo();
-		this.tipoEvento = eventoDTO.getTipoEvento();
+		this.tipoEvento = Main.getEventoDAO().getTipoEvento(eventoDTO.getIdTipoEvento());
 		this.asistentes = new ArrayList<>();
-		SalaDTO sala = Main.getSalaDAO().getSala(eventoDTO.getIdSala());
-		this.sala = new SalaEventos(sala, eventoDTO.getId());
-		this.fechaHora = eventoDTO.getFechaHora();
+		this.sala = new SalaEventos(Main.getSalaDAO().getSala(eventoDTO.getIdSala()));
+		this.fechaHora = eventoDTO.getFecha();
 	}
 	
 	@Override
