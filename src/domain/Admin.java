@@ -8,7 +8,7 @@ import main.Main;
 
 public class Admin extends Usuario {
 
-	private ArrayList<String> logAcciones;
+	private ArrayList<LogAccion> logAcciones;
 	
 	public Admin(String dni, String nombre, String email, LocalDateTime fechaCreacion, String contrasena, ArrayList<LogAccion> logAcciones) {
 		super(dni, nombre, email, fechaCreacion, contrasena);
@@ -22,14 +22,14 @@ public class Admin extends Usuario {
 	
 	public Admin(UsuarioDTO usuarioDTO) {
 		super(usuarioDTO);
-//		this.logAcciones = Main.getUsuarioDAO().getLogAccionesByAdminDni(usuarioDTO.getDni()); TODO: crearlo en usuarioDAO
+		this.logAcciones = Main.getUsuarioDAO().getLogAccionesByAdminDni(usuarioDTO.getDni());
 	}
 
-	public ArrayList<String> getLogAcciones() {
+	public ArrayList<LogAccion> getLogAcciones() {
 		return logAcciones;
 	}
 
-	public void setLogAcciones(ArrayList<String> logAcciones) {
+	public void setLogAcciones(ArrayList<LogAccion> logAcciones) {
 		this.logAcciones = logAcciones;
 	}
 
@@ -39,5 +39,4 @@ public class Admin extends Usuario {
 				+ ", getNombre()=" + getNombre() + ", getEmail()=" + getEmail() + ", getFechaCreacion()="
 				+ getFechaCreacion() + ", getContrasena()=" + getContrasena() + "]";
 	}
-
 }
