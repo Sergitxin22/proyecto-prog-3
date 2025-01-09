@@ -1,5 +1,8 @@
 package dbmejorada;
 
+import java.util.ArrayList;
+
+import domain.LogAccion;
 import domain.Usuario;
 
 public interface UsuarioDAOInterface {
@@ -8,5 +11,7 @@ public interface UsuarioDAOInterface {
 	UsuarioDTO getUsuario(String dni);
 	void getDatosAdicionalesUsuario(UsuarioDTO usuario);
 	boolean updatePassword(UsuarioDTO usuario, String password);
+	boolean addLogAccion(LogAccion logAccion);	
+	ArrayList<LogAccion> getLogAccionesByAdminDni(String dniAdmin);
 	void borrarRegistros();
 }

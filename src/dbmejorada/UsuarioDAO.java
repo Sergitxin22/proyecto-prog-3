@@ -180,6 +180,58 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 	}
 
 	@Override
+	public ArrayList<LogAccion> getLogAccionesByAdminDni(String dniAdmin) {
+		ArrayList<LogAccion> logAcciones = null;
+		String insertSQL = "SELECT * FROM LogAccion WHERE dni_admin = ?";
+		PreparedStatement preparedStmt;
+		try {
+			preparedStmt = conexionBD.prepareStatement(insertSQL);
+			preparedStmt.setString(1, dniAdmin);
+
+			try (ResultSet rs = preparedStmt.executeQuery()) {
+				logAcciones = new ArrayList<LogAccion>();
+
+				while (rs.next()) {
+					int id = rs.getInt("id");
+					LocalDateTime fecha = LocalDateTime.parse(rs.getString("fecha"));
+					String descripcion = rs.getString("descripcion");
+
+					LogAccion logAccion = new LogAccion(id, fecha, descripcion, dniAdmin);
+					logAcciones.add(logAccion);
+				}
+				System.out.println("LogAcciones obtenidos correctamente");
+			}
+
+		} catch (SQLException e) {
+			if (logger != null)
+				logger.log(Level.SEVERE, "Error al obtener LogAcciones del admin: ", e);
+		}
+
+		return logAcciones;
+	}
+
+	@Override
+	public boolean addLogAccion(LogAccion logAccion) {
+		try {
+			String insertSQL = "INSERT INTO LogAccion VALUES(NULL, ?, ?, ?)";
+			PreparedStatement preparedStmt = conexionBD.prepareStatement(insertSQL);
+			preparedStmt.setString(1, logAccion.getFecha().toString());
+			preparedStmt.setString(2, logAccion.getDescripcion());
+			preparedStmt.setString(3, logAccion.getDniAdmin());
+
+			int filas = preparedStmt.executeUpdate();
+			System.out.println("Filas modificadas: " + filas);
+
+			preparedStmt.close();
+			return (filas > 0) ? true : false;
+		} catch (SQLException e) {
+			if (logger != null)
+				logger.log(Level.SEVERE, "Error al añadir el usuario: ", e);
+			return false;
+		}
+	}
+
+	@Override
 	public void borrarRegistros() {
 		try {
 			Statement stmt = conexionBD.createStatement();
