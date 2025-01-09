@@ -1,23 +1,22 @@
 package dbmejorada;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class ReservaSalaPublicaDTO {
 	private int id;
-	private LocalDate fechaEntrada;
+	private LocalDateTime fechaEntrada;
 	private String dniCliente;
 	private int numeroBloque;
 	
 	public ReservaSalaPublicaDTO() {
 		super();
 		this.id = 0;
-		this.fechaEntrada = LocalDate.now();
+		this.fechaEntrada = LocalDateTime.now();
 		this.dniCliente = "";
 		this.numeroBloque = 0;
 	}
 	
-	public ReservaSalaPublicaDTO(int id, LocalDate fechaEntrada, String dniCliente, int numeroBloque) {
+	public ReservaSalaPublicaDTO(int id, LocalDateTime fechaEntrada, String dniCliente, int numeroBloque) {
 		super();
 		this.id = id;
 		this.fechaEntrada = fechaEntrada;
@@ -33,11 +32,11 @@ public class ReservaSalaPublicaDTO {
 		this.id = id;
 	}
 	
-	public LocalDate getFechaEntrada() {
+	public LocalDateTime getFechaEntrada() {
 		return fechaEntrada;
 	}
 	
-	public void setFechaEntrada(LocalDate fechaEntrada) {
+	public void setFechaEntrada(LocalDateTime fechaEntrada) {
 		this.fechaEntrada = fechaEntrada;
 	}
 	

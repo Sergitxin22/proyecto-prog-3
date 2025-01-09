@@ -63,7 +63,7 @@ public class ReservaSalaPublicaDAO implements ReservaSalaPublicaDAOInterface {
                    String dniCliente = rs.getString("dni_cliente");
                    int numeroBloque = rs.getInt("numero_bloque");
                    
-                   reservaSalaPublica = new ReservaSalaPublicaDTO(id, LocalDate.parse(fechaEntrada), dniCliente, numeroBloque);
+                   reservaSalaPublica = new ReservaSalaPublicaDTO(id, LocalDateTime.parse(fechaEntrada), dniCliente, numeroBloque);
                 }
                 System.out.println("Reserva sala publica sin fallos");
                 return reservaSalaPublica;
@@ -96,7 +96,7 @@ public class ReservaSalaPublicaDAO implements ReservaSalaPublicaDAOInterface {
                      String dniCliente = rs.getString("dni_cliente");
                      int numeroBloque = rs.getInt("numero_bloque");
                    
-                   reserva = new ReservaSalaPublicaDTO(id, LocalDate.parse(fechaEntrada), dniCliente, numeroBloque);
+                   reserva = new ReservaSalaPublicaDTO(id, LocalDateTime.parse(fechaEntrada), dniCliente, numeroBloque);
                    reservasSalaPublica.add(reserva);
                 }
                 System.out.println("Reserva sala publica sin fallos");
@@ -228,7 +228,7 @@ public class ReservaSalaPublicaDAO implements ReservaSalaPublicaDAOInterface {
 	}
 	
 	public void pruebas() {
-		ReservaSalaPublicaDTO reservaSalaPublica = new ReservaSalaPublicaDTO(1, LocalDate.parse("2025-02-02"), "00000000A", 45);
+		ReservaSalaPublicaDTO reservaSalaPublica = new ReservaSalaPublicaDTO(1, LocalDateTime.parse("2025-02-02T00:00:00"), "00000000A", 45);
 //		addReservaSalaPublica(reservaSalaPublica);
 //		System.out.println(getReservaSalaPublicaById(2));
 //		UsuarioDTO usuario = new UsuarioDTO();

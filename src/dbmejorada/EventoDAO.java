@@ -22,6 +22,55 @@ public class EventoDAO implements EventoDAOInterface {
 	public EventoDAO() {
 		this.conexionBD = Main.getConexionBD();
 		this.logger = Main.getLogger();
+		
+		// Inicialización de los tipos de evento posibles en la BBDD:
+		
+		try {
+		String insertSQLCharla = "INSERT INTO TipoEvento VALUES (?, ?)";
+		String insertSQLDebate = "INSERT INTO TipoEvento VALUES (?, ?)";
+		String insertSQLSeminario = "INSERT INTO TipoEvento VALUES (?, ?)";
+		String insertSQLCursillo = "INSERT INTO TipoEvento VALUES (?, ?)";
+		String insertSQLTaller = "INSERT INTO TipoEvento VALUES (?, ?)";
+		String insertSQLConferencia = "INSERT INTO TipoEvento VALUES (?, ?)";
+		
+		PreparedStatement preparedStmtOrdenadores = conexionBD.prepareStatement(insertSQLCharla);
+		PreparedStatement preparedStmtProyector = conexionBD.prepareStatement(insertSQLDebate);
+		PreparedStatement preparedStmtPizarra = conexionBD.prepareStatement(insertSQLSeminario);
+		PreparedStatement preparedStmtCursillo = conexionBD.prepareStatement(insertSQLCursillo);
+		PreparedStatement preparedStmtTaller = conexionBD.prepareStatement(insertSQLTaller);
+		PreparedStatement preparedStmtConferencia = conexionBD.prepareStatement(insertSQLConferencia);
+		
+		preparedStmtOrdenadores.setInt(1, 0);
+		preparedStmtOrdenadores.setString(2, "CHARLA");
+		preparedStmtProyector.setInt(1, 1);
+		preparedStmtProyector.setString(2, "DEBATE");
+		preparedStmtPizarra.setInt(1, 2);
+		preparedStmtPizarra.setString(2, "SEMINARIO");
+		preparedStmtCursillo.setInt(1, 3);
+		preparedStmtCursillo.setString(2, "CURSILLO");
+		preparedStmtTaller.setInt(1, 4);
+		preparedStmtTaller.setString(2, "TALLER");
+		preparedStmtConferencia.setInt(1, 5);
+		preparedStmtConferencia.setString(2, "CONFERENCIA");
+		
+		preparedStmtOrdenadores.executeUpdate();
+		preparedStmtProyector.executeUpdate();
+		preparedStmtPizarra.executeUpdate();
+		preparedStmtCursillo.executeUpdate();
+		preparedStmtTaller.executeUpdate();
+		preparedStmtConferencia.executeUpdate();
+		
+		preparedStmtOrdenadores.close();
+		preparedStmtProyector.close();
+		preparedStmtPizarra.close();
+		preparedStmtCursillo.close();
+		preparedStmtTaller.close();
+		preparedStmtConferencia.close();
+		
+		} catch (SQLException e) {
+			if (logger != null)
+                logger.log(Level.SEVERE, "Error al añadir los tipos de evento: ", e);
+		}
 	}
 
 	@Override
@@ -155,7 +204,9 @@ public class EventoDAO implements EventoDAOInterface {
 		case 0: return TipoEvento.CHARLA;
 		case 1: return TipoEvento.DEBATE;
 		case 2: return TipoEvento.SEMINARIO;
-		default : return TipoEvento.TALLER;
+		case 3: return TipoEvento.CURSILLO;
+		case 4: return TipoEvento.TALLER;
+		default : return TipoEvento.CONFERENCIA;
 		}
 	}
 
@@ -167,8 +218,12 @@ public class EventoDAO implements EventoDAOInterface {
 			return 1;
 		} else if (tipoEvento.equals(TipoEvento.SEMINARIO)) {
 			return 2;
-		} else {
+		} else if (tipoEvento.equals(TipoEvento.CURSILLO)) {
 			return 3;
+		} else if (tipoEvento.equals(TipoEvento.TALLER)) {
+			return 4;
+		} else {
+			return 5;
 		}
 	}
 	
