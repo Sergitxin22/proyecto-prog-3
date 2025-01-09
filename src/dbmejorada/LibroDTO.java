@@ -1,5 +1,7 @@
 package dbmejorada;
 
+import java.time.LocalDate;
+
 public class LibroDTO {
 	
 	private long isbn;
@@ -9,7 +11,7 @@ public class LibroDTO {
 	private String sinopsis;
 	private String genero;
 	private int rating;
-	private int fechaPublicacion;
+	private LocalDate fechaPublicacion;
 	
 	public LibroDTO() {
 		super();
@@ -20,11 +22,11 @@ public class LibroDTO {
 		this.sinopsis = "";
 		this.genero = "";
 		this.rating = 0;
-		this.fechaPublicacion = 0;
+		this.fechaPublicacion = LocalDate.now();;
 	}
 	
 	public LibroDTO(long isbn, String titulo, String autor, int numeroDePaginas, String sinopsis, String genero,
-			int rating, int fechaPublicacion) {
+			int rating, LocalDate fechaPublicacion) {
 		super();
 		this.isbn = isbn;
 		this.titulo = titulo;
@@ -92,11 +94,11 @@ public class LibroDTO {
 		this.rating = rating;
 	}
 
-	public int getFechaPublicacion() {
+	public LocalDate getFechaPublicacion() {
 		return fechaPublicacion;
 	}
 
-	public void setFechaPublicacion(int fechaPublicacion) {
+	public void setFechaPublicacion(LocalDate fechaPublicacion) {
 		this.fechaPublicacion = fechaPublicacion;
 	}
 
