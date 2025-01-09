@@ -1,6 +1,6 @@
 package domain;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import dbmejorada.UsuarioDTO;
@@ -10,10 +10,10 @@ public abstract class Usuario {
 	private String dni;
 	private String nombre;
 	private String email;
-	private LocalDateTime fechaCreacion;
+	private LocalDate fechaCreacion;
 	private String contrasena;
 	
-	public Usuario(String dni, String nombre, String email, LocalDateTime fechaCreacion, String contrasena) {
+	public Usuario(String dni, String nombre, String email, LocalDate fechaCreacion, String contrasena) {
 		super();
 		this.dni = dni;
 		this.nombre = nombre;
@@ -27,7 +27,7 @@ public abstract class Usuario {
 		this.dni = "";
 		this.nombre = "";
 		this.email = "";
-		this.fechaCreacion = LocalDateTime.now();
+		this.fechaCreacion = LocalDate.now();
 		this.contrasena = "";
 	}
 	
@@ -64,11 +64,11 @@ public abstract class Usuario {
 		this.email = email;
 	}
 
-	public LocalDateTime getFechaCreacion() {
+	public LocalDate getFechaCreacion() {
 		return fechaCreacion;
 	}
 
-	public void setFechaCreacion(LocalDateTime fechaCreacion) {
+	public void setFechaCreacion(LocalDate fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
 	}
 

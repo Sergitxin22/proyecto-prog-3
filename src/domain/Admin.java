@@ -1,6 +1,6 @@
 package domain;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import dbmejorada.UsuarioDTO;
@@ -10,7 +10,7 @@ public class Admin extends Usuario {
 
 	private ArrayList<LogAccion> logAcciones;
 	
-	public Admin(String dni, String nombre, String email, LocalDateTime fechaCreacion, String contrasena, ArrayList<LogAccion> logAcciones) {
+	public Admin(String dni, String nombre, String email, LocalDate fechaCreacion, String contrasena, ArrayList<LogAccion> logAcciones) {
 		super(dni, nombre, email, fechaCreacion, contrasena);
 		this.logAcciones = logAcciones;
 	}

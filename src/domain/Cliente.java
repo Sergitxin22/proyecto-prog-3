@@ -1,6 +1,6 @@
 package domain;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import dbmejorada.UsuarioDTO;
@@ -12,7 +12,7 @@ public class Cliente extends Usuario {
 	private ArrayList<Review> listaReviews;
 	private int amonestaciones;
 	
-	public Cliente(String dni, String nombre, String email, LocalDateTime fechaCreacion, String contrasena,
+	public Cliente(String dni, String nombre, String email, LocalDate fechaCreacion, String contrasena,
 			ArrayList<Libro> historial, ArrayList<Review> listaReviews, int amonestaciones) {
 		super(dni, nombre, email, fechaCreacion, contrasena);
 		this.historial = historial;
