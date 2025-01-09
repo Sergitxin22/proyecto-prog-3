@@ -72,9 +72,9 @@ public class EventoDAO implements EventoDAOInterface {
                    evento = new EventoDTO();
                    evento.setId(rs.getInt("id"));
                    evento.setTitulo(rs.getString("titulo"));
-                   evento.setFechaHora(LocalDateTime.parse(rs.getString("fecha"))); // TODO: Comprobar que esto funciona
+                   evento.setFecha(LocalDateTime.parse(rs.getString("fecha"))); // TODO: Comprobar que esto funciona
                    evento.setIdSala(rs.getInt("id_sala"));
-                   evento.setTipoEvento(getTipoEvento(rs.getInt("id_tipo_evento")));
+                   evento.setIdTipoEvento(rs.getInt("id_tipo_evento"));
                 }
                 System.out.println("Evento recuperado correctamente");
                 
