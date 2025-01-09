@@ -1,6 +1,5 @@
 package main;
 
-import db.GestorDB;
 import dbmejorada.EventoDAO;
 import dbmejorada.EventoDAOInterface;
 import dbmejorada.LibroDAO;
@@ -15,40 +14,39 @@ import dbmejorada.SalaDAO;
 import dbmejorada.SalaDAOInterface;
 import dbmejorada.UsuarioDAO;
 import dbmejorada.UsuarioDAOInterface;
-import dbmejorada.UsuarioDTO;
-import domain.Admin;
-import domain.Cliente;
-import domain.Libro;
-import domain.Recurso;
-import domain.Reserva;
-import domain.Review;
-import domain.SalaPrivada;
+
 import domain.SalaPublica;
 import domain.Usuario;
+
 import gui.VentanaPortada;
+
+import io.CargarDatosEnBBDD;
 
 import java.io.FileReader;
 import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
+
 public class Main {
 	private final static String PROPERTIES_FILE = "app.properties";
+	private static String driver;
+	private static String connection;
+	private static String nombreBD;
 	
 	private static Usuario usuario;
 	private static SalaPublica salaPublica;
+	
 	private static Connection conexionBD;
 	private static Logger logger;
-	private static Libro libro;
 	
-	//	Declaración de los DAO
 	private static UsuarioDAOInterface usuarioDAO;
 	private static SalaDAOInterface salaDAO;
 	private static ReservaSalaPrivadaDAOInterface reservaSalaPrivadaDAO;
@@ -147,21 +145,22 @@ public class Main {
 
     public static void main(String[] args) {
     	
+    	// Inicialización de usuario y sala pública
     	usuario = null;
-    	salaPublica = new SalaPublica(250, 0, 1);
+    	salaPublica = new SalaPublica(Main.getSalaDAO().getSala(0));
     	
+    	// Carga de propiedades
     	Properties properties = new Properties();
 		try {
 			properties.load(new FileReader(PROPERTIES_FILE));
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.err.println("Error al abrir el fichero de propiedades:" + e);;
 		}
 		
-		String driver = properties.getProperty("driver");
-		String connection = properties.getProperty("connection");
-		String nombreBD = properties.getProperty("dbName");
+		driver = properties.getProperty("driver");
+		connection = properties.getProperty("connection");
+		nombreBD = properties.getProperty("dbName");
     	
-
     	// Comprobación del .jar e inicialización de Conexión y Logger
         try {
             Class.forName(driver);
@@ -182,31 +181,10 @@ public class Main {
         libroDAO = new LibroDAO();
         eventoDAO = new EventoDAO();
         
-        SalaPrivada sala = new SalaPrivada(5, 12, 2, null, null);
+        // Carga de datos del .csv a la BD
+        new CargarDatosEnBBDD();
         
-        ArrayList<Recurso> recursos = new ArrayList<>();
-        ArrayList<Reserva> reservas = new ArrayList<>();
-        
-        recursos.add(Recurso.ORDENADORES);
-        recursos.add(Recurso.PROYECTOR);
-        reservas.add(new Reserva(sala, LocalDate.now(), LocalDateTime.now(), LocalDateTime.now(), new Cliente("7a", "Markel", "markel", LocalDateTime.now(), "hola", new ArrayList<>(), new ArrayList<>(), 2)));
-        
-        sala.setRecursos(recursos);
-        sala.setReservas(reservas);
-        
-//        salaDAO.addSala(sala);
-        
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
-        
-        usuarioDTO.setAdmin(false);
-        usuarioDTO.setAmonestaciones(2);
-        usuarioDTO.setDni("aaaaa");
-        usuarioDTO.setNombre("Ander");
-        
-//        Review review = new Review(new Libro(129, "Libro 2", "Yo",  12, "Sinopsis", "Fantasia",  5, 2003, null, new ArrayList<>()), usuarioDTO, "Comentarioo", 5);
-//    	reviewDAO.addReview(review);
-        
-        
-    	new VentanaPortada();
+        // Inicio de la interfaz gráfica
+    	SwingUtilities.invokeLater(() -> new VentanaPortada());
     }
 }
