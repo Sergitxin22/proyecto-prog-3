@@ -40,7 +40,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Main {
-	private final static String PROPERTIES_FILE = "src/dbmejorada/app.properties";
+	private final static String PROPERTIES_FILE = "app.properties";
 	
 	private static Usuario usuario;
 	private static SalaPublica salaPublica;
@@ -207,6 +207,6 @@ public class Main {
 //    	reviewDAO.addReview(review);
         
         
-//    	new VentanaPortada();
+    	new VentanaPortada();
     }
 }

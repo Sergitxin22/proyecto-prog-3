@@ -27,7 +27,7 @@ import domain.LogAccion;
 import main.Main;
 
 class UsuarioDAOTest {
-	private final static String PROPERTIES_FILE = "src/dbmejorada/app.properties";
+	private final static String PROPERTIES_FILE = "app.properties";
 	private UsuarioDAOInterface usuarioDAO;
 
 	@BeforeEach
