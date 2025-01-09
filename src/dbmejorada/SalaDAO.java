@@ -11,11 +11,9 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 import domain.Cliente;
-import domain.Evento;
 import domain.Recurso;
 import domain.Reserva;
 import domain.Sala;
-import domain.SalaEventos;
 import domain.SalaPrivada;
 import domain.SalaPublica;
 import main.Main;
@@ -106,11 +104,9 @@ public class SalaDAO implements SalaDAOInterface {
                    sala.setId(rs.getInt("id"));
                    sala.setCapacidad(rs.getInt("capacidad"));
                    sala.setPiso(rs.getInt("piso"));
-                   sala.setTipo(getTipoSala(rs.getInt("tipo")));
+                   sala.setIdTipo(rs.getInt("tipo"));
                 }
                 System.out.println("Sala recuperada correctamente");
-                
-                getDatosAdicionalesSala(sala);
     			preparedStmt.close();
                 
             }
@@ -151,8 +147,7 @@ public class SalaDAO implements SalaDAOInterface {
 			return 1;
 		} else {
 			return 2;
-		}
-		
+		}		
 	}
 	
 	@Override
@@ -164,9 +159,9 @@ public class SalaDAO implements SalaDAOInterface {
 	@Override
 	public Recurso getRecurso(int id) {
 		switch(id) {
-		case 0: return Recurso.ORDENADORES;
-		case 1: return Recurso.PROYECTOR;
-		default: return Recurso.PIZARRA;
+			case 0: return Recurso.ORDENADORES;
+			case 1: return Recurso.PROYECTOR;
+			default: return Recurso.PIZARRA;
 		}
 	}
 
@@ -177,10 +172,5 @@ public class SalaDAO implements SalaDAOInterface {
 		// TODO
 		
 		return result;
-	}
-
-	
-
-	
-	
+	}	
 }

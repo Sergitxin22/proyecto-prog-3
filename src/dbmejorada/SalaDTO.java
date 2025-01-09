@@ -7,59 +7,59 @@ import domain.Recurso;
 
 public class SalaDTO {
 
-	private int capacidad;
 	private int id;
 	private int piso;
-	private ArrayList<Recurso> recursos;
-	private int idEvento;
-	private String tipo;
-	
-	public int getCapacidad() {
-		return capacidad;
+	private int capacidad;
+	private int idTipo;
+
+	public SalaDTO() {
+		this.id = 0;
+		this.piso = 0;
+		this.capacidad = 0;
+		this.idTipo = 0;
 	}
-	
-	public void setCapacidad(int capacidad) {
+
+	public SalaDTO(int id, int piso, int capacidad, int idTipo) {
+		this.id = id;
+		this.piso = piso;
 		this.capacidad = capacidad;
+		this.idTipo = idTipo;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public int getPiso() {
 		return piso;
 	}
-	
+
 	public void setPiso(int piso) {
 		this.piso = piso;
 	}
-	
-	public ArrayList<Recurso> getRecursos() {
-		return recursos;
+
+	public int getCapacidad() {
+		return capacidad;
 	}
-	
-	public void setRecursos(ArrayList<Recurso> recursos) {
-		this.recursos = recursos;
+
+	public void setCapacidad(int capacidad) {
+		this.capacidad = capacidad;
 	}
-	
-	public int getIdEvento() {
-		return idEvento;
+
+	public int getIdTipo() {
+		return idTipo;
 	}
-	
-	public void setEvento(int idEvento) {
-		this.idEvento = idEvento;
+
+	public void setIdTipo(int idTipo) {
+		this.idTipo = idTipo;
 	}
-	
-	public String getTipo() {
-		return tipo;
+
+	@Override
+	public String toString() {
+		return "SalaDTO [id=" + id + ", piso=" + piso + ", capacidad=" + capacidad + ", idTipo=" + idTipo + "]";
 	}
-	
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-	
 }
