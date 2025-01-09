@@ -35,16 +35,16 @@ public class Reserva {
 		this.horaSalida = null;
 		this.cliente = new Cliente();
 	}
-
 	
-	public Reserva(ReservaSalaPrivadaDTO reserva) {
+	public Reserva(ReservaSalaPrivadaDTO reservaSalaPrivadaDTO) {
 		super();
-		SalaDTO salaDTO = Main.getSalaDAO().getSala(reserva.getIdSala());
+		SalaDTO salaDTO = Main.getSalaDAO().getSala(reservaSalaPrivadaDTO.getIdSala());
 		this.sala = new SalaPrivada(salaDTO);
-		this.fechaReserva = reserva.getFechaReserva();
-		this.horaEntrada = reserva.getHoraEntrada();
-		this.horaSalida = reserva.getHoraSalida();
-		UsuarioDTO usuarioDTO = Main.getUsuarioDAO().getUsuario(reserva.getDniCliente());
+		this.fechaReserva = reservaSalaPrivadaDTO.getFechaReserva();
+		this.horaEntrada = reservaSalaPrivadaDTO.getfechaEntrada();
+		this.horaSalida = reservaSalaPrivadaDTO.getfechaSalida();
+		UsuarioDTO usuarioDTO = Main.getUsuarioDAO().getUsuario(reservaSalaPrivadaDTO.getDniCliente());
+		
 		if (!usuarioDTO.isAdmin()) {
 			this.cliente = new Cliente(usuarioDTO);
 		}

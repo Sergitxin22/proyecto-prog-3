@@ -29,10 +29,9 @@ public class Cliente extends Usuario {
 	
 	public Cliente(UsuarioDTO usuarioDTO) {
 		super(usuarioDTO);
-//		this.historial = null;
-//		this.listaReviews = null;
 		this.historial = null;
-		this.listaReviews = Main.getReviewDAO().getReviewsUsuario(this); //TODO: solo hay que pasar el dni
+//		this.historial = Main.getLibroDAO().getHistorialByDniCliente(usuarioDTO.getDni()); // TODO: falta implementar
+		this.listaReviews = Main.getReviewDAO().getReviewsUsuario(this); // TODO: solo hay que pasar el dni
 		this.amonestaciones = usuarioDTO.getAmonestaciones();
 	}
 
@@ -66,6 +65,5 @@ public class Cliente extends Usuario {
 				+ amonestaciones + ", getDni()=" + getDni() + ", getNombre()=" + getNombre() + ", getEmail()="
 				+ getEmail() + ", getFechaCreacion()=" + getFechaCreacion() + ", getContrasena()=" + getContrasena()
 				+ "]";
-	}
-	
+	}	
 }

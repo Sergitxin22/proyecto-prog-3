@@ -203,7 +203,7 @@ public class Main {
         usuarioDTO.setDni("aaaaa");
         usuarioDTO.setNombre("Ander");
         
-        Review review = new Review(new Libro(129, "Libro 2", "Yo",  12, "Sinopsis", "Fantasia",  5, 2003, null, new ArrayList<>()), usuarioDTO, "Comentarioo", 5);
+//        Review review = new Review(new Libro(129, "Libro 2", "Yo",  12, "Sinopsis", "Fantasia",  5, 2003, null, new ArrayList<>()), usuarioDTO, "Comentarioo", 5);
 //    	reviewDAO.addReview(review);
         
         
