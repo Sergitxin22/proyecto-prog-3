@@ -11,7 +11,6 @@ import domain.Cliente;
 public interface SalaDAOInterface {
 	boolean addSala(Sala sala);
 	SalaDTO getSala(int id);
-	void getDatosAdicionalesSala(SalaDTO sala);
 	int getTipoSalaId(String tipoSala);
 	String getTipoSala(int id);
 	int getRecursoId(Recurso recurso);

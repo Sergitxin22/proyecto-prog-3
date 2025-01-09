@@ -9,6 +9,14 @@ public class ReservaSalaPublicaDTO {
 	private String dniCliente;
 	private int numeroBloque;
 	
+	public ReservaSalaPublicaDTO() {
+		super();
+		this.id = 0;
+		this.fechaEntrada = LocalDate.now();
+		this.dniCliente = "";
+		this.numeroBloque = 0;
+	}
+	
 	public ReservaSalaPublicaDTO(int id, LocalDate fechaEntrada, String dniCliente, int numeroBloque) {
 		super();
 		this.id = id;
@@ -53,6 +61,5 @@ public class ReservaSalaPublicaDTO {
 	public String toString() {
 		return "ReservaSalaPublicaDTO [id=" + id + ", fechaEntrada=" + fechaEntrada + ", dniCliente=" + dniCliente
 				+ ", numeroBloque=" + numeroBloque + "]";
-	}
-	
+	}	
 }

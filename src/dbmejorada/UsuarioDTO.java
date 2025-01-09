@@ -7,9 +7,18 @@ public class UsuarioDTO {
 	private String nombre;
 	private String email;
 	private LocalDateTime fechaCreacion;
-	private String contrasena;
 	private int amonestaciones;
 	private boolean admin;
+
+	public UsuarioDTO() {
+		super();
+		this.dni = "";
+		this.nombre = "";
+		this.email = "";
+		this.fechaCreacion = LocalDateTime.now();
+		this.amonestaciones = 0;
+		this.admin = false;
+	}
 	
 	public UsuarioDTO(String dni, String nombre, String email, LocalDateTime fechaCreacion, String contrasena,
 			int amonestaciones, boolean admin) {
@@ -18,20 +27,8 @@ public class UsuarioDTO {
 		this.nombre = nombre;
 		this.email = email;
 		this.fechaCreacion = fechaCreacion;
-		this.contrasena = contrasena;
 		this.amonestaciones = amonestaciones;
 		this.admin = admin;
-	}
-
-	public UsuarioDTO() {
-		super();
-		this.dni = "";
-		this.nombre = "";
-		this.email = "";
-		this.fechaCreacion = LocalDateTime.now();
-		this.contrasena = "";
-		this.amonestaciones = 0;
-		this.admin = false;
 	}
 
 	public String getDni() {
@@ -66,14 +63,6 @@ public class UsuarioDTO {
 		this.fechaCreacion = fechaCreacion;
 	}
 
-	public String getContrasena() {
-		return contrasena;
-	}
-
-	public void setContrasena(String contrasena) {
-		this.contrasena = contrasena;
-	}
-
 	public int getAmonestaciones() {
 		return amonestaciones;
 	}
@@ -93,7 +82,6 @@ public class UsuarioDTO {
 	@Override
 	public String toString() {
 		return "UsuarioDTO [dni=" + dni + ", nombre=" + nombre + ", email=" + email + ", fechaCreacion=" + fechaCreacion
-				+ ", contrasena=" + contrasena + ", amonestaciones=" + amonestaciones + ", admin=" + admin + "]";
-	}
-	
+				+ ", amonestaciones=" + amonestaciones + ", admin=" + admin + "]";
+	}	
 }

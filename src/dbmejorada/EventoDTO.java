@@ -9,11 +9,28 @@ public class EventoDTO {
 
 	private int id;
 	private String titulo;
-	private TipoEvento tipoEvento;
+	private int idTipoEvento;
 	private int idSala;
-	private LocalDateTime fechaHora;
-	private int hora;
+	private LocalDateTime fecha;
+	
+	public EventoDTO() {
+		super();
+		this.id = 0;
+		this.titulo = "";
+		this.idTipoEvento = 0;
+		this.idSala = 0;
+		this.fecha = LocalDateTime.now();
+	}
 
+	public EventoDTO(int id, String titulo, int idTipoEvento, int idSala, LocalDateTime fecha) {
+		super();
+		this.id = id;
+		this.titulo = titulo;
+		this.idTipoEvento = idTipoEvento;
+		this.idSala = idSala;
+		this.fecha = fecha;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -30,12 +47,12 @@ public class EventoDTO {
 		this.titulo = titulo;
 	}
 	
-	public TipoEvento getTipoEvento() {
-		return tipoEvento;
+	public int getIdTipoEvento() {
+		return idTipoEvento;
 	}
 	
-	public void setTipoEvento(TipoEvento tipoEvento) {
-		this.tipoEvento = tipoEvento;
+	public void setIdTipoEvento(int idTipoEvento) {
+		this.idTipoEvento = idTipoEvento;
 	}
 	
 	public int getIdSala() {
@@ -46,27 +63,17 @@ public class EventoDTO {
 		this.idSala = idSala;
 	}
 	
-	public LocalDateTime getFechaHora() {
-		return fechaHora;
+	public LocalDateTime getFecha() {
+		return fecha;
 	}
 	
-	public void setFechaHora(LocalDateTime fechaHora) {
-		this.fechaHora = fechaHora;
+	public void setFecha(LocalDateTime fecha) {
+		this.fecha = fecha;
 	}
 	
-	public int getHora() {
-		return hora;
-	}
-	
-	public void setHora(int hora) {
-		this.hora = hora;
-	}
-
 	@Override
 	public String toString() {
-		return "EventoDTO [id=" + id + ", titulo=" + titulo + ", tipoEvento=" + tipoEvento + ", idSala=" + idSala
-				+ ", fecha=" + fechaHora + ", hora=" + hora + "]";
+		return "EventoDTO [id=" + id + ", titulo=" + titulo + ", idTipoEvento=" + idTipoEvento + ", idSala=" + idSala
+				+ ", fecha=" + fecha + "]";
 	}
-	
-	
 }

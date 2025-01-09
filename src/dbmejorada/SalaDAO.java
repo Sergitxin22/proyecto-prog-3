@@ -11,11 +11,9 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 import domain.Cliente;
-import domain.Evento;
 import domain.Recurso;
 import domain.Reserva;
 import domain.Sala;
-import domain.SalaEventos;
 import domain.SalaPrivada;
 import domain.SalaPublica;
 import main.Main;
@@ -106,11 +104,9 @@ public class SalaDAO implements SalaDAOInterface {
                    sala.setId(rs.getInt("id"));
                    sala.setCapacidad(rs.getInt("capacidad"));
                    sala.setPiso(rs.getInt("piso"));
-                   sala.setTipo(getTipoSala(rs.getInt("tipo")));
+                   sala.setIdTipo(rs.getInt("tipo"));
                 }
                 System.out.println("Sala recuperada correctamente");
-                
-                getDatosAdicionalesSala(sala);
     			preparedStmt.close();
                 
             }
@@ -123,41 +119,6 @@ public class SalaDAO implements SalaDAOInterface {
 		} 
 		
 		return sala;	
-	}
-
-	@Override
-	public void getDatosAdicionalesSala(SalaDTO sala) {
-
-		ArrayList<Recurso> recursos = new ArrayList<>();
-		String selectSQLRecurso = "SELECT id_recurso FROM SalaPrivadaRecurso WHERE id_sala = ?";
-		String selectSQLEvento = "SELECT id FROM Evento WHERE id_sala = ?";
-		try {
-			PreparedStatement preparedStmtRecurso = conexionBD.prepareStatement(selectSQLRecurso);
-			preparedStmtRecurso.setInt(1, sala.getId());
-			
-			try (ResultSet rs = preparedStmtRecurso.executeQuery()) {
-                
-                while (rs.next()) {
-                   recursos.add(getRecurso(rs.getInt("id_recurso")));
-                }
-                
-                System.out.println("Datos adicionales de la sala recuperados correctamente");
-                sala.setRecursos(recursos);
-                preparedStmtRecurso.close();
-            }
-			
-			PreparedStatement preparedStmtEvento = conexionBD.prepareStatement(selectSQLEvento);
-			preparedStmtEvento.setInt(1, sala.getId());		
-			try (ResultSet rs = preparedStmtEvento.executeQuery()) {
-                while (rs.next()) {
-                	sala.setEvento(rs.getInt("id"));
-                }
-            }
-		} catch (SQLException e) {
-			if (logger != null) {
-				logger.log(Level.SEVERE, "Error al recuperar los datos adicionales de la sala: ", e);
-			}
-		}
 	}
 
 	@Override
@@ -186,8 +147,7 @@ public class SalaDAO implements SalaDAOInterface {
 			return 1;
 		} else {
 			return 2;
-		}
-		
+		}		
 	}
 	
 	@Override
@@ -199,9 +159,9 @@ public class SalaDAO implements SalaDAOInterface {
 	@Override
 	public Recurso getRecurso(int id) {
 		switch(id) {
-		case 0: return Recurso.ORDENADORES;
-		case 1: return Recurso.PROYECTOR;
-		default: return Recurso.PIZARRA;
+			case 0: return Recurso.ORDENADORES;
+			case 1: return Recurso.PROYECTOR;
+			default: return Recurso.PIZARRA;
 		}
 	}
 
@@ -212,10 +172,5 @@ public class SalaDAO implements SalaDAOInterface {
 		// TODO
 		
 		return result;
-	}
-
-	
-
-	
-	
+	}	
 }
