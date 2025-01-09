@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import domain.Reserva;
 import main.Main;
 
 public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
@@ -32,8 +31,8 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
     	PreparedStatement preparedStmtReservaSalaPrivada;
 		try {
 			preparedStmtReservaSalaPrivada = conexionBD.prepareStatement(insertSQLReservaSalaPrivada);
-			preparedStmtReservaSalaPrivada.setString(1, reservaSalaPrivada.getHoraEntrada().toString());
-	   		preparedStmtReservaSalaPrivada.setString(2, reservaSalaPrivada.getHoraSalida().toString());
+			preparedStmtReservaSalaPrivada.setString(1, reservaSalaPrivada.getfechaEntrada().toString());
+	   		preparedStmtReservaSalaPrivada.setString(2, reservaSalaPrivada.getfechaSalida().toString());
 	   		preparedStmtReservaSalaPrivada.setString(3, reservaSalaPrivada.getFechaReserva().toString());
 	    	preparedStmtReservaSalaPrivada.setString(4, reservaSalaPrivada.getDniCliente());
 	    	preparedStmtReservaSalaPrivada.setInt(5, reservaSalaPrivada.getIdSala());
@@ -61,15 +60,14 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
 	        try (ResultSet rs = preparedStmt.executeQuery()) {
                 
                 while (rs.next()) {
-                	//int id, LocalDateTime horaEntrada, LocalDateTime horaSalida, LocalDate fechaReserva,String dniCliente, int idSala
-                   int id = rs.getInt("id");
-                   String horaEntrada = rs.getString("fecha_entrada");
-                   String horaSalida = rs.getString("fecha_salida");
-                   String fechaReserva = rs.getString("fecha_reserva");
-                   String dniCliente = rs.getString("dni_cliente");
-                   int idSala = rs.getInt("id_sala");
-                   
-                   reservaSalaPrivada = new ReservaSalaPrivadaDTO(id, LocalDateTime.parse(horaEntrada), LocalDateTime.parse(horaSalida), LocalDate.parse(fechaReserva), dniCliente, idSala);
+                	int id = rs.getInt("id");
+                	String horaEntrada = rs.getString("fecha_entrada");
+                	String horaSalida = rs.getString("fecha_salida");
+                	String fechaReserva = rs.getString("fecha_reserva");
+                	String dniCliente = rs.getString("dni_cliente");
+                	int idSala = rs.getInt("id_sala");
+                	
+                	reservaSalaPrivada = new ReservaSalaPrivadaDTO(id, LocalDateTime.parse(horaEntrada), LocalDateTime.parse(horaSalida), LocalDate.parse(fechaReserva), dniCliente, idSala);
                 }
                 System.out.println("Reserva sala privada sin fallos");
                 return reservaSalaPrivada;
@@ -140,7 +138,7 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
 
 	@Override
 	public boolean isSalaPrivadaReservable(ReservaSalaPrivadaDTO reservaSalaPrivada) {
-		ArrayList<Integer> salasDisponibles = getIdSalasPrivadasDisponiblesEntreFechas(reservaSalaPrivada.getHoraEntrada().toString(), reservaSalaPrivada.getHoraSalida().toString());
+		ArrayList<Integer> salasDisponibles = getIdSalasPrivadasDisponiblesEntreFechas(reservaSalaPrivada.getfechaEntrada().toString(), reservaSalaPrivada.getfechaSalida().toString());
 		if (salasDisponibles.contains(reservaSalaPrivada.getIdSala())) {
 			return true;
 		}
@@ -152,8 +150,8 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
 		try {
             String insertSQL = "UPDATE ReservaSalaPrivada SET fecha_entrada=?,fecha_salida=?,fecha_reserva=?,dni_cliente=?,id_sala=? WHERE id=?;";
             PreparedStatement preparedStmt = conexionBD.prepareStatement(insertSQL);
-            preparedStmt.setString(1,reservaSalaPrivada.getHoraEntrada().toString());
-            preparedStmt.setString(2,reservaSalaPrivada.getHoraSalida().toString());
+            preparedStmt.setString(1,reservaSalaPrivada.getfechaEntrada().toString());
+            preparedStmt.setString(2,reservaSalaPrivada.getfechaSalida().toString());
             preparedStmt.setString(3,reservaSalaPrivada.getFechaReserva().toString());
             preparedStmt.setString(4,reservaSalaPrivada.getDniCliente());
             preparedStmt.setInt(5,reservaSalaPrivada.getIdSala());
