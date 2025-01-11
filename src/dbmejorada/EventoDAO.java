@@ -104,6 +104,24 @@ public class EventoDAO implements EventoDAOInterface {
             return false;
         }
 	}
+	
+	@Override
+	public boolean deleteEvento(int id) {
+		String deleteSQL = "DELETE FROM EVENTO WHERE id = ?";
+		try {
+			PreparedStatement preparedStmt = conexionBD.prepareStatement(deleteSQL);
+			preparedStmt.setInt(1, id);
+			preparedStmt.executeUpdate();
+			preparedStmt.close();
+			
+		} catch (SQLException e) {
+			if (logger != null) {
+				logger.log(Level.SEVERE, "Error al eliminar el evento: ", e);
+				return false;
+			}
+		}
+		return true;
+	}
 
 	@Override
 	public EventoDTO getEvento(int id) {

@@ -109,7 +109,11 @@ public class VentanaIniciarSesion extends JFrame {
 				
 //				Instanciar una nueva ventana Madre
 				try {
-					previousWindow.getClass().getConstructor().newInstance();
+					if (previousWindow instanceof VentanaInformacionRecurso) {
+						new VentanaPortada();
+					} else {
+						previousWindow.getClass().getConstructor().newInstance();
+					}
 					previousWindow.dispose();
 				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
@@ -122,7 +126,7 @@ public class VentanaIniciarSesion extends JFrame {
 			
 
 		});
-
+		
 		JLabel noCuentaLabel = new JLabel("¿No tienes cuenta?", SwingConstants.CENTER);
 		noCuentaLabel.setForeground(Color.blue);
 		noCuentaLabel.addMouseListener(new MouseAdapter() {

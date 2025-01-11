@@ -10,7 +10,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -30,14 +29,13 @@ import domain.Seccion;
 import domain.Usuario;
 import gui.components.AddPanel;
 import gui.components.Header;
-import io.InputUtils;
 import main.Main;
 import utils.Utils;
 
 public class VentanaBiblioteca extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
-	private final ArrayList<Libro> listaLibros = InputUtils.cargarLibros();
+	private final ArrayList<Libro> listaLibros = Main.getLibroDAO().getLibros();
 	private ArrayList<Libro> listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
 	private Usuario usuario = Main.getUsuario();
 	

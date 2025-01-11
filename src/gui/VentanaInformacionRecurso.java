@@ -227,70 +227,24 @@ public class VentanaInformacionRecurso extends JFrame {
 		
 		JButton botonReview = new JButton("Añadir review");
 		JButton botonReservar = new JButton("Reservar");
+		JButton botonEditar = new JButton("Editar");
+		botonEditar.addActionListener(e -> {
+			dispose();
+			new VentanaCrearEditarLibro(this, libro);
+		});
 		botonReview.setFont(new Font("Arial", Font.BOLD, 17));		
 		botonReservar.setFont(new Font("Arial", Font.BOLD, 17));
         
         if (usuario == null) {
 			botonReview.setEnabled(false);
 			botonReservar.setEnabled(false);
-		}
-
-		if (usuario instanceof Admin) {
-
-			for (JTextArea ta : areas) {
-				ta.setEditable(true);
-			}
-
-			tituloLibroArea.setEditable(true);
-
-			JButton guardarCambiosButton = new JButton("Guardar cambios");
-			guardarCambiosButton.addActionListener(e -> {
-
-				String titulo = tituloLibroArea.getText();
-				System.out.println(titulo);
-
-				String autor = taAutor.getText();
-				autor = autor.substring(10);
-				System.out.println(autor);
-
-				String genero = taGenero.getText();
-				genero = genero.substring(8);
-				System.out.println(genero);
-
-				String numeroPaginas = taNumeroPaginas.getText();
-				numeroPaginas = numeroPaginas.substring(19);
-				System.out.println(numeroPaginas);
-
-				String rating = taRating.getText();
-				int lengthRating = taRating.getText().length();
-				rating = rating.substring(8, lengthRating - 3);
-				System.out.println(rating);
-
-				String sinopsis = taSinopsis.getText();
-				sinopsis = sinopsis.substring(10);
-				System.out.println(sinopsis);
-
-				libro.setTitulo(titulo);
-				libro.setAutor(autor);
-				libro.setGenero(genero);
-				libro.setNumeroDePaginas(Integer.parseInt(numeroPaginas));
-				libro.setRating(Integer.parseInt(rating));
-				libro.setSinopsis(sinopsis);
-				repaint();
-				// TODO: AÑADIR AQUI FUNCIONALIDAD PARA PASARLO A LA BASE DE DATOS Y A LA LISTA DE LIBROS
-			});
-			
-			JButton eliminarLibroButton = new JButton("Eliminar libro");
-
-			botonesPanel.add(guardarCambiosButton);
-			botonesPanel.add(eliminarLibroButton);
+		}else if (usuario instanceof Admin) {
+			botonesPanel.add(botonEditar);
 		} else {
 			botonesPanel.add(botonReview);
 			botonesPanel.add(botonReservar);
 		}
 
-		
-       
 		pCentro.add(botonesPanel);
 		
 		botonReview.addActionListener(new ActionListener() {
@@ -377,13 +331,24 @@ public class VentanaInformacionRecurso extends JFrame {
 	    JPanel panelboton = new JPanel();
 	    panelboton.setBackground(Color.WHITE);
 	    JButton reservarButton = new JButton("Reservar");
-		if (usuario == null) {
+	    JButton botonEditar = new JButton("Editar");
+	    botonEditar.addActionListener(e -> {
+	    	new VentanaCrearEditarSala(this, (SalaPrivada) sala);
+	    	dispose();
+	    });
+	   
+        if (usuario == null) {
+        	panelboton.add(reservarButton);
 			reservarButton.setEnabled(false);
+		}else if (usuario instanceof Admin) {
+			panelboton.add(botonEditar);
+		} else {
+			panelboton.add(reservarButton);
 		}
-	    reservarButton.setFont(new Font("Arial", Font.BOLD, 20));
-	    panelboton.add(reservarButton);
-	    
         
+	    reservarButton.setFont(new Font("Arial", Font.BOLD, 20));
+	    botonEditar.setFont(new Font("Arial", Font.BOLD, 20));
+	     
         pCentro.setBorder(new EmptyBorder(160, 100, 30, 15));
         pOeste.setBorder(new EmptyBorder(140, 15, 10, 0));
         pCentro.add(taDescripcion);
@@ -471,12 +436,27 @@ public class VentanaInformacionRecurso extends JFrame {
 	    pCentro.setLayout(new BorderLayout());
 	    //Panel Boton
 	    JPanel panelboton = new JPanel();
+	    
+	    JButton botonEditar = new JButton("Editar");
+	    botonEditar.addActionListener(e -> {
+	    	new VentanaCrearEditarEvento(this, evento);
+	    	dispose();
+	    });
+	    
 	    panelboton.setBackground(Color.WHITE);
 	    JButton reservarButton = new JButton("Reservar");
-		if (usuario == null) {
+	   
+        
+        if (usuario == null) {
+        	panelboton.add(reservarButton);
 			reservarButton.setEnabled(false);
+		}else if (usuario instanceof Admin) {
+			panelboton.add(botonEditar);
+		} else {
+			panelboton.add(reservarButton);
 		}
 	    reservarButton.setFont(new Font("Arial", Font.BOLD, 20));
+	    botonEditar.setFont(new Font("Arial", Font.BOLD, 20));
 	    panelboton.add(reservarButton);
 	    
         
@@ -494,7 +474,7 @@ public class VentanaInformacionRecurso extends JFrame {
 		        // Cerrar la ventana actual
 		        vInformacionRecurso.dispose();
 		        // Abrir Venatana de ConfirmacionReserva
-		        VentanaConfirmacionReservaEvento ventanaConfirmacionReservaEvento = new VentanaConfirmacionReservaEvento(evento);
+		        new VentanaConfirmacionReservaEvento(evento);
 		    }
 		});
 	   
@@ -606,29 +586,12 @@ public class VentanaInformacionRecurso extends JFrame {
 	public static void main(String[] args) {
 		ImageIcon foto = Utils.loadImage("books/9780006514855" + ".jpg", 128, 200);
 		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, foto, new ArrayList<Review>());
-
-		SalaDTO salaDTO = new SalaDTO();
-		salaDTO.setId(110);
-		salaDTO.setCapacidad(100);
-		salaDTO.setEvento(null);
-		salaDTO.setPiso(10);
-		salaDTO.setRecursos(null);
-		salaDTO.setTipo("EVENTOS");
-		
-		Evento evento = new Evento(12, "Charla sobre el Veganismo", TipoEvento.CHARLA, new ArrayList<Cliente>(), salaDTO, LocalDateTime.now());
 		
 		UsuarioDTO usuarioDTO = new UsuarioDTO();
 		usuarioDTO.setAdmin(isDefaultLookAndFeelDecorated());
 		usuarioDTO.setAmonestaciones(12);
 		usuarioDTO.setDni("73291756J");
 		usuarioDTO.setNombre("Jorge");
-		
-		Review review1 = new Review ( libro, usuarioDTO ,"Mala pelicula" , 2);
-		Review review2 = new Review ( libro, usuarioDTO, "Buenisima pelicula", 5);
-		Review review3 = new Review (libro, usuarioDTO , "Lamentable", 1);
-		libro.agregarReview(review1);
-		libro.agregarReview(review2);
-		libro.agregarReview(review3);
 		
 		ArrayList<Recurso>recursos = new ArrayList<>();
 		recursos.add(Recurso.ORDENADORES);
@@ -642,7 +605,7 @@ public class VentanaInformacionRecurso extends JFrame {
 		
 		
 		//new VentanaInformacionRecurso(sala);
-		new VentanaInformacionRecurso(evento);
+		new VentanaInformacionRecurso(libro);
 		//new InformacionRecurso(sala, new Cliente());
 		//new VentanaInformacionRecurso(libro);
 		
