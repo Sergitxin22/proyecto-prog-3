@@ -47,14 +47,14 @@ public class ReviewDAO implements ReviewDAOInterface {
 	}
 
 	@Override
-	public ArrayList<Review> getReviewsUsuario(Usuario usuario) {
+	public ArrayList<Review> getReviewsByUsuarioDni(String dniCliente) {
 		ArrayList<Review> result = null;
 		
 		String selectSQL = "SELECT * FROM Review WHERE dni_cliente = ?";
         PreparedStatement preparedStmt;
 		try {
 			preparedStmt = conexionBD.prepareStatement(selectSQL);
-			preparedStmt.setString(1, usuario.getDni());
+			preparedStmt.setString(1, dniCliente);
 
 	        try (ResultSet rs = preparedStmt.executeQuery()) {
                 
@@ -85,14 +85,14 @@ public class ReviewDAO implements ReviewDAOInterface {
 	}
 
 	@Override
-	public ArrayList<Review> getReviewsLibro(Libro libro) {
+	public ArrayList<Review> getReviewsLibroByIsbn(Long isbnLibro) {
 		ArrayList<Review> result = null;
 		
 		String selectSQL = "SELECT * FROM Review WHERE isbn_libro = ?";
         PreparedStatement preparedStmt;
 		try {
 			preparedStmt = conexionBD.prepareStatement(selectSQL);
-			preparedStmt.setLong(1, libro.getIsbn());
+			preparedStmt.setLong(1, isbnLibro);
 
 	        try (ResultSet rs = preparedStmt.executeQuery()) {
                 

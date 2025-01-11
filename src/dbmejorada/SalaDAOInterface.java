@@ -10,6 +10,7 @@ import domain.Cliente;
 
 public interface SalaDAOInterface {
 	boolean addSala(Sala sala);
+	boolean deleteSala(int id);
 	SalaDTO getSala(int id);
 	ArrayList<Sala> getSalas();
 	int getTipoSalaId(String tipoSala);

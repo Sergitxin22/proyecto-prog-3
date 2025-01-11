@@ -31,7 +31,7 @@ import javax.swing.SwingConstants;
 import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
 
-public class VentanaCrearEvento extends JFrame {
+public class VentanaCrearEditarEvento extends JFrame {
 
 	private static final long serialVersionUID = -3996159568028430335L;
 		
@@ -59,18 +59,9 @@ public class VentanaCrearEvento extends JFrame {
 		
 		ButtonGroup bg = new ButtonGroup();
 		
-		public VentanaCrearEvento() {
-			setTitle("Crear evento");
-			setSize(650, 500);
-			setLocationRelativeTo(null);
+		public VentanaCrearEditarEvento(JFrame previousWindow, Evento eventoAEditar) {
 			
-			addWindowListener(new WindowAdapter() {
-		        @Override
-		        public void windowClosing(WindowEvent e) {
-		        	new VentanaEventos();
-		        	dispose();
-		        	}
-				});
+			int idEventoAntiguo = eventoAEditar.getId();
 			
 			MaskFormatter fechaMask;
 			try {
@@ -91,6 +82,54 @@ public class VentanaCrearEvento extends JFrame {
 			}
 		
 			
+			String titleString = "Crear";
+			if (previousWindow instanceof VentanaInformacionRecurso) {
+				 
+				titleString = "Editar";
+				
+				tfId.setText(Integer.toString(eventoAEditar.getId()));
+				tfTitulo.setText(eventoAEditar.getTitulo());
+				tfSala.setText(Integer.toString(eventoAEditar.getSala().getId()));
+				tfFecha.setText(Integer.toString(eventoAEditar.getFechaHora().getYear()) + "-" + Integer.toString(eventoAEditar.getFechaHora().getMonthValue()) + "-" + Integer.toString(eventoAEditar.getFechaHora().getDayOfMonth()));
+				tfHora.setText(Integer.toString(eventoAEditar.getFechaHora().getHour()) + ":" + eventoAEditar.getFechaHora().getMinute());
+				
+				switch(eventoAEditar.getTipoEvento()) {
+				case CHARLA:
+					charlaRB.setSelected(true);
+				case CONFERENCIA:
+					conferenciaRB.setSelected(true);
+					break;
+				case CURSILLO:
+					cursilloRB.setSelected(true);
+					break;
+				case DEBATE:
+					debateRB.setSelected(true);
+					break;
+				case SEMINARIO:
+					seminarioRB.setSelected(true);
+					break;
+				case TALLER:
+					tallerRB.setSelected(true);
+					break;
+				}
+			}
+			
+			setTitle(titleString + " evento");
+			setSize(650, 500);
+			setLocationRelativeTo(null);
+			
+			addWindowListener(new WindowAdapter() {
+		        @Override
+		        public void windowClosing(WindowEvent e) {
+		        	if (previousWindow instanceof VentanaEventos) {
+		        		new VentanaEventos();
+		        	} else {
+		        		new VentanaInformacionRecurso(eventoAEditar);
+		        	}
+		        	dispose();
+		        	}
+				});
+			
 			format.setGroupingUsed(false);
 			numberFormatter.setAllowsInvalid(false);
 		    numberFormatter.setMinimum(0);
@@ -110,10 +149,10 @@ public class VentanaCrearEvento extends JFrame {
 		    conferenciaRB.setText("Conferencia");
 			
 			// Texto superior
-			JLabel topText = new JLabel("Crear evento", SwingConstants.CENTER); // Label con texto centrado
+			JLabel topText = new JLabel(titleString + " evento", SwingConstants.CENTER); // Label con texto centrado
 			topText.setFont(new Font("Verdana", Font.BOLD, 32));
 				
-				// Cuerpo de la ventana
+			// Cuerpo de la ventana
 			JPanel body = new JPanel();
 			body.setLayout(new BoxLayout(body, BoxLayout.Y_AXIS));
 			
@@ -177,9 +216,10 @@ public class VentanaCrearEvento extends JFrame {
 			body.add(textTipoEvento);
 			body.add(tipoEventoPanel);
 		
-			JButton crearEventoButton = new JButton("Crear evento");
+			JButton crearEventoButton = new JButton(titleString + " evento");
 			crearEventoButton.addActionListener(e -> {
 				try {
+					
 					id = Integer.parseInt(tfId.getText());
 					titulo = tfTitulo.getText();
 					idSala = Integer.parseInt(tfSala.getText());
@@ -202,16 +242,31 @@ public class VentanaCrearEvento extends JFrame {
 						JOptionPane.showMessageDialog(this, "Selecciona un tipo de evento", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 					
-					if (tipoEvento != null) {
-						Evento evento = new Evento(id, titulo, tipoEvento, new ArrayList<>(), new SalaEventos(Main.getSalaDAO().getSala(idSala)), fechaHora);
-						System.out.println(evento);
-						if (Main.getEventoDAO().addEvento(evento)) {
-							// LogAdmin
-							JOptionPane.showMessageDialog(null, "Evento creado correctamente.", "Evento creado", JOptionPane.INFORMATION_MESSAGE);
-							new VentanaEventos();
-							dispose();
+					if (previousWindow instanceof VentanaInformacionRecurso) {
+						Evento eventoNuevo = new Evento(id, titulo, tipoEvento, new ArrayList<>(), new SalaEventos(Main.getSalaDAO().getSala(idSala)), fechaHora);
+						if (Main.getEventoDAO().deleteEvento(idEventoAntiguo)) {
+							if(Main.getEventoDAO().addEvento(eventoNuevo)) {
+								JOptionPane.showMessageDialog(this, "Evento editado correctamente.", "Evento editado", JOptionPane.INFORMATION_MESSAGE);
+								new VentanaInformacionRecurso(eventoNuevo);
+								dispose();
+							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Error al actualizar la base de datos. Comprueba los datos.", "Evento creado", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(this, "Ha ocurrido un error en la edición, comprueba los datos", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+						
+					} else {
+						
+						if (tipoEvento != null) {
+							Evento evento = new Evento(id, titulo, tipoEvento, new ArrayList<>(), new SalaEventos(Main.getSalaDAO().getSala(idSala)), fechaHora);
+							System.out.println(evento);
+							if (Main.getEventoDAO().addEvento(evento)) {
+								// LogAdmin
+								JOptionPane.showMessageDialog(null, "Evento creado correctamente.", "Evento creado", JOptionPane.INFORMATION_MESSAGE);
+								new VentanaInformacionRecurso(evento);
+								dispose();
+							} else {
+								JOptionPane.showMessageDialog(null, "Error al actualizar la base de datos. Comprueba los datos.", "Evento creado", JOptionPane.INFORMATION_MESSAGE);
+							}
 						}
 					}
 					
@@ -225,6 +280,18 @@ public class VentanaCrearEvento extends JFrame {
 			JPanel tail = new JPanel(new GridLayout(2, 1, 0, 0));
 			
 			JPanel añadirLibroButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+			if (previousWindow instanceof VentanaInformacionRecurso) {
+				JButton eliminarEventoButton = new JButton("Eliminar evento");
+				eliminarEventoButton.addActionListener(e -> {
+					if (Main.getEventoDAO().deleteEvento(idEventoAntiguo)) {
+						JOptionPane.showMessageDialog(null, "Evento eliminado correctamente.", "Evento creado", JOptionPane.INFORMATION_MESSAGE);
+						new VentanaEventos();
+						dispose();
+					}
+				});
+				
+				añadirLibroButtonPanel.add(eliminarEventoButton);
+			}
 			añadirLibroButtonPanel.add(crearEventoButton);
 			
 			tail.add(añadirLibroButtonPanel);
@@ -234,9 +301,5 @@ public class VentanaCrearEvento extends JFrame {
 			add(tail, BorderLayout.SOUTH);
 		
 			setVisible(true);
-	}
-		
-	public static void main(String[] args) {
-		new VentanaCrearEvento();
 	}
 }

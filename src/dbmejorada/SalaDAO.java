@@ -131,6 +131,26 @@ public class SalaDAO implements SalaDAOInterface {
 		
 		return true;
 	}
+	
+	@Override
+	public boolean deleteSala(int id) {
+		String deleteSQL = "DELETE FROM SALA WHERE id = ?";
+		PreparedStatement preparedStmt;
+		try {
+			preparedStmt = conexionBD.prepareStatement(deleteSQL);
+			preparedStmt.setInt(1, id);
+			preparedStmt.executeUpdate();
+			preparedStmt.close();
+			
+		} catch (SQLException e) {
+			 if (logger != null)
+	                logger.log(Level.SEVERE, "Error al eliminar la sala: ", e);
+	            return false;
+		}
+		
+		
+		return true;
+	}
 
 	@Override
 	public SalaDTO getSala(int id) {

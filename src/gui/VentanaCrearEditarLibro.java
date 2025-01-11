@@ -12,6 +12,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,15 +34,17 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import dbmejorada.LibroDTO;
 import domain.Libro;
 import main.Main;
 
-public class VentanaCrearLibro extends JFrame {
+public class VentanaCrearEditarLibro extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private Libro libro = new Libro();
 	
 	private long isbn;
+	private final long isbnAntiguo;
 	private String titulo;
 	private String autor;
 	private int numeroDePaginas;
@@ -59,24 +62,51 @@ public class VentanaCrearLibro extends JFrame {
 	private JTextField tfGenero = new JTextField();
 	private JTextField tfRating = new JTextField();
 	private JTextField tfAñoPublicacion = new JTextField();
-
+	
+	private JLabel imageLabel = new JLabel();
+	private ImageIcon imagen;
 	private File ficheroImagen;
 
-	public VentanaCrearLibro() {
-		setTitle("Crear libro");
+	public VentanaCrearEditarLibro(JFrame previousWindow, Libro libroAEditar) {
+		
+		isbnAntiguo = libroAEditar.getIsbn();
+		
+		String titleString = "";
+		if (previousWindow instanceof VentanaBiblioteca) {
+			titleString = "Crear";
+			
+		} else {
+			
+			titleString = "Editar";
+			tfISBN.setText(Long.toString(libroAEditar.getIsbn()));
+			tfTitulo.setText(libroAEditar.getTitulo());
+			tfAutor.setText(libroAEditar.getAutor());
+			tfNumeroPaginas.setText(Integer.toString(libroAEditar.getNumeroDePaginas()));
+			taSinopsis.setText(libroAEditar.getSinopsis());
+			tfGenero.setText(libroAEditar.getGenero());
+			tfRating.setText(Integer.toString(libroAEditar.getRating()));
+			tfAñoPublicacion.setText(Integer.toString(libroAEditar.getFechaPublicacion()));
+			imageLabel.setIcon(libroAEditar.getFoto());
+		}
+		
+		setTitle(titleString + " libro");
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
 
 		addWindowListener(new WindowAdapter() {
         @Override
         public void windowClosing(WindowEvent e) {
-        	new VentanaBiblioteca();
+        	if (previousWindow instanceof VentanaBiblioteca) {
+        		new VentanaBiblioteca();
+        	} else {
+        		new VentanaInformacionRecurso(libroAEditar);
+        	}
         	dispose();
         	}
 		});
 		
 		// Texto superior
-		JLabel topText = new JLabel("Crear libro", SwingConstants.CENTER); // Label con texto centrado
+		JLabel topText = new JLabel(titleString + " libro", SwingConstants.CENTER); // Label con texto centrado
 		topText.setFont(new Font("Verdana", Font.BOLD, 32));
 
 		
@@ -173,7 +203,6 @@ public class VentanaCrearLibro extends JFrame {
 		JLabel textImagen = new JLabel("Imagen del libro");
 		textImagen.setAlignmentX(CENTER_ALIGNMENT);
 
-		JLabel imageLabel = new JLabel();
 		imageLabel.setAlignmentX(CENTER_ALIGNMENT);
 		JButton añadirImagenButton = new JButton("Añadir imagen");
 		añadirImagenButton.setAlignmentX(CENTER_ALIGNMENT);
@@ -198,7 +227,7 @@ public class VentanaCrearLibro extends JFrame {
 				e1.printStackTrace();
 			}
 	        
-	        ImageIcon imagen = new ImageIcon(bi.getScaledInstance(128, 200, Image.SCALE_DEFAULT));
+	        imagen = new ImageIcon(bi.getScaledInstance(128, 200, Image.SCALE_DEFAULT));
 	        foto = imagen;
 	        imageLabel.setIcon(imagen);
 		});
@@ -227,9 +256,10 @@ public class VentanaCrearLibro extends JFrame {
 		leftBody.setBorder(new EmptyBorder(0, 0, 0, 0));
 		
 		// Parte baja de la pantalla
-		JButton crearLibroButton = new JButton("Crear libro");
+		JButton crearLibroButton = new JButton(titleString + " libro");
 		crearLibroButton.addActionListener(e -> {
 			try {
+				
 				isbn = Long.parseLong(tfISBN.getText());
 				titulo = tfTitulo.getText();
 				autor = tfAutor.getText();
@@ -239,31 +269,78 @@ public class VentanaCrearLibro extends JFrame {
 				rating = Integer.parseInt(tfRating.getText());
 				añoPublicacion = Integer.parseInt(tfAñoPublicacion.getText());
 				
-
-				libro = new Libro(isbn, titulo, autor, numeroDePaginas, sinopsis, genero, rating, añoPublicacion, foto, new ArrayList<>());
-				System.out.println(libro);
 				
-				if (!Main.getLibroDAO().addLibro(libro)) {
-					JOptionPane.showMessageDialog(this, "Error al insertar el libro en la BD. Comprueba los datos.", "Error", JOptionPane.ERROR_MESSAGE);
-				} else {
+				libro = new Libro(isbn, titulo, autor, numeroDePaginas, sinopsis, genero, rating, añoPublicacion, foto, new ArrayList<>());
+				
+				if (previousWindow instanceof VentanaInformacionRecurso) {
+					LibroDTO libroEditado = new LibroDTO();
+					libroEditado.setIsbn(isbn);
+					libroEditado.setTitulo(titulo);
+					libroEditado.setAutor(autor);
+					libroEditado.setNumeroDePaginas(numeroDePaginas);
+					libroEditado.setSinopsis(sinopsis);
+					libroEditado.setGenero(genero);
+					libroEditado.setRating(rating);
+					libroEditado.setFechaPublicacion(añoPublicacion);
+
+					Main.getLibroDAO().updateLibro(libroEditado, isbnAntiguo);
 					
 					if (ficheroImagen != null) {
+						
+						try {
+							Path deletePath = Paths.get(new File("resources/images/books/" + isbnAntiguo + ".jpg").getAbsolutePath());
+							Files.delete(deletePath);
+						} catch (Exception e2) {
+							JOptionPane.showMessageDialog(this, "Error al eliminar la imagen antigua del libro.", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+						
 						Path origen = ficheroImagen.toPath();
 						Path destino = Paths.get(new File("resources/images/books").getAbsolutePath(), Long.toString(isbn) + ".jpg");
-						
+						libro.setFoto(imagen);
 						try {
 							Files.copy(origen, destino);
 						} catch (IOException e1) {
 							JOptionPane.showMessageDialog(this, "Error al guardar la imagen de libro. Comprueba que la imagen no esté ya creada.", "Error", JOptionPane.ERROR_MESSAGE);
 						}
+					} else {
+						libro.setFoto(libroAEditar.getFoto());
+						if (isbnAntiguo != isbn) {
+							System.out.println("Epa");
+							Path deletePath = Paths.get(new File("resources/images/books/" + Long.toString(isbnAntiguo) + ".jpg").getAbsolutePath());
+							Path origen = deletePath;
+							Path destino = Paths.get(new File("resources/images/books").getAbsolutePath(), Long.toString(isbn) + ".jpg");
+							
+							try {
+								Files.copy(origen, destino);
+							} catch (Exception e1) {
+								JOptionPane.showMessageDialog(this, "Error al guardar la imagen de libro. Comprueba que la imagen no esté ya creada.", "Error", JOptionPane.ERROR_MESSAGE);
+							}
+							
+							try {
+								Files.delete(deletePath);
+							} catch (Exception e2) {
+								JOptionPane.showMessageDialog(this, "Error al eliminar la imagen antigua del libro.", "Error", JOptionPane.ERROR_MESSAGE);
+							}
+						}
 					}
 					
-					JOptionPane.showMessageDialog(this, "El libro se ha añadido correctamente.", "Libro añadido correctamente", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(this, "Libro editado correctamente.", "Libro editado", JOptionPane.INFORMATION_MESSAGE);
 					dispose();
-					new VentanaBiblioteca();
+					new VentanaInformacionRecurso(libro);
+				} else {
+					
+					if (!Main.getLibroDAO().addLibro(libro)) {
+						JOptionPane.showMessageDialog(this, "Error al insertar el libro en la BD. Comprueba los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+					} else {
+						
+						JOptionPane.showMessageDialog(this, "El libro se ha añadido correctamente.", "Libro añadido correctamente", JOptionPane.INFORMATION_MESSAGE);
+						dispose();
+						new VentanaInformacionRecurso(libro);
+					}
 				}
 			} catch (Exception e2) {
 				JOptionPane.showMessageDialog(this, "Error en el formato de algún campo. Comprueba los datos introducidos.", "Error", JOptionPane.ERROR_MESSAGE);
+				e2.printStackTrace();
 			}
 			
 			
@@ -273,6 +350,24 @@ public class VentanaCrearLibro extends JFrame {
 		JPanel tail = new JPanel(new GridLayout(2, 1, 0, 0));
 		
 		JPanel añadirLibroButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		if (previousWindow instanceof VentanaInformacionRecurso) {
+			JButton eliminarLibroButton = new JButton("Eliminar libro");
+			eliminarLibroButton.addActionListener(e -> {
+				if (Main.getLibroDAO().deleteLibroByIsbn(isbnAntiguo)) {
+					JOptionPane.showMessageDialog(this, "Libro eliminado correctamente", "Libro eliminado", JOptionPane.INFORMATION_MESSAGE);
+					File imagenLibro = new File("resources/images/books/" + isbnAntiguo + ".jpg");
+					imagenLibro.delete();
+					dispose();
+					new VentanaBiblioteca();
+				} else {
+					JOptionPane.showMessageDialog(this, "Ha habido un problema eliminando el libro.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
+			});
+			
+			añadirLibroButtonPanel.add(eliminarLibroButton);
+		}
 		añadirLibroButtonPanel.add(crearLibroButton);
 		
 		tail.add(añadirLibroButtonPanel);
@@ -293,9 +388,5 @@ public class VentanaCrearLibro extends JFrame {
 		body.setBorder(new EmptyBorder(100, 30, 0, 0));
 		
 		setVisible(true);
-	}
-	
-	public static void main(String[] args) {
-		new VentanaCrearLibro();
 	}
 }

@@ -7,6 +7,7 @@ import domain.TipoEvento;
 
 public interface EventoDAOInterface {
 	boolean addEvento(Evento evento);
+	boolean deleteEvento(int id);
 	EventoDTO getEvento(int id);
 	ArrayList<Evento> getEventos();
 	ArrayList<UsuarioDTO> getAsistentesEvento(int id);
