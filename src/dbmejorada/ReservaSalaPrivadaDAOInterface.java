@@ -1,5 +1,6 @@
 package dbmejorada;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import domain.Reserva;
@@ -12,7 +13,6 @@ public interface ReservaSalaPrivadaDAOInterface {
 	boolean isSalaPrivadaReservable(ReservaSalaPrivadaDTO reserva);
 	boolean updateReservaSalaPrivada(ReservaSalaPrivadaDTO reserva);
 	ArrayList<ReservaSalaPrivadaDTO> getReservasSalaPrivadaByIdSala(int idSala);
-	// TODO Refactorizar para recibir LocalDateTime
-	ArrayList<Integer> getIdSalasPrivadasDisponiblesEntreFechas(String fechaI, String fechaF);
+	ArrayList<Integer> getIdSalasPrivadasDisponiblesEntreFechas(LocalDateTime fechaI, LocalDateTime fechaF);
 	void borrarRegistros();
 }
