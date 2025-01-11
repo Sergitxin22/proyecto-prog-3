@@ -1,5 +1,7 @@
 package main;
 
+import dbmejorada.AsistenciaEventoDAO;
+import dbmejorada.AsistenciaEventoDAOInterface;
 import dbmejorada.EventoDAO;
 import dbmejorada.EventoDAOInterface;
 import dbmejorada.LibroDAO;
@@ -57,8 +59,8 @@ public class Main {
 	private static LibroDAOInterface libroDAO;
 	private static ReservaLibroDAOInterface reservaLibroDAO;
 	private static EventoDAOInterface eventoDAO;
+	private static AsistenciaEventoDAOInterface asistenciaEventoDAO;
 	
-
 	public static UsuarioDAOInterface getUsuarioDAO() {
 		return usuarioDAO;
 	}
@@ -138,11 +140,19 @@ public class Main {
 	public static void setEventoDAO(EventoDAOInterface eventoDAO) {
 		Main.eventoDAO = eventoDAO;
 	}
+	
+	public static AsistenciaEventoDAOInterface getAsistenciaEventoDAO() {
+		return asistenciaEventoDAO;
+	}
+	
+	public static void setAsistenciaEventoDAO(AsistenciaEventoDAOInterface asistenciaEventoDAO) {
+		Main.asistenciaEventoDAO = asistenciaEventoDAO;
+	}
 
 	public static Connection getConexionBD() {
 		return conexionBD;
 	}
-
+	
 	public static void setConexionBD(Connection conexionBD) {
 		Main.conexionBD = conexionBD;
 	}
@@ -189,6 +199,7 @@ public class Main {
         libroDAO = new LibroDAO();
         reservaLibroDAO = new ReservaLibroDAO();
 //        eventoDAO = new EventoDAO();
+        asistenciaEventoDAO= new AsistenciaEventoDAO();
         
         // Carga de datos del .csv a la BD
 //        new CargarDatosEnBBDD();

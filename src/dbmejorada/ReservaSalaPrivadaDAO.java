@@ -138,11 +138,11 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
 
 	@Override
 	public boolean isSalaPrivadaReservable(ReservaSalaPrivadaDTO reservaSalaPrivada) {
-		ArrayList<Integer> salasDisponibles = getIdSalasPrivadasDisponiblesEntreFechas(reservaSalaPrivada.getfechaEntrada(), reservaSalaPrivada.getfechaSalida());
-		if (salasDisponibles.contains(reservaSalaPrivada.getIdSala())) {
-			return true;
+		ArrayList<Integer> salasNoDisponibles = getIdSalasPrivadasNoDisponiblesEntreFechas(reservaSalaPrivada.getfechaEntrada(), reservaSalaPrivada.getfechaSalida());
+		if (salasNoDisponibles.contains(reservaSalaPrivada.getIdSala())) {
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	@Override
@@ -169,30 +169,22 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
 	}
 
 	@Override
-	public ArrayList<Integer> getIdSalasPrivadasDisponiblesEntreFechas(LocalDateTime fechaI, LocalDateTime fechaF) {
-		ArrayList<Integer> salasDisponibles = new ArrayList<Integer>();
+	public ArrayList<Integer> getIdSalasPrivadasNoDisponiblesEntreFechas(LocalDateTime fechaI, LocalDateTime fechaF) {
+		ArrayList<Integer> salasNoDisponibles = new ArrayList<Integer>();
 		int idTipoSala = Main.getSalaDAO().getTipoSalaId("PRIVADA");
-		String insertSQL = "SELECT s.*"
-				+ " FROM Sala s"
-				+ " LEFT JOIN ReservaSalaPrivada r"
-				+ " ON s.id = r.id_sala"
-				+ " AND r.fecha_entrada <= ?" // Fecha de Fin
-				+ " AND r.fecha_salida >= ?"  // Fecha de Inicio
-				+ " WHERE r.id IS NULL"
-				+ " AND s.tipo = ?;"; // TODO: necesito obtener el id del SalaDAO
+		String insertSQL = "SELECT id_sala FROM ReservaSalaPrivada WHERE fecha_entrada BETWEEN ? AND ?";
+		
         PreparedStatement preparedStmt;
 		try {
 			preparedStmt = conexionBD.prepareStatement(insertSQL);
-			preparedStmt.setString(1, fechaF.toString());
-	        preparedStmt.setString(2, fechaI.toString());
-	        preparedStmt.setInt(3, idTipoSala);
+			preparedStmt.setString(1, fechaI.toString());
+	        preparedStmt.setString(2, fechaF.toString());
+	        
 
 	        try (ResultSet rs = preparedStmt.executeQuery()) {
                 
                 while (rs.next()) {
-                    int idSala = rs.getInt("id");
-                    
-                    salasDisponibles.add(idSala);
+                    salasNoDisponibles.add(rs.getInt("id_sala"));
                 }
                 System.out.println("Ids de salas privadas recuperados correctamente");
             }
@@ -201,10 +193,10 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
 			if (logger != null)
 				System.out.println(insertSQL);
                 logger.log(Level.SEVERE, "Error al recuperar los Ids de salas privadas: ", e);
-            return salasDisponibles;
+            return salasNoDisponibles;
 		}
 		
-		return salasDisponibles;
+		return salasNoDisponibles;
 	}
 	
 	@Override
