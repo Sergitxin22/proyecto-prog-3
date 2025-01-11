@@ -4,6 +4,8 @@ import dbmejorada.EventoDAO;
 import dbmejorada.EventoDAOInterface;
 import dbmejorada.LibroDAO;
 import dbmejorada.LibroDAOInterface;
+import dbmejorada.ReservaLibroDAO;
+import dbmejorada.ReservaLibroDAOInterface;
 import dbmejorada.ReservaSalaPrivadaDAO;
 import dbmejorada.ReservaSalaPrivadaDAOInterface;
 import dbmejorada.ReservaSalaPublicaDAO;
@@ -53,7 +55,9 @@ public class Main {
 	private static ReservaSalaPublicaDAOInterface reservaSalaPublicaDAO;
 	private static ReviewDAOInterface reviewDAO;
 	private static LibroDAOInterface libroDAO;
+	private static ReservaLibroDAOInterface reservaLibroDAO;
 	private static EventoDAOInterface eventoDAO;
+	
 
 	public static UsuarioDAOInterface getUsuarioDAO() {
 		return usuarioDAO;
@@ -119,6 +123,14 @@ public class Main {
 		Main.libroDAO = libroDAO;
 	}
 	
+	public static ReservaLibroDAOInterface getReservaLibroDAO() {
+		return reservaLibroDAO;
+	}
+
+	public static void setReservaLibroDAO(ReservaLibroDAOInterface reservaLibroDAO) {
+		Main.reservaLibroDAO = reservaLibroDAO;
+	}
+
 	public static EventoDAOInterface getEventoDAO() {
 		return eventoDAO;
 	}
@@ -175,16 +187,17 @@ public class Main {
         reservaSalaPublicaDAO = new ReservaSalaPublicaDAO();
         reviewDAO = new ReviewDAO();
         libroDAO = new LibroDAO();
-        eventoDAO = new EventoDAO();
+        reservaLibroDAO = new ReservaLibroDAO();
+//        eventoDAO = new EventoDAO();
         
         // Carga de datos del .csv a la BD
-        new CargarDatosEnBBDD();
+//        new CargarDatosEnBBDD();
     	    	
     	// Inicialización de usuario y sala pública
     	usuario = null;
-    	salaPublica = new SalaPublica(Main.getSalaDAO().getSala(0));
+//    	salaPublica = new SalaPublica(Main.getSalaDAO().getSala(0));
              
         // Inicio de la interfaz gráfica
-    	SwingUtilities.invokeLater(() -> new VentanaPortada());
+//    	SwingUtilities.invokeLater(() -> new VentanaPortada());
     }
 }
