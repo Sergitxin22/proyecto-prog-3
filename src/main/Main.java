@@ -145,10 +145,6 @@ public class Main {
 
     public static void main(String[] args) {
     	
-    	// Inicialización de usuario y sala pública
-    	usuario = null;
-    	salaPublica = new SalaPublica(Main.getSalaDAO().getSala(0));
-    	
     	// Carga de propiedades
     	Properties properties = new Properties();
 		try {
@@ -160,7 +156,7 @@ public class Main {
 		driver = properties.getProperty("driver");
 		connection = properties.getProperty("connection");
 		nombreBD = properties.getProperty("dbName");
-    	
+    	 	
     	// Comprobación del .jar e inicialización de Conexión y Logger
         try {
             Class.forName(driver);
@@ -172,7 +168,7 @@ public class Main {
                 logger.log(Level.SEVERE, "Error en el .jar o en la conexión de base de datos " + nombreBD + ".db", e);
         }
     	
-        // Inicialización de DAOs
+    	// Inicialización de DAOs
         usuarioDAO = new UsuarioDAO();
         salaDAO = new SalaDAO();
         reservaSalaPrivadaDAO = new ReservaSalaPrivadaDAO();
@@ -183,7 +179,11 @@ public class Main {
         
         // Carga de datos del .csv a la BD
         new CargarDatosEnBBDD();
-        
+    	    	
+    	// Inicialización de usuario y sala pública
+    	usuario = null;
+    	salaPublica = new SalaPublica(Main.getSalaDAO().getSala(0));
+             
         // Inicio de la interfaz gráfica
     	SwingUtilities.invokeLater(() -> new VentanaPortada());
     }
