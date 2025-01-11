@@ -7,10 +7,8 @@ import domain.Review;
 import domain.Usuario;
 
 
-public interface ReviewDAOInterface {
-	
+public interface ReviewDAOInterface {	
 	boolean addReview(Review review);
 	ArrayList<Review> getReviewsUsuario(Usuario usuario);
-	ArrayList<Review> getReviewsLibro(Libro libro);
-	
+	ArrayList<Review> getReviewsLibroByIsbn(Long isbnLibro);	
 }
