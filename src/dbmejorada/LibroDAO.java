@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import domain.Cliente;
 import domain.Libro;
 import main.Main;
+import utils.Utils;
 
 public class LibroDAO implements LibroDAOInterface{
 	
@@ -28,7 +29,7 @@ public class LibroDAO implements LibroDAOInterface{
 
 	@Override
 	public boolean addLibro(Libro libro) {
-	    String insertSQLLibro = "INSERT INTO Libro (isbn, titulo, autor, numero_de_paginas, sinopsis, genero, rating, fecha_publicacion) VALUES (?,?,?,?,?,?,?,?)";
+	    String insertSQLLibro = "INSERT INTO Libro (isbn, titulo, autor, numPaginas, sinopsis, genero, rating, fecha_publicacion) VALUES (?,?,?,?,?,?,?,?)";
 
 	    try (PreparedStatement preparedStmtLibro = conexionBD.prepareStatement(insertSQLLibro)) {
 	        preparedStmtLibro.setLong(1, libro.getIsbn());
@@ -38,14 +39,7 @@ public class LibroDAO implements LibroDAOInterface{
 	        preparedStmtLibro.setString(5, libro.getSinopsis());
 	        preparedStmtLibro.setString(6, libro.getGenero());
 	        preparedStmtLibro.setInt(7, libro.getRating());
-
-	        if (libro.getFechaPublicacion() != 0) {
-	            // Crear un LocalDate con el año de fechaPublicacion (usando 1 de enero como día predeterminado)
-	            LocalDate fecha = LocalDate.of(libro.getFechaPublicacion(), 1, 1);
-	            preparedStmtLibro.setDate(8, java.sql.Date.valueOf(fecha));
-	        } else {
-	            preparedStmtLibro.setDate(8, null);
-	        }
+	        preparedStmtLibro.setInt(8, libro.getFechaPublicacion());
 
 	        preparedStmtLibro.executeUpdate();
 	        return true;
@@ -74,17 +68,12 @@ public class LibroDAO implements LibroDAOInterface{
 	                libro.setIsbn(rs.getLong("isbn"));
 	                libro.setTitulo(rs.getString("titulo"));
 	                libro.setAutor(rs.getString("autor"));
-	                libro.setNumeroDePaginas(rs.getInt("número de páginas"));
+	                libro.setNumeroDePaginas(rs.getInt("numPaginas"));
 	                libro.setSinopsis(rs.getString("sinopsis"));
 	                libro.setGenero(rs.getString("género"));
 	                libro.setRating(rs.getInt("rating"));
-
-	                Date fechaPublicacionDate = rs.getDate("fecha publicación");
-	                if (fechaPublicacionDate != null) {
-	                    libro.setFechaPublicacion(fechaPublicacionDate.toLocalDate());
-	                } else {
-	                    libro.setFechaPublicacion(null); // Fechas nulas
-	                }
+	                libro.setFechaPublicacion(rs.getInt("fecha_publicacion"));
+	                
 
 	                System.out.println("Libro recuperado correctamente");
 	                preparedStmt.close();
@@ -99,6 +88,30 @@ public class LibroDAO implements LibroDAOInterface{
 	    return libro;
 	}
 
+	@Override
+	public ArrayList<Libro> getLibros() {
+		ArrayList<Libro> result = new ArrayList<>();
+		
+		String selectSQLibro = "SELECT * FROM Libro";
+		try {
+			PreparedStatement preparedStmtLibro = conexionBD.prepareStatement(selectSQLibro);
+			ResultSet rs = preparedStmtLibro.executeQuery();
+			while (rs.next()) {
+				long isbn = rs.getLong("isbn");
+				System.out.println(rs.getInt("rating"));
+				Libro libro = new Libro(isbn, rs.getString("titulo"), rs.getString("autor"), rs.getInt("numPaginas"), rs.getString("sinopsis"), rs.getString("genero"), rs.getInt("rating"), rs.getInt("fecha_publicacion"), Utils.loadImage("books/" + Long.toString(isbn) + ".jpg", 98, 151), new ArrayList<>());
+				libro.setReviews(Main.getReviewDAO().getReviewsLibro(libro));
+				result.add(libro);
+			}
+		} catch (SQLException e) {
+			if (logger != null) {
+	            logger.log(Level.SEVERE, "Error al recuperar todos los libros: ", e);
+	            return result;
+	        }
+		}
+		return result;
+	}
+	
 	@Override
 	public void añadirReserva(long isbn, int diasDevolucion, Cliente cliente) {
 		String insertSQL = "INSERT INTO ReservaLibro(fecha_inicio, fecha_fin, isbn, dni_cliente";
@@ -143,9 +156,9 @@ public class LibroDAO implements LibroDAOInterface{
                 	String sinopsis = rs.getString("sinopsis");
                 	String genero = rs.getString("genero");
                 	int rating = rs.getInt("rating");
-                	String fechaPublicacion = rs.getString("fecha_publicacion");
+                	int fechaPublicacion = rs.getInt("fecha_publicacion");
                 	
-                	libro = new LibroDTO(isbn, titulo, autor, numeroDePaginas, sinopsis, genero, rating, LocalDate.parse(fechaPublicacion));
+                	libro = new LibroDTO(isbn, titulo, autor, numeroDePaginas, sinopsis, genero, rating, fechaPublicacion);
                 	historialCliente.add(libro);
                 }
                 System.out.println("Historial cliente sin fallos");
@@ -163,22 +176,24 @@ public class LibroDAO implements LibroDAOInterface{
 	
 	
 	@Override
-	public boolean updateLibro(LibroDTO libro) {
+	public boolean updateLibro(LibroDTO libroEditado, long isbnAntiguo) {
 		try {
-            String insertSQL = "UPDATE Libro SET titulo=?,autor=?,numero_de_paginas=?,sinopsis=?, genero=?, rating=?, fecha_publicacion=? WHERE isbn=?;";
+            String insertSQL = "UPDATE Libro SET isbn=?,titulo=?,autor=?,numPaginas=?,sinopsis=?, genero=?, rating=?, fecha_publicacion=? WHERE isbn=?;";
             PreparedStatement preparedStmt = conexionBD.prepareStatement(insertSQL);
-            preparedStmt.setLong(1, libro.getIsbn());
-            preparedStmt.setString(2, libro.getTitulo());
-            preparedStmt.setString(3, libro.getAutor());
-            preparedStmt.setInt(4, libro.getNumeroDePaginas());
-            preparedStmt.setString(5, libro.getSinopsis());
-            preparedStmt.setString(6, libro.getGenero());
-            preparedStmt.setInt(7, libro.getRating());
-            preparedStmt.setString(8, libro.getFechaPublicacion().toString());
+            preparedStmt.setLong(1, libroEditado.getIsbn());
+            preparedStmt.setString(2, libroEditado.getTitulo());
+            preparedStmt.setString(3, libroEditado.getAutor());
+            preparedStmt.setInt(4, libroEditado.getNumeroDePaginas());
+            preparedStmt.setString(5, libroEditado.getSinopsis());
+            preparedStmt.setString(6, libroEditado.getGenero());
+            preparedStmt.setInt(7, libroEditado.getRating());
+            preparedStmt.setInt(8, libroEditado.getFechaPublicacion());
+            preparedStmt.setLong(9, isbnAntiguo);
             
             int filas = preparedStmt.executeUpdate();
             System.out.println("Filas modificadas: " + filas);
-
+            
+            preparedStmt.close();
             return (filas > 0) ? true : false;
             
 		}catch(SQLException e) {

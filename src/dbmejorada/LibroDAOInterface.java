@@ -3,15 +3,15 @@ package dbmejorada;
 import java.util.ArrayList;
 
 import domain.Cliente;
-import domain.Evento;
 import domain.Libro;
 
 public interface LibroDAOInterface {
 	boolean addLibro(Libro libro);
 	LibroDTO getLibro(long isbn);
+	ArrayList<Libro> getLibros();
 	void añadirReserva(long isbn, int diasDevolucion, Cliente cliente);
 	ArrayList<LibroDTO> getHistorialByCliente(String dniCliente);
 	boolean libroLeidoByDniCliente(String dniCliente, Long isbn);
-	boolean updateLibro(LibroDTO libro);
+	boolean updateLibro(LibroDTO libro, long isbnAntiguo);
 	boolean deleteLibroByIsbn(long isbnLibro);
 }
