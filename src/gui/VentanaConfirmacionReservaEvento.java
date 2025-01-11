@@ -221,8 +221,8 @@ public void setMainWindowProperties() {
 	   
 	    setVisible(true);
     }
+	
 	public static void main(String[] args) {
-		
 		SalaDTO salaDTO = new SalaDTO();
 		salaDTO.setCapacidad(100);
 		salaDTO.setEvento(null);
@@ -234,7 +234,5 @@ public void setMainWindowProperties() {
 		Evento evento = new Evento(13, "Evento sobre agricultura", TipoEvento.CURSILLO, new ArrayList<Cliente> (),salaDTO, LocalDateTime.now());
 		
 		new VentanaConfirmacionReservaEvento(evento);
-
-		
 	}
 }

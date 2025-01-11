@@ -46,9 +46,7 @@ public class VentanaRegistrarse extends JFrame {
 				previousWindow.setVisible(true);
 				dispose();
 			}
-});
-
-		
+		});
 
 		// Texto superior
 		JLabel topText = new JLabel("Regístrate", SwingConstants.CENTER);
@@ -73,7 +71,6 @@ public class VentanaRegistrarse extends JFrame {
 		
 		JLabel textRepetirContrasenia = new JLabel("Repetir contraseña", SwingConstants.CENTER);
 		textRepetirContrasenia.setFont(topText.getFont().deriveFont(Font.PLAIN, 20));
-		
 			
 		JTextField tfDNI = new JTextField();
 		JTextField tfNombre = new JTextField();
@@ -184,11 +181,4 @@ public class VentanaRegistrarse extends JFrame {
 	public static void main(String[] args) {
 		new VentanaRegistrarse(null);
 	}
-}
-
-	        
-	        
-	        
-	        
-	      
-	     
+} 

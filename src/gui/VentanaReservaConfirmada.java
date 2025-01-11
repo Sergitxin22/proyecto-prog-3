@@ -32,9 +32,7 @@ public class VentanaReservaConfirmada extends JFrame {
 	private Usuario usuario = Main.getUsuario();
 
 	public void setMainWindowProperties() {
-		
 		// Método que recoge las propiedades en común de los constructores de esta ventana
-		
 		setSize(600, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -46,9 +44,7 @@ public class VentanaReservaConfirmada extends JFrame {
 		add(confirmadaLabel, BorderLayout.NORTH);
 	}
 	
-	
 	public VentanaReservaConfirmada(Libro libro) {
-		
 		setMainWindowProperties();
 		setTitle(libro.getTitulo() + ": Reserva confirmada");
 		
@@ -104,7 +100,6 @@ public class VentanaReservaConfirmada extends JFrame {
 	}
 	
 	public VentanaReservaConfirmada(Evento evento) {
-		
 		setMainWindowProperties();
 		setTitle(evento.getTitulo() + ": Reserva confirmada");
 		
@@ -125,7 +120,6 @@ public class VentanaReservaConfirmada extends JFrame {
 		codigoLabel.setFont(eventTitleLabel.getFont());
 		eventTitleLabel.setBorder(new EmptyBorder(10, 0, 10, 0));
 
-		
 		reservaPanel.add(eventTitleLabelCenterPanel);
 		reservaPanel.add(codigoLabelCenterPanel);
 		
@@ -182,10 +176,8 @@ public class VentanaReservaConfirmada extends JFrame {
 		
 		setVisible(true);
 	}
-
 	
 	public static void main(String[] args) {
-		
 		// RECURSOS DE PRUEBA
 //		Libro libro = new Libro(0000000000000, "Libro 1", "Autor 1", 300, "Sinopsis", "Genero 1", 30, 2003, null, new ArrayList<Review>());	
 		SalaDTO salaDTO = new SalaDTO();

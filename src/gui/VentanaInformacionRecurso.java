@@ -262,7 +262,7 @@ public class VentanaInformacionRecurso extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {				 
-				VentanaConfirmaciónDeReserva nuevaVentana = new VentanaConfirmaciónDeReserva(libro);
+				VentanaConfirmacionDeReserva nuevaVentana = new VentanaConfirmacionDeReserva(libro);
 				nuevaVentana.setVisible(true);
 				vInformacionRecurso.dispose();
 			}
