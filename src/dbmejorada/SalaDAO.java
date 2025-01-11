@@ -128,7 +128,6 @@ public class SalaDAO implements SalaDAOInterface {
                 logger.log(Level.SEVERE, "Error al añadir la sala: ", e);
             return false;
         }
-		
 		return true;
 	}
 	
@@ -147,8 +146,6 @@ public class SalaDAO implements SalaDAOInterface {
 	                logger.log(Level.SEVERE, "Error al eliminar la sala: ", e);
 	            return false;
 		}
-		
-		
 		return true;
 	}
 
@@ -293,7 +290,6 @@ public class SalaDAO implements SalaDAOInterface {
 	}	
 	
 	private HashMap<?, ?> getIdsTipoSala(int ordenMapa){ // ordenMapa 0 --> tipo,id, ordenMapa 1 --> id,tipo
-		
 		HashMap<Object, Object> idsTipoSala = new HashMap<>();
 		String selectSql = "SELECT * FROM TipoSala;";
 		try {
@@ -318,7 +314,6 @@ public class SalaDAO implements SalaDAOInterface {
 	}
 	
 	private HashMap<?, ?> getIdsRecurso(int ordenMapa){ // ordenMapa 0 --> recurso,id, ordenMapa 1 --> id,recurso
-		
 		HashMap<Object, Object> idsRecurso = new HashMap<>();
 		String selectSql = "SELECT * FROM Recurso;";
 		try {
