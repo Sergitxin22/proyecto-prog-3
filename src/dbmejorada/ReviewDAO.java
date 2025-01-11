@@ -47,14 +47,14 @@ public class ReviewDAO implements ReviewDAOInterface {
 	}
 
 	@Override
-	public ArrayList<Review> getReviewsUsuario(Usuario usuario) {
+	public ArrayList<Review> getReviewsByUsuarioDni(String dniCliente) {
 		ArrayList<Review> result = null;
 		
 		String selectSQL = "SELECT * FROM Review WHERE dni_cliente = ?";
         PreparedStatement preparedStmt;
 		try {
 			preparedStmt = conexionBD.prepareStatement(selectSQL);
-			preparedStmt.setString(1, usuario.getDni());
+			preparedStmt.setString(1, dniCliente);
 
 	        try (ResultSet rs = preparedStmt.executeQuery()) {
                 

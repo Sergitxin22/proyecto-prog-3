@@ -100,7 +100,7 @@ public class LibroDAO implements LibroDAOInterface{
 				long isbn = rs.getLong("isbn");
 				System.out.println(rs.getInt("rating"));
 				Libro libro = new Libro(isbn, rs.getString("titulo"), rs.getString("autor"), rs.getInt("numPaginas"), rs.getString("sinopsis"), rs.getString("genero"), rs.getInt("rating"), rs.getInt("fecha_publicacion"), Utils.loadImage("books/" + Long.toString(isbn) + ".jpg", 98, 151), new ArrayList<>());
-				libro.setReviews(Main.getReviewDAO().getReviewsLibro(libro));
+				libro.setReviews(Main.getReviewDAO().getReviewsLibroByIsbn(libro.getIsbn()));
 				result.add(libro);
 			}
 		} catch (SQLException e) {
