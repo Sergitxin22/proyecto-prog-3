@@ -215,6 +215,8 @@ public class EventoDAO implements EventoDAOInterface {
 		
 		return result;
 	}
+	
+	
 
 	@Override
 	public TipoEvento getTipoEvento(int id) {

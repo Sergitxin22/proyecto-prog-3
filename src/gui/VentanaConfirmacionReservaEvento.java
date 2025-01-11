@@ -13,11 +13,13 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import dbmejorada.AsistenciaEventoDTO;
 import dbmejorada.SalaDTO;
 import domain.Cliente;
 import domain.Evento;
@@ -208,19 +210,28 @@ public void setMainWindowProperties() {
 
 	    // Asegúrate de que pCentrpesté agregado al JFrame
 	    
-
-	    reservarButton.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        // Cerrar la ventana actual
-		        dispose();
-		        // Abrir Venatana de ConfirmacionReserva
-		        VentanaReservaConfirmada ventanaReservaConfirmada = new VentanaReservaConfirmada(evento);
-		    }
-		});
-	   
-	    setVisible(true);
-    }
+	    if(Main.getAsistenciaEventoDAO().isUsuarioAsistente(usuario.getDni())) {
+	    	reservarButton.setEnabled(false);
+	    }
+	    reservarButton.addActionListener(e -> {
+	    	for(Integer i : evento.getAsistentes().keySet()) {
+	    		if(evento.getAsistentes().get(i)==null) {
+	    			AsistenciaEventoDTO asistenciaEventoDTO = new AsistenciaEventoDTO(0,usuario.getDni(), evento.getSala().getId());
+	    			if(Main.getAsistenciaEventoDAO().addAsistenciaEvento(asistenciaEventoDTO)) {
+	    				JOptionPane.showMessageDialog(this, "Reserva realizada correctamente", "Reserva realizada", JOptionPane.INFORMATION_MESSAGE);
+	    				// Cerrar la ventana actual
+	    		        dispose();
+	    		        // Abrir Venatana de ConfirmacionReserva
+	    		        new VentanaReservaConfirmada(evento);
+	    			}
+	    			break;
+	    		}
+	    	}
+	    	JOptionPane.showMessageDialog(this, "No quedan asientos disponibles para este evento", "Error", JOptionPane.ERROR_MESSAGE);
+	    }); 
+		
+	}
+    
 	
 	public static void main(String[] args) {
 		SalaDTO salaDTO = new SalaDTO();
