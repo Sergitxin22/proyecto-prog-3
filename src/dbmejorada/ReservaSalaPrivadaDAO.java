@@ -260,15 +260,29 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
 	}
 	
 	public void pruebas() {
-		//TODO: hacer pruebas
-//		boolean addReservaSalaPrivada(ReservaSalaPrivadaDTO reserva);
-//		ReservaSalaPrivadaDTO getReservaSalaPrivadaById(int idReservaSala);
-//		ArrayList<ReservaSalaPrivadaDTO> getReservasSalaPrivadaByUsuarioDTO(UsuarioDTO usuario);
-//		boolean deleteReservaSalaPrivadaById(int idReservaSala);
-//		boolean isSalaPrivadaReservable(ReservaSalaPrivadaDTO reserva);
-//		boolean updateReservaSalaPrivada(ReservaSalaPrivadaDTO reserva);
-//		ArrayList<ReservaSalaPrivadaDTO> getReservasSalaPrivadaByIdSala(int idSala);
-//		ArrayList<Integer> getIdSalasPrivadasDisponiblesEntreFechas(String fechaI, String fechaF);
+		LocalDateTime fecha = LocalDateTime.now();
+		ReservaSalaPrivadaDTO reservaSalaPrivada = new ReservaSalaPrivadaDTO(1, fecha, fecha, LocalDate.now(), "00000000A", 54);
+//		addReservaSalaPrivada(reservaSalaPrivada);
+//		System.out.println(getReservaSalaPrivadaById(29));
+//		UsuarioDTO usuario = new UsuarioDTO();
+//		usuario.setDni("00000000A");
+//		System.out.println(getReservasSalaPrivadaByUsuarioDTO(usuario));
+//		System.out.println(deleteReservaSalaPrivadaById(28));
+//		System.out.println(isSalaPrivadaReservable(reservaSalaPrivada));
+//		System.out.println(updateReservaSalaPrivada(reservaSalaPrivada));
+//		System.out.println(getReservasSalaPrivadaByIdSala(3));
+//		System.out.println(getIdSalasPrivadasDisponiblesEntreFechas(fecha, fecha));	
+//		borrarRegistros();
+		
+//		boolean addReservaSalaPrivada(ReservaSalaPrivadaDTO reserva);  ✅
+//		ReservaSalaPrivadaDTO getReservaSalaPrivadaById(int idReservaSala);  ✅
+//		ArrayList<ReservaSalaPrivadaDTO> getReservasSalaPrivadaByUsuarioDTO(UsuarioDTO usuario);  ✅
+//		boolean deleteReservaSalaPrivadaById(int idReservaSala);  ✅
+//		boolean isSalaPrivadaReservable(ReservaSalaPrivadaDTO reserva);  ✅
+//		boolean updateReservaSalaPrivada(ReservaSalaPrivadaDTO reserva);  ✅
+//		ArrayList<ReservaSalaPrivadaDTO> getReservasSalaPrivadaByIdSala(int idSala); ✅
+//		ArrayList<Integer> getIdSalasPrivadasDisponiblesEntreFechas(LocalDateTime fechaI, LocalDateTime fechaF); ✅
+//		void borrarRegistros(); ✅
 	}
 
 }
