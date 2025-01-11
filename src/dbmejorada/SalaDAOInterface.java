@@ -19,4 +19,5 @@ public interface SalaDAOInterface {
 	ArrayList<Integer> getIdsRecursosDisponiblesByIdSala(int idSala);
 	Recurso getRecurso(int id);
 	HashMap<Integer, Cliente> getClientesPorBloque();
+	void borrarRegistros();
 }

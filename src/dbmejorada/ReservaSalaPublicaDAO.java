@@ -229,15 +229,25 @@ public class ReservaSalaPublicaDAO implements ReservaSalaPublicaDAOInterface {
 	
 	public void pruebas() {
 		ReservaSalaPublicaDTO reservaSalaPublica = new ReservaSalaPublicaDTO(1, LocalDateTime.parse("2025-02-02T00:00:00"), "00000000A", 45);
-//		addReservaSalaPublica(reservaSalaPublica);
-//		System.out.println(getReservaSalaPublicaById(2));
-//		UsuarioDTO usuario = new UsuarioDTO();
+//		addReservaSalaPublica(reservaSalaPublica); 
+//		System.out.println(getReservaSalaPublicaById(2)); 
+//		UsuarioDTO usuario = new UsuarioDTO(); 
 //		usuario.setDni("00000000A");
-//		System.out.println(getReservasSalaPublicaByUsuarioDTO(usuario));
+//		System.out.println(getReservasSalaPublicaByUsuarioDTO(usuario)); 
 //		System.out.println(deleteReservaSalaPublicaById(3));
 //		System.out.println(isSalaPublicaReservable(reservaSalaPublica));
-//		System.out.println(updateReservaSalaPublica(reservaSalaPublica));
-//		System.out.println(getAsientosDisponibles(LocalDate.parse("2025-02-02")));
+//		System.out.println(updateReservaSalaPublica(reservaSalaPublica)); 
+//		System.out.println(getAsientosDisponibles(LocalDate.parse("2025-02-02"))); 
+//		borrarRegistros();
+		
+//		boolean addReservaSalaPublica(ReservaSalaPublicaDTO reservaSalaPublica); ✅
+//		ReservaSalaPublicaDTO getReservaSalaPublicaById(int idReservaSalaPublica); ✅
+//		ArrayList<ReservaSalaPublicaDTO> getReservasSalaPublicaByUsuarioDTO(UsuarioDTO usuario); ✅
+//		boolean deleteReservaSalaPublicaById(int idReservaSalaPublica); ✅
+//		boolean isSalaPublicaReservable(ReservaSalaPublicaDTO reservaSalaPublica); ✅
+//		boolean updateReservaSalaPublica(ReservaSalaPublicaDTO reservaSalaPublica); ✅
+//		ArrayList<Integer> getAsientosDisponibles(LocalDate fecha); ✅
+//		void borrarRegistros(); ✅
 	}
 
 }
