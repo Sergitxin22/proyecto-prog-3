@@ -138,7 +138,7 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
 
 	@Override
 	public boolean isSalaPrivadaReservable(ReservaSalaPrivadaDTO reservaSalaPrivada) {
-		ArrayList<Integer> salasDisponibles = getIdSalasPrivadasDisponiblesEntreFechas(reservaSalaPrivada.getfechaEntrada().toString(), reservaSalaPrivada.getfechaSalida().toString());
+		ArrayList<Integer> salasDisponibles = getIdSalasPrivadasDisponiblesEntreFechas(reservaSalaPrivada.getfechaEntrada(), reservaSalaPrivada.getfechaSalida());
 		if (salasDisponibles.contains(reservaSalaPrivada.getIdSala())) {
 			return true;
 		}
@@ -169,9 +169,9 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
 	}
 
 	@Override
-	public ArrayList<Integer> getIdSalasPrivadasDisponiblesEntreFechas(String fechaI, String fechaF) {
+	public ArrayList<Integer> getIdSalasPrivadasDisponiblesEntreFechas(LocalDateTime fechaI, LocalDateTime fechaF) {
 		ArrayList<Integer> salasDisponibles = new ArrayList<Integer>();
-		
+		int idTipoSala = Main.getSalaDAO().getTipoSalaId("PRIVADA");
 		String insertSQL = "SELECT s.*"
 				+ " FROM Sala s"
 				+ " LEFT JOIN ReservaSalaPrivada r"
@@ -179,12 +179,13 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
 				+ " AND r.fecha_entrada <= ?" // Fecha de Fin
 				+ " AND r.fecha_salida >= ?"  // Fecha de Inicio
 				+ " WHERE r.id IS NULL"
-				+ " AND s.tipo = 59;"; // TODO: necesito obtener el id del SalaDAO
+				+ " AND s.tipo = ?;"; // TODO: necesito obtener el id del SalaDAO
         PreparedStatement preparedStmt;
 		try {
 			preparedStmt = conexionBD.prepareStatement(insertSQL);
-			preparedStmt.setString(1, fechaF);
-	        preparedStmt.setString(2, fechaI);
+			preparedStmt.setString(1, fechaF.toString());
+	        preparedStmt.setString(2, fechaI.toString());
+	        preparedStmt.setInt(3, idTipoSala);
 
 	        try (ResultSet rs = preparedStmt.executeQuery()) {
                 
