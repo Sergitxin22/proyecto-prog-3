@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
+import dbmejorada.LibroDTO;
+import main.Main;
+
 public class Libro implements Reservable {
 	// campos de la bbdd
 	private long isbn;
@@ -14,11 +17,11 @@ public class Libro implements Reservable {
 	private String genero;
 	private int rating;
 	private int fechaPublicacion;
-	
+
 	// campos no relacionados con la bbdd
 	private ImageIcon foto;
 	private ArrayList<Review> reviews;
-	
+
 	public Libro(long isbn, String titulo, String autor, int numeroDePaginas, String sinopsis, String genero,
 			int rating, int fechaPublicacion, ImageIcon foto, ArrayList<Review> reviews) {
 		super();
@@ -46,6 +49,20 @@ public class Libro implements Reservable {
 		this.fechaPublicacion = 0;
 		this.foto = null;
 		this.reviews = new ArrayList<Review>();
+	}
+
+	public Libro(LibroDTO libroDTO) {
+		super();
+		this.isbn = libroDTO.getIsbn();
+		this.titulo = libroDTO.getTitulo();
+		this.autor = libroDTO.getAutor();
+		this.numeroDePaginas = libroDTO.getNumeroDePaginas();
+		this.sinopsis = libroDTO.getSinopsis();
+		this.genero = libroDTO.getGenero();
+		this.rating = libroDTO.getRating();
+		this.fechaPublicacion = libroDTO.getFechaPublicacion();
+		this.foto = null;
+		this.reviews = Main.getReviewDAO().getReviewsLibroByIsbn(libroDTO.getIsbn());
 	}
 
 	public long getIsbn() {
@@ -119,10 +136,10 @@ public class Libro implements Reservable {
 	public void setFoto(ImageIcon foto) {
 		this.foto = foto;
 	}
-	
+
 	public void agregarReview(Review review) {
-        this.reviews.add(review);
-    }
+		this.reviews.add(review);
+	}
 
 	public ArrayList<Review> getReviews() {
 		return reviews;
@@ -131,7 +148,6 @@ public class Libro implements Reservable {
 	public void setReviews(ArrayList<Review> reviews) {
 		this.reviews = reviews;
 	}
-
 
 	@Override
 	public String toString() {
