@@ -31,7 +31,7 @@ public class Cliente extends Usuario {
 		super(usuarioDTO);
 		this.historial = null;
 //		this.historial = Main.getLibroDAO().getHistorialByDniCliente(usuarioDTO.getDni()); // TODO: falta implementar
-		this.listaReviews = Main.getReviewDAO().getReviewsUsuario(this); // TODO: solo hay que pasar el dni
+		this.listaReviews = Main.getReviewDAO().getReviewsByUsuarioDni(usuarioDTO.getDni());
 		this.amonestaciones = usuarioDTO.getAmonestaciones();
 	}
 
