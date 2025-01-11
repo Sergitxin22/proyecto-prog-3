@@ -285,4 +285,21 @@ public class SalaDAO implements SalaDAOInterface {
 		
 		return result;
 	}	
+	@Override
+	public void borrarRegistros() {
+		try {
+			Statement stmt = conexionBD.createStatement();
+			String instruccion = "DELETE FROM Sala;"
+					+ "DELETE FROM Recurso;"
+					+ "DELETE FROM TipoSala;";
+			
+			int filas = stmt.executeUpdate(instruccion);
+			stmt.close();
+			System.out.println("Filas modificadas: " + filas);
+		} catch (SQLException e) {
+			if (logger != null)
+                logger.log(Level.SEVERE, "Error al borrar los registros: ", e);
+		}
+	}
+
 }
