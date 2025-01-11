@@ -1,10 +1,13 @@
 package gui.components;
 
+import domain.Evento;
+import domain.Libro;
+import domain.SalaPrivada;
 import domain.Seccion;
 import domain.Usuario;
-import gui.VentanaCrearLibro;
-import gui.VentanaCrearEvento;
-import gui.VentanaCrearSalaPrivada;
+import gui.VentanaCrearEditarLibro;
+import gui.VentanaCrearEditarEvento;
+import gui.VentanaCrearEditarSala;
 import utils.Utils;
 
 import java.awt.GridBagConstraints;
@@ -46,17 +49,17 @@ public class AddPanel extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
 	        	if (seccion.equals(Seccion.BIBLIOTECA)) {
-					new VentanaCrearLibro();
+					new VentanaCrearEditarLibro(window, new Libro());
 					window.dispose();
 				}
 
 				if (seccion.equals(Seccion.SALAS_DE_ESTUDIO)) {
-					new VentanaCrearSalaPrivada();
+					new VentanaCrearEditarSala(window, new SalaPrivada());
 					window.dispose();
 				}
 
 				if (seccion.equals(Seccion.EVENTOS)) {
-					new VentanaCrearEvento();
+					new VentanaCrearEditarEvento(window, new Evento());
 					window.dispose();
 				}
         	}

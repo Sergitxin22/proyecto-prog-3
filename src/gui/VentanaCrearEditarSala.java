@@ -25,7 +25,7 @@ import domain.Recurso;
 import domain.SalaPrivada;
 import main.Main;
 
-public class VentanaCrearSalaPrivada extends JFrame {
+public class VentanaCrearEditarSala extends JFrame {
 
 	private static final long serialVersionUID = -2023022345495844787L;
 	
@@ -45,15 +45,43 @@ public class VentanaCrearSalaPrivada extends JFrame {
 	private JCheckBox proyectorCB = new JCheckBox("Proyector");
 	private JCheckBox pizarraCB = new JCheckBox("Pizarra");
 	
-	public VentanaCrearSalaPrivada() {
-		setTitle("Crear sala privada");
+	public VentanaCrearEditarSala(JFrame previousWindow, SalaPrivada salaAEditar) {
+		
+		int idSalaAntigua = salaAEditar.getId();
+		
+		String titleString = "Crear";
+		if (previousWindow instanceof VentanaInformacionRecurso) {
+			titleString = "Editar";
+			
+			tfId.setText(Integer.toString(salaAEditar.getId()));
+			tfPiso.setText(Integer.toString(salaAEditar.getPiso()));
+			tfCapacidad.setText(Integer.toString(salaAEditar.getCapacidad()));
+			
+			if (salaAEditar.getRecursos().contains(Recurso.ORDENADORES)) {
+				ordenadoresCB.setSelected(true);
+			}
+			
+			if (salaAEditar.getRecursos().contains(Recurso.PROYECTOR)) {
+				proyectorCB.setSelected(true);
+			}
+			
+			if (salaAEditar.getRecursos().contains(Recurso.PIZARRA)) {
+				pizarraCB.setSelected(true);
+			}
+		}
+		
+		setTitle(titleString + " privada");
 		setSize(650, 500);
 		setLocationRelativeTo(null);
 		
 		addWindowListener(new WindowAdapter() {
 	        @Override
 	        public void windowClosing(WindowEvent e) {
-	        	new VentanaSalasPrivadas();
+	        	if (previousWindow instanceof VentanaInformacionRecurso) {
+	        		new VentanaInformacionRecurso(salaAEditar);
+	        	} else {
+	        		new VentanaSalasPrivadas();
+	        	}
 	        	dispose();
 	        	}
 			});
@@ -115,7 +143,7 @@ public class VentanaCrearSalaPrivada extends JFrame {
 		
 	
 	
-		JButton crearSalaPrivadaButton = new JButton("Crear sala privada");
+		JButton crearSalaPrivadaButton = new JButton(titleString + " sala privada");
 		crearSalaPrivadaButton.addActionListener(e -> {
 			
 			try {
@@ -135,15 +163,30 @@ public class VentanaCrearSalaPrivada extends JFrame {
 					recursos.add(Recurso.PIZARRA);
 				} 
 				
-				SalaPrivada salaPrivada = new SalaPrivada(capacidad, id, piso, recursos, new ArrayList<>());
-				recursos = new ArrayList<Recurso>();
-				
-				if (Main.getSalaDAO().addSala(salaPrivada)) {
-					// TODO: logAdmin
-					JOptionPane.showMessageDialog(this, "Sala añadida correctamente.", "Sala añadida", JOptionPane.INFORMATION_MESSAGE);
+				if (previousWindow instanceof VentanaInformacionRecurso) {
+					SalaPrivada salaPrivadaNueva = new SalaPrivada(capacidad, id, piso, recursos, new ArrayList<>());
+					if (Main.getSalaDAO().deleteSala(idSalaAntigua)) {
+						if(Main.getSalaDAO().addSala(salaPrivadaNueva)) {
+							JOptionPane.showMessageDialog(this, "Sala editada correctamente.", "Sala editada", JOptionPane.INFORMATION_MESSAGE);
+							new VentanaInformacionRecurso(salaPrivadaNueva);
+							dispose();
+						}
+					}
 				} else {
-					JOptionPane.showMessageDialog(this, "Error al añadir la sala. Comprueba los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+					SalaPrivada salaPrivada = new SalaPrivada(capacidad, id, piso, recursos, new ArrayList<>());
+					recursos = new ArrayList<Recurso>();
+					
+					if (Main.getSalaDAO().addSala(salaPrivada)) {
+						// TODO: logAdmin
+						JOptionPane.showMessageDialog(this, "Sala añadida correctamente.", "Sala añadida", JOptionPane.INFORMATION_MESSAGE);
+						new VentanaInformacionRecurso(salaPrivada);
+						dispose();
+					} else {
+						JOptionPane.showMessageDialog(this, "Error al añadir la sala. Comprueba los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+					}
 				}
+	
+			
 			} catch (Exception e2) {
 				JOptionPane.showMessageDialog(this, "Error en la entrada de datos. Compruébalos.", "Error", JOptionPane.ERROR_MESSAGE);
 			}
@@ -152,21 +195,30 @@ public class VentanaCrearSalaPrivada extends JFrame {
 		});
 		
 		JPanel tail = new JPanel(new GridLayout(2, 1, 0, 0));
+
+		JPanel añadirSalaButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JButton eliminarSalaButton = new JButton("Eliminar sala");
+		eliminarSalaButton.addActionListener(e -> {
+			if (Main.getSalaDAO().deleteSala(idSalaAntigua)) {
+				JOptionPane.showMessageDialog(this, "Sala eliminada correctamente.", "Sala eliminada",  JOptionPane.INFORMATION_MESSAGE);
+				new VentanaSalasPrivadas();
+				dispose();
+			} else {
+				JOptionPane.showMessageDialog(this, "La sala no ha podido ser eliminada.", "Error",  JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		if (previousWindow instanceof VentanaInformacionRecurso) {
+			añadirSalaButtonPanel.add(eliminarSalaButton);
+		}
 		
-		JPanel añadirLibroButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		añadirLibroButtonPanel.add(crearSalaPrivadaButton);
+		añadirSalaButtonPanel.add(crearSalaPrivadaButton);
 		
-		tail.add(añadirLibroButtonPanel);
+		tail.add(añadirSalaButtonPanel);
 	
 		add(topText, BorderLayout.NORTH);
 		add(body, BorderLayout.CENTER);
 		add(tail, BorderLayout.SOUTH);
 	
 		setVisible(true);
-	}
-
-	public static void main(String[] args) {
-	new VentanaCrearSalaPrivada();
-	
 	}
 }
