@@ -25,13 +25,13 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 	public UsuarioDAO() {
 		conexionBD = Main.getConexionBD();
 		logger = Main.getLogger();
-		 pruebas();
+//		 pruebas();
 	}
 	
 	public UsuarioDAO(Connection conexionBD, Logger logger) {
 		this.conexionBD = conexionBD;
 		this.logger = logger;
-		 pruebas();
+//		 pruebas();
 	}
 
 	@Override
