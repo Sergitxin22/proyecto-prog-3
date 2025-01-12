@@ -62,13 +62,19 @@ public class VentanaAñadirReview extends JFrame {
 		JLabel comentarioLabel = new JLabel("Comentario");
 		
 		JTextArea comentarioTextArea = new JTextArea();
-		
+		comentarioTextArea.setLineWrap(true);
+		comentarioTextArea.setWrapStyleWord(true);
 		JLabel valoracionLabel = new JLabel("Valoración");
 		
 		JPanel starPanel = new JPanel();
+		starPanel.setLayout(new BoxLayout(starPanel, BoxLayout.Y_AXIS));
+		
+		JPanel starPanelTop = new JPanel();
+		JPanel starPanelBottom = new JPanel();
+		
 		List<JLabel> starList = new ArrayList<>();
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 10; i++) {
 			JLabel label = new JLabel();
 
 			final int j = i;
@@ -76,7 +82,7 @@ public class VentanaAñadirReview extends JFrame {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					starAction(j, starList);
-					rating = (j + 1) * 2;
+					rating = (j + 1);
 				}
 			});
 
@@ -86,8 +92,15 @@ public class VentanaAñadirReview extends JFrame {
 		}
 
 		for (int i = 0; i < 5; i++) {
-			starPanel.add(starList.get(i));
+			starPanelTop.add(starList.get(i));
 		}
+		
+		for (int i = 5; i < 10; i++) {
+			starPanelBottom.add(starList.get(i));
+		}
+		
+		starPanel.add(starPanelTop);
+		starPanel.add(starPanelBottom);
 		
 		JButton publicarButton = new JButton("Publicar review");
 
@@ -147,7 +160,7 @@ public class VentanaAñadirReview extends JFrame {
 	public static void starAction(int starIndex, List<JLabel> starList) {
 		// Pinta las estrellas en función de la estrella de review seleccionada
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 10; i++) {
 			starList.get(i).setIcon(Utils.loadImage("estrellaBlanca.png", 24, 24));
 		}
 
