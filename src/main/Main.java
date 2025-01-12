@@ -25,6 +25,7 @@ import domain.Usuario;
 import gui.VentanaPortada;
 
 import io.CargarDatosEnBBDD;
+import io.CrearBBDD;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -198,11 +199,12 @@ public class Main {
         reviewDAO = new ReviewDAO();
         libroDAO = new LibroDAO();
         reservaLibroDAO = new ReservaLibroDAO();
-//        eventoDAO = new EventoDAO();
+        eventoDAO = new EventoDAO();
         asistenciaEventoDAO= new AsistenciaEventoDAO();
         
         // Carga de datos del .csv a la BD
-//        new CargarDatosEnBBDD();
+        new CrearBBDD();
+        new CargarDatosEnBBDD();
     	    	
     	// Inicialización de usuario y sala pública
     	usuario = null;
