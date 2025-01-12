@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 import javax.swing.ImageIcon;
 
@@ -185,7 +186,7 @@ public class InputUtils {
 						break;
 				}
 				
-				evento = new Evento(idEvento, titulo, tipoEvento, new ArrayList<>(), new SalaEventos(Main.getSalaDAO().getSala(idSala)), fecha);
+				evento = new Evento(idEvento, titulo, tipoEvento, new HashMap<>(), new SalaEventos(Main.getSalaDAO().getSala(idSala)), fecha);
 
 				result.add(evento);
 				
