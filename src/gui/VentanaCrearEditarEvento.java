@@ -1,8 +1,10 @@
 package gui;
 
 import domain.Evento;
+import domain.LogAccion;
 import domain.SalaEventos;
 import domain.TipoEvento;
+import domain.Usuario;
 import main.Main;
 
 import java.awt.BorderLayout;
@@ -16,7 +18,6 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -37,6 +38,8 @@ public class VentanaCrearEditarEvento extends JFrame {
 		
 		private NumberFormat format = NumberFormat.getIntegerInstance();
 	    private NumberFormatter numberFormatter = new NumberFormatter(format);
+	    
+	    private Usuario usuario = Main.getUsuario();
 	    
 		private int id;
 		private String titulo;
@@ -245,7 +248,9 @@ public class VentanaCrearEditarEvento extends JFrame {
 					if (previousWindow instanceof VentanaInformacionRecurso) {
 						Evento eventoNuevo = new Evento(id, titulo, tipoEvento, new ArrayList<>(), new SalaEventos(Main.getSalaDAO().getSala(idSala)), fechaHora);
 						if (Main.getEventoDAO().deleteEvento(idEventoAntiguo)) {
+							Main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Eliminar evento " + idEventoAntiguo, usuario.getDni()));
 							if(Main.getEventoDAO().addEvento(eventoNuevo)) {
+								Main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Añadir evento " + eventoNuevo.getId(), usuario.getDni()));
 								JOptionPane.showMessageDialog(this, "Evento editado correctamente.", "Evento editado", JOptionPane.INFORMATION_MESSAGE);
 								new VentanaInformacionRecurso(eventoNuevo);
 								dispose();
@@ -260,7 +265,7 @@ public class VentanaCrearEditarEvento extends JFrame {
 							Evento evento = new Evento(id, titulo, tipoEvento, new ArrayList<>(), new SalaEventos(Main.getSalaDAO().getSala(idSala)), fechaHora);
 							System.out.println(evento);
 							if (Main.getEventoDAO().addEvento(evento)) {
-								// LogAdmin
+								Main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Añadir evento " + evento.getId(), usuario.getDni()));
 								JOptionPane.showMessageDialog(null, "Evento creado correctamente.", "Evento creado", JOptionPane.INFORMATION_MESSAGE);
 								new VentanaInformacionRecurso(evento);
 								dispose();
@@ -281,9 +286,10 @@ public class VentanaCrearEditarEvento extends JFrame {
 			
 			JPanel añadirLibroButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 			if (previousWindow instanceof VentanaInformacionRecurso) {
-				JButton eliminarEventoButton = new JButton("Eliminar evento");
+				JButton eliminarEventoButton = new JButton("Eliminar evento ");
 				eliminarEventoButton.addActionListener(e -> {
 					if (Main.getEventoDAO().deleteEvento(idEventoAntiguo)) {
+						Main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Eliminar evento " + idEventoAntiguo, usuario.getDni()));
 						JOptionPane.showMessageDialog(null, "Evento eliminado correctamente.", "Evento creado", JOptionPane.INFORMATION_MESSAGE);
 						new VentanaEventos();
 						dispose();
