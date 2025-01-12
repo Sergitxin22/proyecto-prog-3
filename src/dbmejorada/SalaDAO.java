@@ -229,7 +229,7 @@ public class SalaDAO implements SalaDAOInterface {
 	public int getTipoSalaId(String tipoSala) {
 		@SuppressWarnings("unchecked")
 		HashMap<String, Integer> idTipoSalaByTipo = (HashMap<String, Integer>) getIdsTipoSala(0);
-		
+		System.out.println("Hola: " + idTipoSalaByTipo);
 		return idTipoSalaByTipo.get(tipoSala);
 	}
 
@@ -298,7 +298,7 @@ public class SalaDAO implements SalaDAOInterface {
 				while (rs.next()) {
 					int id = rs.getInt("id");
 					String tipo = rs.getString("tipo");
-					
+					System.out.println("Dentro");
 					if (ordenMapa == 0) {
 						idsTipoSala.put(tipo, id);
 					}else {
@@ -335,6 +335,68 @@ public class SalaDAO implements SalaDAOInterface {
 			e.printStackTrace();
 		}
 		return idsRecurso;
+	}
+
+	@Override
+	public boolean addRecursos() {
+		try {		
+			String insertSQLOrdenadores = "INSERT INTO Recurso VALUES (NULL, ?)";
+			String insertSQLProyector = "INSERT INTO Recurso VALUES (NULL, ?)";
+			String insertSQLPizarra = "INSERT INTO Recurso VALUES (NULL, ?)";
+			
+			PreparedStatement preparedStmtOrdenadores = conexionBD.prepareStatement(insertSQLOrdenadores);
+			PreparedStatement preparedStmtProyector = conexionBD.prepareStatement(insertSQLProyector);
+			PreparedStatement preparedStmtPizarra = conexionBD.prepareStatement(insertSQLPizarra);
+			
+			preparedStmtOrdenadores.setString(1, "ORDENADORES");
+			preparedStmtProyector.setString(1, "PROYECTOR");
+			preparedStmtPizarra.setString(1, "PIZARRA");
+			
+			preparedStmtOrdenadores.executeUpdate();
+			preparedStmtProyector.executeUpdate();
+			preparedStmtPizarra.executeUpdate();
+			
+			preparedStmtOrdenadores.close();
+			preparedStmtProyector.close();
+			preparedStmtPizarra.close();
+		
+		} catch (SQLException e) {
+			if (logger != null)
+               logger.log(Level.SEVERE, "Error al añadir los recursos: ", e);
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean addTiposSala() {
+		try {		
+			String insertSQLPublica = "INSERT INTO TipoSala VALUES (NULL, ?)";
+			String insertSQLPrivada = "INSERT INTO TipoSala VALUES (NULL, ?)";
+			String insertSQLEventos = "INSERT INTO TipoSala VALUES (NULL, ?)";
+			
+			PreparedStatement preparedStmtPublica = conexionBD.prepareStatement(insertSQLPublica);
+			PreparedStatement preparedStmtPrivada = conexionBD.prepareStatement(insertSQLPrivada);
+			PreparedStatement preparedStmtEventos = conexionBD.prepareStatement(insertSQLEventos);
+			
+			preparedStmtPublica.setString(1, "PUBLICA");
+			preparedStmtPrivada.setString(1, "PRIVADA");
+			preparedStmtEventos.setString(1, "EVENTOS");
+			
+			preparedStmtPublica.executeUpdate();
+			preparedStmtPrivada.executeUpdate();
+			preparedStmtEventos.executeUpdate();
+			
+			preparedStmtPublica.close();
+			preparedStmtPrivada.close();
+			preparedStmtEventos.close();
+		
+		} catch (SQLException e) {
+			if (logger != null)
+               logger.log(Level.SEVERE, "Error al añadir los recursos: ", e);
+			return false;
+		}
+		return true;
 	}
 	
 	@Override
