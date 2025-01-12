@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -21,8 +22,10 @@ import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.NumberFormatter;
 
+import domain.LogAccion;
 import domain.Recurso;
 import domain.SalaPrivada;
+import domain.Usuario;
 import main.Main;
 
 public class VentanaCrearEditarSala extends JFrame {
@@ -31,6 +34,8 @@ public class VentanaCrearEditarSala extends JFrame {
 	
 	private NumberFormat format = NumberFormat.getIntegerInstance();
     private NumberFormatter numberFormatter = new NumberFormatter(format);
+    
+    private Usuario usuario = Main.getUsuario();
     
 	private int id;
 	private int piso;
@@ -166,7 +171,9 @@ public class VentanaCrearEditarSala extends JFrame {
 				if (previousWindow instanceof VentanaInformacionRecurso) {
 					SalaPrivada salaPrivadaNueva = new SalaPrivada(capacidad, id, piso, recursos, new ArrayList<>());
 					if (Main.getSalaDAO().deleteSala(idSalaAntigua)) {
+						Main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Eliminar sala " + idSalaAntigua, usuario.getDni()));
 						if(Main.getSalaDAO().addSala(salaPrivadaNueva)) {
+							Main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Añadir sala " + salaPrivadaNueva.getId(), usuario.getDni()));
 							JOptionPane.showMessageDialog(this, "Sala editada correctamente.", "Sala editada", JOptionPane.INFORMATION_MESSAGE);
 							new VentanaInformacionRecurso(salaPrivadaNueva);
 							dispose();
@@ -177,7 +184,7 @@ public class VentanaCrearEditarSala extends JFrame {
 					recursos = new ArrayList<Recurso>();
 					
 					if (Main.getSalaDAO().addSala(salaPrivada)) {
-						// TODO: logAdmin
+						Main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Añadir sala " + salaPrivada.getId(), usuario.getDni()));
 						JOptionPane.showMessageDialog(this, "Sala añadida correctamente.", "Sala añadida", JOptionPane.INFORMATION_MESSAGE);
 						new VentanaInformacionRecurso(salaPrivada);
 						dispose();
@@ -200,6 +207,7 @@ public class VentanaCrearEditarSala extends JFrame {
 		JButton eliminarSalaButton = new JButton("Eliminar sala");
 		eliminarSalaButton.addActionListener(e -> {
 			if (Main.getSalaDAO().deleteSala(idSalaAntigua)) {
+				Main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Eliminar sala " + idSalaAntigua, usuario.getDni()));
 				JOptionPane.showMessageDialog(this, "Sala eliminada correctamente.", "Sala eliminada",  JOptionPane.INFORMATION_MESSAGE);
 				new VentanaSalasPrivadas();
 				dispose();

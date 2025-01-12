@@ -7,6 +7,8 @@ import main.Main;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,6 +34,15 @@ public class VentanaConfirmacionReservaSalaPrivada extends JFrame{
 	private JFormattedTextField tfHoraEntrada;
 	private JFormattedTextField tfHoraSalida;
 	public VentanaConfirmacionReservaSalaPrivada(SalaPrivada sala) {
+		
+	addWindowListener(new WindowAdapter() {
+	    @Override
+	    public void windowClosing(WindowEvent e) {
+	       	new VentanaInformacionRecurso(sala);
+	       	dispose();
+	       	}
+		});
+		
 		MaskFormatter fechaMask;
 		try {
 			fechaMask = new MaskFormatter("####-##-##");

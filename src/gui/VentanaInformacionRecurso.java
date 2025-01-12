@@ -108,9 +108,12 @@ public class VentanaInformacionRecurso extends JFrame {
 		panelimagenLibro.setBorder(new EmptyBorder (0,65,0,0));
 		JLabel imagenDelLibro = new JLabel();
 		imagenDelLibro.setPreferredSize(new Dimension(275,500));
-		Image imagen = libro.getFoto().getImage().getScaledInstance(200, 350, Image.SCALE_SMOOTH);
-		ImageIcon imagenEscalada = new ImageIcon(imagen);
-		imagenDelLibro.setIcon(imagenEscalada);
+		if (libro.getFoto() != null) {
+			Image imagen = libro.getFoto().getImage().getScaledInstance(200, 350, Image.SCALE_SMOOTH);
+			ImageIcon imagenEscalada = new ImageIcon(imagen);
+			imagenDelLibro.setIcon(imagenEscalada);
+		}
+		
 		imagenDelLibro.setAlignmentX(CENTER_ALIGNMENT);
 		
 		panelimagenLibro.add(imagenDelLibro);
@@ -236,6 +239,8 @@ public class VentanaInformacionRecurso extends JFrame {
 		botonReservar.setFont(new Font("Arial", Font.BOLD, 17));
         
         if (usuario == null) {
+        	botonesPanel.add(botonReview);
+			botonesPanel.add(botonReservar);
 			botonReview.setEnabled(false);
 			botonReservar.setEnabled(false);
 		}else if (usuario instanceof Admin) {
@@ -262,7 +267,7 @@ public class VentanaInformacionRecurso extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {				 
-				VentanaConfirmacionDeReserva nuevaVentana = new VentanaConfirmacionDeReserva(libro);
+				VentanaConfirmacionReservaLibro nuevaVentana = new VentanaConfirmacionReservaLibro(libro);
 				nuevaVentana.setVisible(true);
 				vInformacionRecurso.dispose();
 			}
@@ -457,8 +462,6 @@ public class VentanaInformacionRecurso extends JFrame {
 		}
 	    reservarButton.setFont(new Font("Arial", Font.BOLD, 20));
 	    botonEditar.setFont(new Font("Arial", Font.BOLD, 20));
-	    panelboton.add(reservarButton);
-	    
         
         pCentro.setBorder(new EmptyBorder(160, 100, 30, 15));
         pOeste.setBorder(new EmptyBorder(140, 15, 10, 0));
@@ -577,10 +580,9 @@ public class VentanaInformacionRecurso extends JFrame {
  	    });
     }
 	*/
-	public LocalDate calcularDiasParaDevolver(int paginas) { // TODO
-		LocalDate fechaDevolucion = LocalDate.now();
+	public static int calcularDiasParaDevolver(int paginas) {
 		int dias = Math.round(paginas / 10);
-		return fechaDevolucion.plusDays(dias);
+		return dias;
 	}
 	
 	public static void main(String[] args) {

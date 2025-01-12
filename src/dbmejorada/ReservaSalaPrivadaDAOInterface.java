@@ -14,5 +14,5 @@ public interface ReservaSalaPrivadaDAOInterface {
 	boolean updateReservaSalaPrivada(ReservaSalaPrivadaDTO reserva);
 	ArrayList<ReservaSalaPrivadaDTO> getReservasSalaPrivadaByIdSala(int idSala);
 	void borrarRegistros();
-	ArrayList<Integer> getIdSalasPrivadasNoDisponiblesEntreFechas(LocalDateTime fechaI, LocalDateTime fechaF);
+	ArrayList<Integer> getIdSalasPrivadasNoDisponiblesEntreFechas(int id, LocalDateTime fechaI, LocalDateTime fechaF);
 }

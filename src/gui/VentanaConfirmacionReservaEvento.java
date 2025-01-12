@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 
 import dbmejorada.AsistenciaEventoDTO;
 import dbmejorada.SalaDTO;
+import dbmejorada.UsuarioDTO;
 import domain.Cliente;
 import domain.Evento;
 import domain.SalaEventos;
@@ -45,8 +48,7 @@ public void setMainWindowProperties() {
 		
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		
 		getContentPane().setBackground(Color.WHITE);
 		
 		pCentro = new JPanel();
@@ -72,6 +74,14 @@ public void setMainWindowProperties() {
 	}
 	
 	public VentanaConfirmacionReservaEvento(Evento evento) {
+		
+		addWindowListener(new WindowAdapter() {
+		    @Override
+		    public void windowClosing(WindowEvent e) {
+		       	new VentanaInformacionRecurso(evento);
+		       	dispose();
+		       	}
+			});
 		
 		setMainWindowProperties();
     	setTitle("Confirmar reserva del " + evento.getTitulo());
@@ -212,38 +222,26 @@ public void setMainWindowProperties() {
 	    
 	    if(Main.getAsistenciaEventoDAO().isUsuarioAsistente(usuario.getDni())) {
 	    	reservarButton.setEnabled(false);
+	    	reservarButton.setToolTipText("Ya estás asistiendo a este evento");
 	    }
 	    reservarButton.addActionListener(e -> {
-	    	for(Integer i : evento.getAsistentes().keySet()) {
-	    		if(evento.getAsistentes().get(i)==null) {
-	    			AsistenciaEventoDTO asistenciaEventoDTO = new AsistenciaEventoDTO(0,usuario.getDni(), evento.getSala().getId());
-	    			if(Main.getAsistenciaEventoDAO().addAsistenciaEvento(asistenciaEventoDTO)) {
-	    				JOptionPane.showMessageDialog(this, "Reserva realizada correctamente", "Reserva realizada", JOptionPane.INFORMATION_MESSAGE);
-	    				// Cerrar la ventana actual
-	    		        dispose();
-	    		        // Abrir Venatana de ConfirmacionReserva
-	    		        new VentanaReservaConfirmada(evento);
-	    			}
-	    			break;
+	    
+
+	    	if(evento.getAsistentes().size() < evento.getSala().getCapacidad()) {
+	    		evento.getAsistentes().add(new UsuarioDTO(usuario.getDni(), usuario.getNombre(), usuario.getEmail(), usuario.getFechaCreacion(), usuario.getContrasena(), ((Cliente) usuario).getAmonestaciones(), false));
+	    		AsistenciaEventoDTO asistenciaEventoDTO = new AsistenciaEventoDTO(0,usuario.getDni(), evento.getId());
+	    		if(Main.getAsistenciaEventoDAO().addAsistenciaEvento(asistenciaEventoDTO)) {
+	    			JOptionPane.showMessageDialog(this, "Asitencia confirmada correctamente.",  "Asistencia confirmada", JOptionPane.INFORMATION_MESSAGE);
+	    	        dispose();
+	    	        new VentanaInformacionRecurso(evento);
 	    		}
+	    	} else {
+	    		JOptionPane.showMessageDialog(this, "No quedan asientos disponibles para este evento.", "Error", JOptionPane.ERROR_MESSAGE);
 	    	}
-	    	JOptionPane.showMessageDialog(this, "No quedan asientos disponibles para este evento", "Error", JOptionPane.ERROR_MESSAGE);
-	    }); 
-		
-	}
-    
+	    	
 	
-	public static void main(String[] args) {
-		SalaDTO salaDTO = new SalaDTO();
-		salaDTO.setCapacidad(100);
-		salaDTO.setEvento(null);
-		salaDTO.setId(124);
-		salaDTO.setPiso(3);
-		salaDTO.setRecursos(null);
-		salaDTO.setTipo("Cursillo");
-		
-		Evento evento = new Evento(13, "Evento sobre agricultura", TipoEvento.CURSILLO, new ArrayList<Cliente> (),salaDTO, LocalDateTime.now());
-		
-		new VentanaConfirmacionReservaEvento(evento);
+	    }); 
+	    
+	    setVisible(true);
 	}
 }

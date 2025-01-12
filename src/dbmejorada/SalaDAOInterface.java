@@ -2,6 +2,7 @@ package dbmejorada;
 
 import domain.Recurso;
 import domain.Sala;
+import domain.SalaPublica;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ public interface SalaDAOInterface {
 	boolean addSala(Sala sala);
 	boolean deleteSala(int id);
 	SalaDTO getSala(int id);
+	SalaPublica getSalaPublica();
 	ArrayList<Sala> getSalas();
 	int getTipoSalaId(String tipoSala);
 	String getTipoSala(int id);

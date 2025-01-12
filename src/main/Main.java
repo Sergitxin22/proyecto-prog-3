@@ -18,12 +18,10 @@ import dbmejorada.SalaDAO;
 import dbmejorada.SalaDAOInterface;
 import dbmejorada.UsuarioDAO;
 import dbmejorada.UsuarioDAOInterface;
-
 import domain.SalaPublica;
 import domain.Usuario;
 
 import gui.VentanaPortada;
-
 import io.CargarDatosEnBBDD;
 import io.CrearBBDD;
 
@@ -33,7 +31,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,7 +39,7 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 
 public class Main {
-	private final static String PROPERTIES_FILE = "app.properties";
+	private final static String PROPERTIES_FILE = "conf/app.properties";
 	private static String driver;
 	private static String connection;
 	private static String nombreBD;
@@ -51,6 +49,8 @@ public class Main {
 	
 	private static Connection conexionBD;
 	private static Logger logger;
+	
+	private static ArrayList<Thread> threads;
 	
 	private static UsuarioDAOInterface usuarioDAO;
 	private static SalaDAOInterface salaDAO;
@@ -165,6 +165,15 @@ public class Main {
 	public static void setLogger(Logger logger) {
 		Main.logger = logger;
 	}
+	
+	public static ArrayList<Thread> getThreads() {
+		return threads;
+	}
+	
+	public static void setThreads(ArrayList<Thread> threads) {
+		Main.threads = threads;
+	}
+	
 
     public static void main(String[] args) {
     	
@@ -200,7 +209,10 @@ public class Main {
         libroDAO = new LibroDAO();
         reservaLibroDAO = new ReservaLibroDAO();
         eventoDAO = new EventoDAO();
-        asistenciaEventoDAO= new AsistenciaEventoDAO();
+        asistenciaEventoDAO = new AsistenciaEventoDAO();
+        
+        // Inicialización de la lista de threads
+        threads = new ArrayList<>();
         
         // Carga de datos del .csv a la BD
         new CrearBBDD();
@@ -208,9 +220,9 @@ public class Main {
     	    	
     	// Inicialización de usuario y sala pública
     	usuario = null;
-//    	salaPublica = new SalaPublica(Main.getSalaDAO().getSala(0));
+    	salaPublica = Main.getSalaDAO().getSalaPublica();
              
         // Inicio de la interfaz gráfica
-//    	SwingUtilities.invokeLater(() -> new VentanaPortada());
+    	SwingUtilities.invokeLater(() -> new VentanaPortada());
     }
 }

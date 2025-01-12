@@ -329,4 +329,21 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 //		ArrayList<LogAccion> getLogAccionesByAdminDni(String dniAdmin);
 //		void borrarRegistros(); ✅
 	}
+
+	@Override
+	public boolean añadirAmonestacion(UsuarioDTO usuario) {
+		String updateSQL = "UPDATE Cliente SET amonestaciones = ? WHERE dni = ?";
+		try {
+			PreparedStatement preparedStmt = conexionBD.prepareStatement(updateSQL);
+			preparedStmt.setInt(1, usuario.getAmonestaciones() + 1);
+			preparedStmt.setString(2, usuario.getDni());
+			preparedStmt.executeUpdate();
+			preparedStmt.close();
+			return true;
+		} catch (SQLException e) {
+			if (logger != null)
+				logger.log(Level.SEVERE, "Error al añadir la amonestación: ", e);
+			return false;
+		}
+	}
 }

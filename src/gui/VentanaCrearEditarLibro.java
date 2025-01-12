@@ -12,10 +12,10 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -36,12 +36,16 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import dbmejorada.LibroDTO;
 import domain.Libro;
+import domain.LogAccion;
+import domain.Usuario;
 import main.Main;
 
 public class VentanaCrearEditarLibro extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private Libro libro = new Libro();
+	
+	private Usuario usuario = Main.getUsuario();
 	
 	private long isbn;
 	private final long isbnAntiguo;
@@ -284,6 +288,7 @@ public class VentanaCrearEditarLibro extends JFrame {
 					libroEditado.setFechaPublicacion(añoPublicacion);
 
 					Main.getLibroDAO().updateLibro(libroEditado, isbnAntiguo);
+					Main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Editar libro " + libro.getIsbn(), usuario.getDni()));
 					
 					if (ficheroImagen != null) {
 						
@@ -332,7 +337,7 @@ public class VentanaCrearEditarLibro extends JFrame {
 					if (!Main.getLibroDAO().addLibro(libro)) {
 						JOptionPane.showMessageDialog(this, "Error al insertar el libro en la BD. Comprueba los datos.", "Error", JOptionPane.ERROR_MESSAGE);
 					} else {
-						
+						Main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Añadir libro " + libro.getIsbn(), usuario.getDni()));
 						JOptionPane.showMessageDialog(this, "El libro se ha añadido correctamente.", "Libro añadido correctamente", JOptionPane.INFORMATION_MESSAGE);
 						dispose();
 						new VentanaInformacionRecurso(libro);
@@ -354,6 +359,7 @@ public class VentanaCrearEditarLibro extends JFrame {
 			JButton eliminarLibroButton = new JButton("Eliminar libro");
 			eliminarLibroButton.addActionListener(e -> {
 				if (Main.getLibroDAO().deleteLibroByIsbn(isbnAntiguo)) {
+					Main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Eliminar libro " + isbnAntiguo, usuario.getDni()));
 					JOptionPane.showMessageDialog(this, "Libro eliminado correctamente", "Libro eliminado", JOptionPane.INFORMATION_MESSAGE);
 					File imagenLibro = new File("resources/images/books/" + isbnAntiguo + ".jpg");
 					imagenLibro.delete();
