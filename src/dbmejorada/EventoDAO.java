@@ -40,10 +40,10 @@ public class EventoDAO implements EventoDAOInterface {
 
 			String insertSQL = "INSERT INTO AsistenciaEvento(id, dni_cliente) VALUES (?, ?)";
 
-			for (UsuarioDTO asistente : evento.getAsistentes()) {
+			for (UsuarioDTO usuario : evento.getAsistentes()) {
 				PreparedStatement preparedStmtAsistenciaEvento = conexionBD.prepareStatement(insertSQL);
 				preparedStmtAsistenciaEvento.setInt(1, evento.getId());
-				preparedStmtAsistenciaEvento.setString(2, asistente.getDni());
+				preparedStmtAsistenciaEvento.setString(2, usuario.getDni());
 				preparedStmtAsistenciaEvento.executeUpdate();
 				preparedStmtAsistenciaEvento.close();
 			}
@@ -121,10 +121,9 @@ public class EventoDAO implements EventoDAOInterface {
 
 			try (ResultSet rs = preparedStmt.executeQuery()) {
 				while (rs.next()) {
+					
 					SalaEventos salaEventos = new SalaEventos(Main.getSalaDAO().getSala(rs.getInt("id_sala")));
-					Evento evento = new Evento(rs.getInt("id"), rs.getString("titulo"),
-							getTipoEvento(rs.getInt("id_tipo_evento")), getAsistentesEvento(rs.getInt("id")),
-							salaEventos, LocalDateTime.parse(rs.getString("fecha")));
+					Evento evento = new Evento(rs.getInt("id"), rs.getString("titulo"), getTipoEvento(rs.getInt("id_tipo_evento")), getAsistentesEvento(rs.getInt("id")), salaEventos, LocalDateTime.parse(rs.getString("fecha")));
 					result.add(evento);
 				}
 

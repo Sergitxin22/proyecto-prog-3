@@ -21,7 +21,7 @@ public class CargarDatosEnBBDD {
 		addSalas(listaSalas);
 		
 		addTiposEvento();
-		ArrayList<Evento> listaEventos = InputUtils.cargarEventos(); // TODO: Falta en el InputUtils
+		ArrayList<Evento> listaEventos = InputUtils.cargarEventos();
 		addEventos(listaEventos);
 		
 		ArrayList<Usuario> listaUsuarios = InputUtils.cargarUsuarios();
