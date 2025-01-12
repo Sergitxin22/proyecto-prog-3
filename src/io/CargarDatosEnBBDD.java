@@ -20,10 +20,12 @@ public class CargarDatosEnBBDD {
 		ArrayList<Sala> listaSalas = InputUtils.cargarSalas();
 		addSalas(listaSalas);
 		
+		addTiposEvento();
 		ArrayList<Evento> listaEventos = InputUtils.cargarEventos(); // TODO: Falta en el InputUtils
 		addEventos(listaEventos);
 		
 		ArrayList<Usuario> listaUsuarios = InputUtils.cargarUsuarios();
+		System.out.println(listaUsuarios);
 		addUsuarios(listaUsuarios);
 		
 		ArrayList<Review> listaReviews = InputUtils.cargarReviews(listaLibros, listaUsuarios);
@@ -48,6 +50,10 @@ public class CargarDatosEnBBDD {
 		for (Sala sala : listaSalas) {
 			Main.getSalaDAO().addSala(sala);
 		}		
+	}
+	
+	private void addTiposEvento() {
+		Main.getEventoDAO().addTiposEvento();
 	}
 	
 	private void addEventos(ArrayList<Evento> listaEventos) {
