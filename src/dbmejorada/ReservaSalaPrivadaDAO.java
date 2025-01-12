@@ -138,7 +138,7 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
 
 	@Override
 	public boolean isSalaPrivadaReservable(ReservaSalaPrivadaDTO reservaSalaPrivada) {
-		ArrayList<Integer> salasNoDisponibles = getIdSalasPrivadasNoDisponiblesEntreFechas(reservaSalaPrivada.getfechaEntrada(), reservaSalaPrivada.getfechaSalida());
+		ArrayList<Integer> salasNoDisponibles = getIdSalasPrivadasNoDisponiblesEntreFechas(reservaSalaPrivada.getIdSala(), reservaSalaPrivada.getfechaEntrada(), reservaSalaPrivada.getfechaSalida());
 		if (salasNoDisponibles.contains(reservaSalaPrivada.getIdSala())) {
 			return false;
 		}
@@ -169,17 +169,16 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
 	}
 
 	@Override
-	public ArrayList<Integer> getIdSalasPrivadasNoDisponiblesEntreFechas(LocalDateTime fechaI, LocalDateTime fechaF) {
+	public ArrayList<Integer> getIdSalasPrivadasNoDisponiblesEntreFechas(int id, LocalDateTime fechaI, LocalDateTime fechaF) {
 		ArrayList<Integer> salasNoDisponibles = new ArrayList<Integer>();
-		int idTipoSala = Main.getSalaDAO().getTipoSalaId("PRIVADA");
-		String insertSQL = "SELECT id_sala FROM ReservaSalaPrivada WHERE fecha_entrada BETWEEN ? AND ?";
+		String insertSQL = "SELECT id_sala FROM ReservaSalaPrivada WHERE fecha_entrada >= ? AND fecha_entrada < ? and id_sala = ?";
 		
         PreparedStatement preparedStmt;
 		try {
 			preparedStmt = conexionBD.prepareStatement(insertSQL);
 			preparedStmt.setString(1, fechaI.toString());
 	        preparedStmt.setString(2, fechaF.toString());
-	        
+	        preparedStmt.setInt(3, id);  
 
 	        try (ResultSet rs = preparedStmt.executeQuery()) {
                 

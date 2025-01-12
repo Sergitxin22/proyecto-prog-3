@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import domain.Reserva;
 import main.Main;
 
 public class ReservaSalaPublicaDAO implements ReservaSalaPublicaDAOInterface {
@@ -22,7 +21,6 @@ public class ReservaSalaPublicaDAO implements ReservaSalaPublicaDAOInterface {
     public ReservaSalaPublicaDAO() {
        	conexionBD = Main.getConexionBD();
       	logger = Main.getLogger();
-        pruebas();
     }
 
 	@Override
@@ -226,28 +224,21 @@ public class ReservaSalaPublicaDAO implements ReservaSalaPublicaDAOInterface {
                 logger.log(Level.SEVERE, "Error al borrar los registros: ", e);
 		}
 	}
-	
-	public void pruebas() {
-		ReservaSalaPublicaDTO reservaSalaPublica = new ReservaSalaPublicaDTO(1, LocalDateTime.parse("2025-02-02T00:00:00"), "00000000A", 45);
-//		addReservaSalaPublica(reservaSalaPublica); 
-//		System.out.println(getReservaSalaPublicaById(2)); 
-//		UsuarioDTO usuario = new UsuarioDTO(); 
-//		usuario.setDni("00000000A");
-//		System.out.println(getReservasSalaPublicaByUsuarioDTO(usuario)); 
-//		System.out.println(deleteReservaSalaPublicaById(3));
-//		System.out.println(isSalaPublicaReservable(reservaSalaPublica));
-//		System.out.println(updateReservaSalaPublica(reservaSalaPublica)); 
-//		System.out.println(getAsientosDisponibles(LocalDate.parse("2025-02-02"))); 
-//		borrarRegistros();
-		
-//		boolean addReservaSalaPublica(ReservaSalaPublicaDTO reservaSalaPublica); ✅
-//		ReservaSalaPublicaDTO getReservaSalaPublicaById(int idReservaSalaPublica); ✅
-//		ArrayList<ReservaSalaPublicaDTO> getReservasSalaPublicaByUsuarioDTO(UsuarioDTO usuario); ✅
-//		boolean deleteReservaSalaPublicaById(int idReservaSalaPublica); ✅
-//		boolean isSalaPublicaReservable(ReservaSalaPublicaDTO reservaSalaPublica); ✅
-//		boolean updateReservaSalaPublica(ReservaSalaPublicaDTO reservaSalaPublica); ✅
-//		ArrayList<Integer> getAsientosDisponibles(LocalDate fecha); ✅
-//		void borrarRegistros(); ✅
+
+	@Override
+	public boolean desasignarBloque(String dni_usuario) {
+		String deleteSQL = "DELETE FROM ReservaSalaPublica WHERE dni_cliente = ?";
+		try {
+			PreparedStatement preparedStmt = conexionBD.prepareStatement(deleteSQL);
+			preparedStmt.setString(1, dni_usuario);
+			preparedStmt.executeUpdate();
+			preparedStmt.close();
+			return true;
+		} catch (SQLException e) {
+			if (logger != null)
+                logger.log(Level.SEVERE, "Error al borrar el registro: ", e);
+		}
+		return false;
 	}
 
 }

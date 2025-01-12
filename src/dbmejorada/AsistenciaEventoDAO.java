@@ -39,9 +39,10 @@ public class AsistenciaEventoDAO implements AsistenciaEventoDAOInterface{
 
 	@Override
 	public boolean isUsuarioAsistente(String dni_usuario) {
-		String sql = "SELECT dni_asistente FROM AsistenciaEvento WHERE dni_asistente = dni_usuario";
+		String sql = "SELECT dni_asistente FROM AsistenciaEvento WHERE dni_asistente = ?";
 		try {
 			PreparedStatement preparedStmt = conexionBD.prepareStatement(sql);
+			preparedStmt.setString(1, dni_usuario);
 			ResultSet rs1 = preparedStmt.executeQuery();
 			return rs1.next();
 		} catch (SQLException e) {

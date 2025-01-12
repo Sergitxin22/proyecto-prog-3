@@ -28,63 +28,13 @@ public class SalaDAO implements SalaDAOInterface {
 	public SalaDAO() {
 		conexionBD = Main.getConexionBD();
 		logger = Main.getLogger();	
-//		borrarRegistros();
-		
-//		try {
-////		 Inicialización de los recursos posibles de salas privadas en la BBDD:
-//			
-//		String insertSQLOrdenadores = "INSERT INTO Recurso VALUES (NULL, ?)";
-//		String insertSQLProyector = "INSERT INTO Recurso VALUES (NULL, ?)";
-//		String insertSQLPizarra = "INSERT INTO Recurso VALUES (NULL, ?)";
-//		
-//		PreparedStatement preparedStmtOrdenadores = conexionBD.prepareStatement(insertSQLOrdenadores);
-//		PreparedStatement preparedStmtProyector = conexionBD.prepareStatement(insertSQLProyector);
-//		PreparedStatement preparedStmtPizarra = conexionBD.prepareStatement(insertSQLPizarra);
-//		
-//		preparedStmtOrdenadores.setString(1, "ORDENADORES");
-//		preparedStmtProyector.setString(1, "PROYECTOR");
-//		preparedStmtPizarra.setString(1, "PIZARRA");
-//		
-//		preparedStmtOrdenadores.executeUpdate();
-//		preparedStmtProyector.executeUpdate();
-//		preparedStmtPizarra.executeUpdate();
-//		
-//		preparedStmtOrdenadores.close();
-//		preparedStmtProyector.close();
-//		preparedStmtPizarra.close();
-//		
-//		// Inicialización de los tipos posibles de salas privadas en la BBDD:
-//		
-//		String insertSQLPublica = "INSERT INTO TipoSala VALUES (NULL, ?)";
-//		String insertSQLPrivada = "INSERT INTO TipoSala VALUES (NULL, ?)";
-//		String insertSQLEventos = "INSERT INTO TipoSala VALUES (NULL, ?)";
-//		
-//		PreparedStatement preparedStmtPublica = conexionBD.prepareStatement(insertSQLPublica);
-//		PreparedStatement preparedStmtPrivada = conexionBD.prepareStatement(insertSQLPrivada);
-//		PreparedStatement preparedStmtEventos = conexionBD.prepareStatement(insertSQLEventos);
-//		
-//		preparedStmtPublica.setString(1, "PUBLICA");
-//		preparedStmtPrivada.setString(1, "PRIVADA");
-//		preparedStmtEventos.setString(1, "EVENTOS");
-//		
-//		preparedStmtPublica.executeUpdate();
-//		preparedStmtPrivada.executeUpdate();
-//		preparedStmtEventos.executeUpdate();
-//		
-//		preparedStmtPublica.close();
-//		preparedStmtPrivada.close();
-//		preparedStmtEventos.close();
-//		
-//		} catch (SQLException e) {
-//			if (logger != null)
-//                logger.log(Level.SEVERE, "Error al añadir los recursos: ", e);
-//		}
 	}
 	
 	@Override
 	public boolean addSala(Sala sala) {
+		System.out.println(sala);
 		try {
-            String insertSQLSala = "INSERT INTO Sala VALUES (NULL,?,?,?)";
+            String insertSQLSala = "INSERT INTO Sala(piso, capacidad, tipo) VALUES (?,?,?)";
             PreparedStatement preparedStmtSala = conexionBD.prepareStatement(insertSQLSala);
             preparedStmtSala.setInt(1, sala.getPiso());
             preparedStmtSala.setInt(2, sala.getCapacidad());
@@ -100,13 +50,14 @@ public class SalaDAO implements SalaDAOInterface {
             		}
             	}
             } else if (sala instanceof SalaPrivada) {
+            	System.out.println(((SalaPrivada) sala).getRecursos());
             	preparedStmtSala.setInt(3, getTipoSalaId("PRIVADA"));
             	
             	String insertSQLSalaPrivadaRecurso = "INSERT INTO SalaPrivadaRecurso(id_recurso, id_sala) VALUES (?,?)";
             	for (Recurso recurso : ((SalaPrivada) sala).getRecursos()) {
             		PreparedStatement preparedStmtSalaPrivadaRecurso = conexionBD.prepareStatement(insertSQLSalaPrivadaRecurso);
             		preparedStmtSalaPrivadaRecurso.setInt(1, getRecursoId(recurso));
-            		preparedStmtSalaPrivadaRecurso.setInt(2, sala.getId());
+            		preparedStmtSalaPrivadaRecurso.setInt(2, sala.getId() + 1);
             		
             		preparedStmtSalaPrivadaRecurso.executeUpdate();
             		preparedStmtSalaPrivadaRecurso.close();
@@ -183,6 +134,33 @@ public class SalaDAO implements SalaDAOInterface {
 		return sala;	
 	}
 
+	@Override
+	public SalaPublica getSalaPublica() {
+		SalaPublica result = null;
+		
+		String selectSQL = "SELECT * FROM Sala, TipoSala WHERE TipoSala.tipo = ? AND Sala.tipo = TipoSala.id";
+		PreparedStatement preparedStmt;
+		try {
+			preparedStmt = conexionBD.prepareStatement(selectSQL);
+			preparedStmt.setString(1, "PUBLICA");
+			
+			ResultSet rs = preparedStmt.executeQuery();
+			
+			while(rs.next()) {
+				result = new SalaPublica(rs.getInt("capacidad"), rs.getInt("id"), rs.getInt("piso"));
+				return result;
+				
+			}
+		} catch (SQLException e) {
+			if (logger != null) {
+				logger.log(Level.SEVERE, "Error al recuperar la sala: ", e);
+				return result;
+			}
+		}
+		Main.getReservaSalaPublicaDAO().borrarRegistros();
+		return result;
+	}
+	
 	@Override
 	public ArrayList<Sala> getSalas() {
 		ArrayList<Sala> result = new ArrayList<>();

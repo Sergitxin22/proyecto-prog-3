@@ -4,12 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +17,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
+import dbmejorada.ReservaLibroDTO;
 import domain.Cliente;
 import domain.Libro;
 import domain.Seccion;
@@ -31,14 +31,14 @@ import domain.Usuario;
 import gui.components.Header;
 import main.Main;
 
-public class VentanaConfirmacionDeReserva extends JFrame {
+public class VentanaConfirmacionReservaLibro extends JFrame {
 	
 	private JPanel pOeste, pEste, pSur, pCentro, pHeader;
 	private Usuario usuario = Main.getUsuario();
 
 	private static final long serialVersionUID = -5490640345084381273L;
 	
-	public VentanaConfirmacionDeReserva(Libro libro) {
+	public VentanaConfirmacionReservaLibro(Libro libro) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("Confirmación de reserva");
 		setSize(1280, 720);
@@ -153,12 +153,27 @@ public class VentanaConfirmacionDeReserva extends JFrame {
 		
 		pCentro.add(botonesPanel);
 		
-		botonConfirmar.addActionListener(new ActionListener() {
+		botonConfirmar.addActionListener(e -> {
+			
+			
 
-			@Override
-			public void actionPerformed(ActionEvent e) {				 
-				VentanaReservaConfirmada nuevaVentana = new VentanaReservaConfirmada(libro);
-				nuevaVentana.setVisible(true);
+			if (((Cliente) usuario).getAmonestaciones() >= 3) {
+				JOptionPane.showMessageDialog(this, "Has superado el límite de amonestaciones para reservar libros.", "Error", JOptionPane.ERROR_MESSAGE);
+			} else {
+				
+				LocalDateTime fechaHoraDevolucion = LocalDateTime.now().plusDays(VentanaInformacionRecurso.calcularDiasParaDevolver(libro.getNumeroDePaginas()));
+				ReservaLibroDTO reserva = new ReservaLibroDTO(0, LocalDateTime.now(), fechaHoraDevolucion, libro.getIsbn(), usuario.getDni());
+				if (Main.getReservaLibroDAO().isLibroDisponible(reserva)) {
+					if (Main.getReservaLibroDAO().addReservaLibro(reserva)) {
+						JOptionPane.showMessageDialog(null, "Reserva confirmada. Tienes hasta el día " + fechaHoraDevolucion.getDayOfMonth() + "/" + fechaHoraDevolucion.getMonthValue() + "/" + fechaHoraDevolucion.getYear() + " a las " + fechaHoraDevolucion.getHour() + " horas y " + fechaHoraDevolucion.getMinute() + " minutos para devolver el libro en recepción.", "Reserva confirmada", JOptionPane.INFORMATION_MESSAGE);
+						new VentanaInformacionRecurso(libro);
+						dispose();
+					}
+				} else {
+					JOptionPane.showMessageDialog(this, "Este libro no se encuentra disponible en estos momentos", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
 			}
 		});
 		
@@ -195,6 +210,6 @@ public class VentanaConfirmacionDeReserva extends JFrame {
 		setVisible(true);
 	} 
 	public static void main(String[] args) {
-		new VentanaConfirmacionDeReserva(new Libro());
+		new VentanaConfirmacionReservaLibro(new Libro());
 	}
 }
