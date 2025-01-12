@@ -14,6 +14,9 @@ public class CargarDatosEnBBDD {
 		ArrayList<Libro> listaLibros = InputUtils.cargarLibros();
 		addLibros(listaLibros);
 		
+		addRecursos();
+		addTiposSala();
+		
 		ArrayList<Sala> listaSalas = InputUtils.cargarSalas();
 		addSalas(listaSalas);
 		
@@ -31,6 +34,14 @@ public class CargarDatosEnBBDD {
 		for (Libro libro : listaLibros) {
 			Main.getLibroDAO().addLibro(libro);
 		}		
+	}
+	
+	private void addRecursos() {
+		Main.getSalaDAO().addRecursos();
+	}
+	
+	private void addTiposSala() {
+		Main.getSalaDAO().addTiposSala();	
 	}
 	
 	private void addSalas(ArrayList<Sala> listaSalas) {
