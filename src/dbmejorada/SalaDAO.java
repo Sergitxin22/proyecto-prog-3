@@ -229,7 +229,6 @@ public class SalaDAO implements SalaDAOInterface {
 	public int getTipoSalaId(String tipoSala) {
 		@SuppressWarnings("unchecked")
 		HashMap<String, Integer> idTipoSalaByTipo = (HashMap<String, Integer>) getIdsTipoSala(0);
-		System.out.println("Hola: " + idTipoSalaByTipo);
 		return idTipoSalaByTipo.get(tipoSala);
 	}
 
@@ -298,7 +297,7 @@ public class SalaDAO implements SalaDAOInterface {
 				while (rs.next()) {
 					int id = rs.getInt("id");
 					String tipo = rs.getString("tipo");
-					System.out.println("Dentro");
+
 					if (ordenMapa == 0) {
 						idsTipoSala.put(tipo, id);
 					}else {
