@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -127,7 +128,7 @@ public class VentanaRegistrarse extends JFrame {
 				tfRepetirContrasenia.setText("");
 				
 			} else {
-				Cliente nuevoUsuario = new Cliente(tfDNI.getText(), tfNombre.getText(), tfUsuarioEmail.getText(), LocalDateTime.now(), new String(tfContrasena.getPassword()), new ArrayList<Libro>(), new ArrayList<Review>(), 0);
+				Cliente nuevoUsuario = new Cliente(tfDNI.getText(), tfNombre.getText(), tfUsuarioEmail.getText(), LocalDate.now(), new String(tfContrasena.getPassword()), new ArrayList<Libro>(), new ArrayList<Review>(), 0);
 				if (!Main.getUsuarioDAO().addUsuario(nuevoUsuario)) {
 					JOptionPane.showMessageDialog(this, "Ya hay un usuario/a registrado con este DNI", "Error", JOptionPane.ERROR_MESSAGE);
 					tfDNI.setText("");
