@@ -20,8 +20,7 @@ public class UsuarioDTO {
 		this.admin = false;
 	}
 	
-	public UsuarioDTO(String dni, String nombre, String email, LocalDate fechaCreacion, String contrasena,
-			int amonestaciones, boolean admin) {
+	public UsuarioDTO(String dni, String nombre, String email, LocalDate fechaCreacion, int amonestaciones, boolean admin) {
 		super();
 		this.dni = dni;
 		this.nombre = nombre;

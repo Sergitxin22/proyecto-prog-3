@@ -173,6 +173,26 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 			return;
 		}
 	}
+	
+	@Override
+	public boolean updateUsuario(Usuario usuario) {
+		try {
+			String insertSQL = "UPDATE Usuario SET nombre = ?, email = ? WHERE dni = ?";
+			PreparedStatement preparedStmt = conexionBD.prepareStatement(insertSQL);
+			preparedStmt.setString(1, usuario.getNombre());
+			preparedStmt.setString(2, usuario.getEmail());
+			preparedStmt.setString(3, usuario.getDni());
+
+			int filas = preparedStmt.executeUpdate();
+			System.out.println("Filas modificadas: " + filas);
+
+			return (filas > 0) ? true : false;
+		} catch (SQLException e) {
+			if (logger != null)
+				logger.log(Level.SEVERE, "Error al actualizar los datos del usuario: ", e);
+			return false;
+		}
+	}
 
 	@Override
 	public boolean updatePassword(UsuarioDTO usuario, String password) {
