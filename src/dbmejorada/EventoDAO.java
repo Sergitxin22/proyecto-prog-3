@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,7 +32,7 @@ public class EventoDAO implements EventoDAOInterface {
 			PreparedStatement preparedStmtEvento = conexionBD.prepareStatement(insertSQLEvento);
 			preparedStmtEvento.setInt(1, evento.getId());
 			preparedStmtEvento.setString(2, evento.getTitulo());
-			preparedStmtEvento.setInt(3, getTipoEventoID(evento.getTipoEvento()));
+			preparedStmtEvento.setInt(3, getTipoEventoId(evento.getTipoEvento()));
 			preparedStmtEvento.setInt(4, evento.getSala().getId());
 			preparedStmtEvento.setString(5, evento.getFechaHora().toString());
 
@@ -167,40 +168,45 @@ public class EventoDAO implements EventoDAOInterface {
 
 		return result;
 	}
-
+	
 	@Override
-	public TipoEvento getTipoEvento(int id) {
-		switch (id) {
-		case 0:
-			return TipoEvento.CHARLA;
-		case 1:
-			return TipoEvento.DEBATE;
-		case 2:
-			return TipoEvento.SEMINARIO;
-		case 3:
-			return TipoEvento.CURSILLO;
-		case 4:
-			return TipoEvento.TALLER;
-		default:
-			return TipoEvento.CONFERENCIA;
-		}
+	public int getTipoEventoId(TipoEvento tipoEvento) {
+		@SuppressWarnings("unchecked")
+		HashMap<TipoEvento, Integer> idTipoEventoByTipo = (HashMap<TipoEvento, Integer>) getIdsTipoEvento(0);
+		return idTipoEventoByTipo.get(tipoEvento);
 	}
 
 	@Override
-	public int getTipoEventoID(TipoEvento tipoEvento) {
-		if (tipoEvento.equals(TipoEvento.CHARLA)) {
-			return 0;
-		} else if (tipoEvento.equals(TipoEvento.DEBATE)) {
-			return 1;
-		} else if (tipoEvento.equals(TipoEvento.SEMINARIO)) {
-			return 2;
-		} else if (tipoEvento.equals(TipoEvento.CURSILLO)) {
-			return 3;
-		} else if (tipoEvento.equals(TipoEvento.TALLER)) {
-			return 4;
-		} else {
-			return 5;
+	public TipoEvento getTipoEvento(int id) {
+		@SuppressWarnings("unchecked")
+		HashMap<Integer, TipoEvento> tipoEventoById = (HashMap<Integer, TipoEvento>) getIdsTipoEvento(1);
+		
+		return tipoEventoById.get(id);
+	}
+
+	private HashMap<?, ?> getIdsTipoEvento(int ordenMapa){ // ordenMapa 0 --> tipo,id, ordenMapa 1 --> id,tipo
+		HashMap<Object, Object> idsTipoSala = new HashMap<>();
+		String selectSql = "SELECT * FROM TipoEvento;";
+		try {
+			PreparedStatement preparedStmt = conexionBD.prepareStatement(selectSql);
+			try (ResultSet rs = preparedStmt.executeQuery()) {
+				while (rs.next()) {
+					int id = rs.getInt("id");
+					String tipoString = rs.getString("descripcion");
+					
+					TipoEvento tipo = TipoEvento.valueOf(tipoString);
+					if (ordenMapa == 0) {
+						idsTipoSala.put(tipo, id);
+					}else {
+						idsTipoSala.put(id, tipo);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		return idsTipoSala;
 	}
 
 	@Override
