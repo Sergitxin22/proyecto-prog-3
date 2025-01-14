@@ -145,4 +145,6 @@ class UsuarioDAOTest {
 		usuarioDAO.borrarRegistros();
 		assertNull(usuarioDAO.getUsuario("00000000A"));
 	}
+	
+	// TODO: testGetUsuarios
 }
