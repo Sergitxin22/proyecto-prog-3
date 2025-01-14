@@ -64,7 +64,7 @@ public class VentanaPortada extends JFrame {
 
 					new VentanaIniciarSesion(currentWindow);
 				} else {
-					new VentanaInformacionUsuario();
+					new VentanaInformacionUsuario(currentWindow);
 				}	
             }
 		});
