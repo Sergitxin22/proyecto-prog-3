@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 
 import dbmejorada.LibroDTO;
 import main.Main;
+import utils.Utils;
 
 public class Libro implements Reservable {
 	// campos de la bbdd
@@ -61,7 +62,7 @@ public class Libro implements Reservable {
 		this.genero = libroDTO.getGenero();
 		this.rating = libroDTO.getRating();
 		this.fechaPublicacion = libroDTO.getFechaPublicacion();
-		this.foto = null;
+		this.foto = Utils.loadImage("books/" + libroDTO.getIsbn() + ".jpg", 128, 200);
 		this.reviews = Main.getReviewDAO().getReviewsLibroByIsbn(libroDTO.getIsbn());
 	}
 
