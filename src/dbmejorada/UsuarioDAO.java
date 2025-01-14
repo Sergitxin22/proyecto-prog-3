@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import domain.Admin;
 import domain.Cliente;
+import domain.Libro;
 import domain.LogAccion;
 import domain.Usuario;
 import main.Main;
@@ -72,6 +73,24 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 		}
 	}
 
+	@Override
+	public boolean deleteUsuario(String dni) {
+		String deleteSQL = "DELETE FROM Usuario WHERE dni = ?";
+		try {
+			PreparedStatement preparedStmt = conexionBD.prepareStatement(deleteSQL);
+			preparedStmt.setString(1, dni);
+			
+			preparedStmt.executeUpdate();
+			preparedStmt.close();
+			return true;
+			
+		} catch (SQLException e) {
+			if (logger != null)
+				logger.log(Level.SEVERE, "Error al eliminar el usuario: ", e);
+			return false;
+		}
+	}
+	
 	@Override
 	public boolean isUsuarioCorrecto(String dni, String password) { // Se usa para el inicio de sesiones
 		UsuarioDTO usuario = null;
@@ -143,6 +162,41 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 			getDatosAdicionalesUsuario(usuario);
 		}
 		return usuario;
+	}
+	
+	@Override
+	public ArrayList<Usuario> getUsuarios() {
+		ArrayList<Usuario> result = new ArrayList<>();
+		
+		String selectSQL = "SELECT "
+				+ "Usuario.dni, Usuario.nombre, Usuario.email, Usuario.fechaCreacion, Usuario.contrasena, IFNULL(Cliente.amonestaciones, 'Es admin') as amonestaciones "
+				+ "FROM Usuario LEFT JOIN Cliente ON Usuario.dni = Cliente.dni LEFT JOIN Admin ON Usuario.dni = Admin.dni;";
+		try {
+			PreparedStatement preparedStmt = conexionBD.prepareStatement(selectSQL);
+			ResultSet rs = preparedStmt.executeQuery();
+			
+			while (rs.next()) {
+				if (rs.getString("amonestaciones").equals("Es admin")) {
+					result.add(new Admin(rs.getString("dni"), rs.getString("nombre"), rs.getString("email"), LocalDate.parse(rs.getString("fechaCreacion")), rs.getString("contrasena"), getLogAccionesByAdminDni(rs.getString("dni"))));
+				} else {
+					ArrayList<LibroDTO> bufferDTO = Main.getLibroDAO().getHistorialByCliente(selectSQL);
+					ArrayList<Libro> historial = new ArrayList<>();
+					
+					for(LibroDTO libroDTO : bufferDTO) {
+						historial.add(new Libro(libroDTO));
+					}
+					
+					result.add(new Cliente(rs.getString("dni"), rs.getString("nombre"), rs.getString("email"), LocalDate.parse(rs.getString("fechaCreacion")), rs.getString("contrasena"), historial, Main.getReviewDAO().getReviewsByUsuarioDni(rs.getString("dni")), rs.getInt("amonestaciones")));
+				}
+			}
+			
+			preparedStmt.close();
+		} catch (SQLException e) {
+			if (logger != null)
+				logger.log(Level.SEVERE, "Error al recuperar los usuarios: ", e);
+			return result;
+		}
+		return result;
 	}
 
 	@Override
@@ -355,11 +409,11 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 	}
 
 	@Override
-	public boolean añadirAmonestacion(UsuarioDTO usuario) {
+	public boolean updateAmonestaciones(UsuarioDTO usuario, int nuevasAmonestaciones) {
 		String updateSQL = "UPDATE Cliente SET amonestaciones = ? WHERE dni = ?";
 		try {
 			PreparedStatement preparedStmt = conexionBD.prepareStatement(updateSQL);
-			preparedStmt.setInt(1, usuario.getAmonestaciones() + 1);
+			preparedStmt.setInt(1, nuevasAmonestaciones);
 			preparedStmt.setString(2, usuario.getDni());
 			preparedStmt.executeUpdate();
 			preparedStmt.close();

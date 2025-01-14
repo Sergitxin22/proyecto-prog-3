@@ -54,7 +54,7 @@ public class SalaPublicaDaemon extends JFrame {
                 }
                 
                 JOptionPane.showMessageDialog(null, usuario.getNombre() + ", Se ha agotado el tiempo de devolución. Has recibido una amonestación.", "Amonestación recibida", JOptionPane.INFORMATION_MESSAGE); 
-                Main.getUsuarioDAO().añadirAmonestacion(new UsuarioDTO(usuario.getDni(), usuario.getNombre(), usuario.getEmail(), usuario.getFechaCreacion(), usuario.getAmonestaciones(), false));
+                Main.getUsuarioDAO().updateAmonestaciones(new UsuarioDTO(usuario.getDni(), usuario.getNombre(), usuario.getEmail(), usuario.getFechaCreacion(), usuario.getAmonestaciones(), false), usuario.getAmonestaciones() + 1);
                 usuario.setAmonestaciones(usuario.getAmonestaciones() + 1);
                 
                 Main.getReservaSalaPublicaDAO().desasignarBloque(usuario.getDni());
