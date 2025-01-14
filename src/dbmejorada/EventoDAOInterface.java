@@ -12,6 +12,6 @@ public interface EventoDAOInterface {
 	ArrayList<Evento> getEventos();
 	ArrayList<UsuarioDTO> getAsistentesEvento(int id);
 	TipoEvento getTipoEvento(int id);
-	int getTipoEventoID(TipoEvento tipoEvento);
+	int getTipoEventoId(TipoEvento tipoEvento);
 	boolean addTiposEvento();
 }
