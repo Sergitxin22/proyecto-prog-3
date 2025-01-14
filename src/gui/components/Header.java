@@ -96,7 +96,7 @@ public class Header extends JPanel {
 						ventana.setVisible(false);
 						break;
 					default:
-						new VentanaInformacionUsuario();
+						new VentanaInformacionUsuario(ventana);
 						break;
 				}	
             }

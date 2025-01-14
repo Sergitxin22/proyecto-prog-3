@@ -51,7 +51,7 @@ public class VentanaInformacionUsuario extends JFrame {
 	
 	private Usuario usuario = Main.getUsuario();
 
-	public VentanaInformacionUsuario() {
+	public VentanaInformacionUsuario(JFrame ventanaPrevia) {
 		setTitle(usuario.getNombre() + ": Información");
 		setSize(640,480);
 		setLocationRelativeTo(null);
@@ -184,7 +184,7 @@ public class VentanaInformacionUsuario extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		VentanaInformacionUsuario viu = new VentanaInformacionUsuario();
+		VentanaInformacionUsuario viu = new VentanaInformacionUsuario(null);
 	}
 
 }
