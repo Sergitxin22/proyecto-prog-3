@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import dbmejorada.UsuarioDTO;
 import utils.Utils;
 
 public class VentanaInformacionUsuario extends JFrame {
@@ -58,7 +59,7 @@ public class VentanaInformacionUsuario extends JFrame {
 		setTitle(usuario.getNombre() + ": Información");
 		setSize(640,480);
 		setLocationRelativeTo(null);
-
+		
 		JPanel contenido = new JPanel();
 		contenido.setLayout(new GridLayout(0, 3));
 		JPanel l1 = new JPanel();
@@ -81,9 +82,9 @@ public class VentanaInformacionUsuario extends JFrame {
 		Font fuenteTitulo = new Font("Arial", Font.PLAIN, 32);
 		titulo.setFont(fuenteTitulo);
 		
-        JPanel panelNombre = getPanel("Nombre", "Usuario");
-        JPanel panelEmail = getPanel("Email", "Email");
-        JPanel panelPassword = getPanel("Contraseña", "Contraseña");
+        JPanel panelNombre = getPanel("Nombre", usuario.getNombre());
+        JPanel panelEmail = getPanel("Email", usuario.getEmail());
+        JPanel panelPassword = getPanel("Contraseña", "********");
 	    
 	    JButton botonHistorial = new JButton("Ver historial de lectura");
 	    JButton botonCerrarSesion = new JButton("Cerrar Sesión");
@@ -157,7 +158,8 @@ public class VentanaInformacionUsuario extends JFrame {
     				input.setEnabled(editarNombre);
     				
     				if (contadorClicksNombre == 2) {
-    					System.out.println("cambiado: " + input.getText());
+    					usuario.setNombre(input.getText());
+    					Main.getUsuarioDAO().updateUsuario(usuario);
     					contadorClicksNombre = 0;
     				}
     			}        	
@@ -172,7 +174,8 @@ public class VentanaInformacionUsuario extends JFrame {
     				input.setEnabled(editarEmail);
     				
     				if (contadorClicksEmail == 2) {
-    					System.out.println("cambiado: " + input.getText());
+    					usuario.setEmail(input.getText());
+    					Main.getUsuarioDAO().updateUsuario(usuario);
     					contadorClicksEmail = 0;
     				}
     			}        	
@@ -187,7 +190,9 @@ public class VentanaInformacionUsuario extends JFrame {
     				input.setEnabled(editarPassword);
     				
     				if (contadorClicksPassword == 2) {
-    					System.out.println("cambiado: " + input.getText());
+    					usuario.setContrasena(input.getText());
+    					UsuarioDTO usuarioDTO = Main.getUsuarioDAO().getUsuario(usuario.getDni());
+    					Main.getUsuarioDAO().updatePassword(usuarioDTO, input.getText());
     					contadorClicksPassword = 0;
     				}
     			}        	
