@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -18,7 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import domain.Admin;
@@ -61,9 +61,9 @@ class UsuarioDAOTest {
 
 	@Test
 	void testAddUsuario() {
-		Cliente cliente = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDateTime.now(), "hola",
+		Cliente cliente = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDate.now(), "hola",
 				new ArrayList<>(), new ArrayList<>(), 3);
-		Admin admin = new Admin("11111111B", "Aroa", "aroa@no.com", LocalDateTime.now(), "aroa2003", new ArrayList<>());
+		Admin admin = new Admin("11111111B", "Aroa", "aroa@no.com", LocalDate.now(), "aroa2003", new ArrayList<>());
 
 		assertTrue(usuarioDAO.addUsuario(cliente));
 		assertTrue(usuarioDAO.addUsuario(admin));
@@ -71,7 +71,7 @@ class UsuarioDAOTest {
 
 	@Test
 	void testIsUsuarioCorrecto() {
-		Cliente cliente = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDateTime.now(), "hola",
+		Cliente cliente = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDate.now(), "hola",
 				new ArrayList<>(), new ArrayList<>(), 3);
 		usuarioDAO.addUsuario(cliente);
 
@@ -81,8 +81,7 @@ class UsuarioDAOTest {
 
 	@Test
 	void testGetUsuario() {
-		Cliente cliente = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDateTime.now(), "hola",
-				new ArrayList<>(), new ArrayList<>(), 3);
+		Cliente cliente = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDate.now(), "hola", new ArrayList<>(), new ArrayList<>(), 3);
 		usuarioDAO.addUsuario(cliente);
 
 		UsuarioDTO usuarioDTO = usuarioDAO.getUsuario("00000000A");
@@ -92,7 +91,7 @@ class UsuarioDAOTest {
 
 	@Test
 	void testGetDatosAdicionalesUsuario() {
-		Cliente cliente = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDateTime.now(), "hola",
+		Cliente cliente = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDate.now(), "hola",
 				new ArrayList<>(), new ArrayList<>(), 3);
 		usuarioDAO.addUsuario(cliente);
 
@@ -105,7 +104,7 @@ class UsuarioDAOTest {
 
 	@Test
 	void testUpdatePassword() {
-		Cliente cliente = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDateTime.now(), "hola",
+		Cliente cliente = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDate.now(), "hola",
 				new ArrayList<>(), new ArrayList<>(), 3);
 		usuarioDAO.addUsuario(cliente);
 
@@ -116,7 +115,7 @@ class UsuarioDAOTest {
 
 	@Test
 	void testAddLogAccion() {
-		Admin admin = new Admin("11111111B", "Aroa", "aroa@no.com", LocalDateTime.now(), "aroa2003", new ArrayList<>());
+		Admin admin = new Admin("11111111B", "Aroa", "aroa@no.com", LocalDate.now(), "aroa2003", new ArrayList<>());
 		usuarioDAO.addUsuario(admin);
 
 		LogAccion logAccion = new LogAccion(1, LocalDateTime.now(), "LogAccion1", "11111111B");
@@ -125,7 +124,7 @@ class UsuarioDAOTest {
 
 	@Test
 	void testGetLogAccionesByAdminDni() {
-		Admin admin = new Admin("11111111B", "Aroa", "aroa@no.com", LocalDateTime.now(), "aroa2003", new ArrayList<>());
+		Admin admin = new Admin("11111111B", "Aroa", "aroa@no.com", LocalDate.now(), "aroa2003", new ArrayList<>());
 		usuarioDAO.addUsuario(admin);
 
 		LogAccion logAccion1 = new LogAccion(1, LocalDateTime.now(), "LogAccion1", "11111111B");
@@ -139,7 +138,7 @@ class UsuarioDAOTest {
 
 	@Test
 	void testBorrarRegistros() {
-		Cliente cliente = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDateTime.now(), "hola",
+		Cliente cliente = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDate.now(), "hola",
 				new ArrayList<>(), new ArrayList<>(), 3);
 		usuarioDAO.addUsuario(cliente);
 
