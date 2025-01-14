@@ -145,7 +145,7 @@ public class VentanaInformacionUsuario extends JFrame {
         JPanel panelInput = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JTextField input = new JTextField(placeholder, 10);
         input.setEnabled(false);
-        ImageIcon iconoEditar = Utils.loadImage("adminUser.png", 20, 20);
+        ImageIcon iconoEditar = Utils.loadImage("edit.png", 20, 20);
         JLabel iconLabel = new JLabel(iconoEditar);
         if (labelText.equalsIgnoreCase("Nombre")) {
         	iconLabel.addMouseListener(new MouseAdapter() {
