@@ -228,7 +228,7 @@ public void setMainWindowProperties() {
 	    
 
 	    	if(evento.getAsistentes().size() < evento.getSala().getCapacidad()) {
-	    		evento.getAsistentes().add(new UsuarioDTO(usuario.getDni(), usuario.getNombre(), usuario.getEmail(), usuario.getFechaCreacion(), usuario.getContrasena(), ((Cliente) usuario).getAmonestaciones(), false));
+	    		evento.getAsistentes().add(new UsuarioDTO(usuario.getDni(), usuario.getNombre(), usuario.getEmail(), usuario.getFechaCreacion(), ((Cliente) usuario).getAmonestaciones(), false));
 	    		AsistenciaEventoDTO asistenciaEventoDTO = new AsistenciaEventoDTO(0,usuario.getDni(), evento.getId());
 	    		if(Main.getAsistenciaEventoDAO().addAsistenciaEvento(asistenciaEventoDTO)) {
 	    			JOptionPane.showMessageDialog(this, "Asitencia confirmada correctamente.",  "Asistencia confirmada", JOptionPane.INFORMATION_MESSAGE);
