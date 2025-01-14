@@ -15,8 +15,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
@@ -93,6 +96,31 @@ public class VentanaInformacionUsuario extends JFrame {
 		l2.add(panelPassword, gbc);
 		l2.add(botonHistorial, gbc);
 		l2.add(botonCerrarSesion, gbc);
+		
+		botonHistorial.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new VentanaHistorialUsuario();
+                dispose();
+            }
+        });
+		
+		botonCerrarSesion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	Main.setUsuario(null);
+            	
+            	try {
+					ventanaPrevia.getClass().getConstructor().newInstance();
+					ventanaPrevia.dispose();
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+                dispose();
+            }
+        });
 		
 		setVisible(true);
 	}
