@@ -140,8 +140,8 @@ public class CrearBBDD {
         );
         INSERT INTO "Usuario" ("dni","nombre","email","fechaCreacion","contrasena") 
         VALUES 
-            ('00000000A','Sergio','sergio@si.es','2024-12-01T22:52:05.597527100','hola'),
-            ('11111111B','Aroa','aroa@no.com','2024-12-01T22:52:05.601522700','aroa2003');
+            ('00000000A','Sergio','sergio@si.es','2024-12-01','hola'),
+            ('11111111B','Aroa','aroa@no.com','2024-12-01','aroa2003');
 		INSERT INTO "Admin" ("dni") VALUES ('11111111B');
         INSERT INTO "Cliente" ("dni","amonestaciones") VALUES ('00000000A',0);
         """;

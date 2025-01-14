@@ -111,7 +111,7 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 	public UsuarioDTO getUsuario(String dni) {
 		UsuarioDTO usuario = null;
 
-		String insertSQL = "SELECT nombre FROM Usuario WHERE dni = ?";
+		String insertSQL = "SELECT nombre, email, fechaCreacion FROM Usuario WHERE dni = ?";
 		PreparedStatement preparedStmt;
 		try {
 			preparedStmt = conexionBD.prepareStatement(insertSQL);
@@ -120,11 +120,15 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 			try (ResultSet rs = preparedStmt.executeQuery()) {
 
 				while (rs.next()) {
-					String nombre = rs.getString("nombre");
-
 					usuario = new UsuarioDTO();
+					String nombre = rs.getString("nombre");
+					String email = rs.getString("email");
+					String fechaCreacion = rs.getString("fechaCreacion");
+
 					usuario.setDni(dni);
 					usuario.setNombre(nombre);
+					usuario.setEmail(email);
+					usuario.setFechaCreacion(LocalDate.parse(fechaCreacion));
 				}
 				System.out.println("Usuario recuperado correctamente");
 			}
