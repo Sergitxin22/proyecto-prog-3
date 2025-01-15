@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import dbmejorada.EventoDTO;
-import dbmejorada.UsuarioDTO;
+import db.EventoDTO;
+import db.UsuarioDTO;
 import main.Main;
 
 public class Evento {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
-import dbmejorada.LibroDTO;
+import db.LibroDTO;
 import main.Main;
 import utils.Utils;
 

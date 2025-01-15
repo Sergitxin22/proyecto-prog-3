@@ -3,7 +3,7 @@ package domain;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import dbmejorada.UsuarioDTO;
+import db.UsuarioDTO;
 import main.Main;
 
 public class Admin extends Usuario {

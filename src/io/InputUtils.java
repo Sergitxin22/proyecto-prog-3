@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.ImageIcon;
 
-import dbmejorada.LibroDTO;
-import dbmejorada.UsuarioDTO;
+import db.LibroDTO;
+import db.UsuarioDTO;
 import utils.Utils;
 
 public class InputUtils {

@@ -1,29 +1,9 @@
 package main;
 
-import dbmejorada.AsistenciaEventoDAO;
-import dbmejorada.AsistenciaEventoDAOInterface;
-import dbmejorada.EventoDAO;
-import dbmejorada.EventoDAOInterface;
-import dbmejorada.LibroDAO;
-import dbmejorada.LibroDAOInterface;
-import dbmejorada.ReservaLibroDAO;
-import dbmejorada.ReservaLibroDAOInterface;
-import dbmejorada.ReservaSalaPrivadaDAO;
-import dbmejorada.ReservaSalaPrivadaDAOInterface;
-import dbmejorada.ReservaSalaPublicaDAO;
-import dbmejorada.ReservaSalaPublicaDAOInterface;
-import dbmejorada.ReviewDAO;
-import dbmejorada.ReviewDAOInterface;
-import dbmejorada.SalaDAO;
-import dbmejorada.SalaDAOInterface;
-import dbmejorada.UsuarioDAO;
-import dbmejorada.UsuarioDAOInterface;
 import domain.SalaPublica;
 import domain.Usuario;
 
 import gui.VentanaPortada;
-import io.CargarDatosEnBBDD;
-import io.CrearBBDD;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -37,6 +17,25 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
+
+import db.AsistenciaEventoDAO;
+import db.AsistenciaEventoDAOInterface;
+import db.EventoDAO;
+import db.EventoDAOInterface;
+import db.LibroDAO;
+import db.LibroDAOInterface;
+import db.ReservaLibroDAO;
+import db.ReservaLibroDAOInterface;
+import db.ReservaSalaPrivadaDAO;
+import db.ReservaSalaPrivadaDAOInterface;
+import db.ReservaSalaPublicaDAO;
+import db.ReservaSalaPublicaDAOInterface;
+import db.ReviewDAO;
+import db.ReviewDAOInterface;
+import db.SalaDAO;
+import db.SalaDAOInterface;
+import db.UsuarioDAO;
+import db.UsuarioDAOInterface;
 
 public class Main {
 	private final static String PROPERTIES_FILE = "conf/app.properties";
@@ -214,9 +213,9 @@ public class Main {
         // Inicialización de la lista de threads
         threads = new ArrayList<>();
         
-        // Carga de datos del .csv a la BD
-        new CrearBBDD();
-        new CargarDatosEnBBDD();
+        // Carga de datos del .csv a la BD (Si esto está comentado es que ya está creada)
+        //new CrearBBDD();
+        //new CargarDatosEnBBDD();
     	    	
     	// Inicialización de usuario y sala pública
     	usuario = null;

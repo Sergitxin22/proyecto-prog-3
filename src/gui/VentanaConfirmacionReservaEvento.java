@@ -2,10 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -21,21 +18,14 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import dbmejorada.AsistenciaEventoDTO;
-import dbmejorada.SalaDTO;
-import dbmejorada.UsuarioDTO;
+import db.AsistenciaEventoDTO;
+import db.UsuarioDTO;
 import domain.Cliente;
 import domain.Evento;
-import domain.SalaEventos;
 import domain.Seccion;
-import domain.TipoEvento;
 import domain.Usuario;
 import gui.components.Header;
 import main.Main;
-
-import java.time.LocalDate;
-//import utils.Utils;
-import java.time.LocalDateTime;
 
 public class VentanaConfirmacionReservaEvento extends JFrame{
 	

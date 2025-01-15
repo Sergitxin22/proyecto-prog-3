@@ -35,7 +35,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import dbmejorada.LibroDTO;
+import db.LibroDTO;
 import domain.Libro;
 import domain.LogAccion;
 import domain.Usuario;

@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import dbmejorada.UsuarioDTO;
+import db.UsuarioDTO;
 import domain.Cliente;
 import main.Main;
 
@@ -20,7 +20,6 @@ public class SalaPublicaDaemon extends JFrame {
             public void run() {
             	
                 for (int i = 12600; i >= 0; i--) { // Tres horas y media
-                    final int tiempoRestante = i;
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
@@ -38,7 +37,6 @@ public class SalaPublicaDaemon extends JFrame {
                 JOptionPane.showMessageDialog(null, usuario.getNombre() + ", Tienes 30 minutos para devolver tu bloque.", "Recordatorio", JOptionPane.INFORMATION_MESSAGE);
                 
                 for (int i = 1800; i >= 0; i--) { // Media hora (cuatro horas en total)
-                    final int tiempoRestante = i;
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {

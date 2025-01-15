@@ -11,9 +11,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -26,11 +23,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import dbmejorada.UsuarioDTO;
+import db.UsuarioDTO;
 import domain.Admin;
 import domain.Cliente;
-import domain.Libro;
-import domain.Review;
 import main.Main;
 
 public class VentanaIniciarSesion extends JFrame {	

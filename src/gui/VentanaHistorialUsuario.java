@@ -8,11 +8,13 @@ import domain.Seccion;
 import domain.Usuario;
 
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 public class VentanaHistorialUsuario extends JFrame{
 	
@@ -23,10 +25,16 @@ public class VentanaHistorialUsuario extends JFrame{
 		if (!(usuario instanceof Cliente)) {
 			return ;
 		}
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(640,480);
 		setTitle("Historial de libros");
 		setLocationRelativeTo(null);
+		
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+				dispose();
+            }
+});
 		
 		//panel arriba
 		JPanel header = new Header(Seccion.BIBLIOTECA, usuario, this);

@@ -23,7 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import dbmejorada.ReservaLibroDTO;
+import db.ReservaLibroDTO;
 import domain.Cliente;
 import domain.Libro;
 import domain.Seccion;

@@ -2,7 +2,7 @@ package domain;
 
 import java.util.HashMap;
 
-import dbmejorada.SalaDTO;
+import db.SalaDTO;
 
 public class SalaPublica extends Sala {
 	private HashMap<Integer, Cliente> clientesPorBloque;
