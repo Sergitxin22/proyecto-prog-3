@@ -39,7 +39,7 @@ public class InputUtils {
 	        }
 			
 			int contador = 0;
-			while (sc.hasNextLine() && contador<36) {
+			while (sc.hasNextLine() && contador<250) {
 				
 				String linea = sc.nextLine();
 				String[] datos = linea.split(";");

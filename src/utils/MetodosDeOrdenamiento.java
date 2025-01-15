@@ -1,4 +1,4 @@
-package domain;
+package utils;
 
 public enum MetodosDeOrdenamiento {
 	ORDENAR,TITULO,FECHA,AUTOR;

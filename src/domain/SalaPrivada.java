@@ -2,8 +2,6 @@ package domain;
 
 import java.util.ArrayList;
 
-import dbmejorada.SalaDTO;
-import main.Main;
 
 public class SalaPrivada extends Sala {
 	private ArrayList<Recurso> recursos;
@@ -19,13 +17,6 @@ public class SalaPrivada extends Sala {
 		super();
 		this.recursos = new ArrayList<>();
 		this.reservas = new ArrayList<>();
-	}
-
-	public SalaPrivada(SalaDTO salaDTO) {
-		super(salaDTO.getCapacidad(), salaDTO.getId(), salaDTO.getPiso());
-		ArrayList<Integer> recursosIds = Main.getSalaDAO().getIdsRecursosDisponiblesByIdSala(salaDTO.getId());
-		this.recursos = getArrayListRecursos(recursosIds);
-//		this.reservas = Main.getReservaSalaDAO().getReservasSalaByIdSala(salaDTO.getId()); TODO: hacer el metodo
 	}
 	
 	public ArrayList<Recurso> getRecursos() {
@@ -44,13 +35,5 @@ public class SalaPrivada extends Sala {
 		this.reservas = reservas;
 	}
 	
-	private ArrayList<Recurso> getArrayListRecursos(ArrayList<Integer> recursosIds) {
-		ArrayList<Recurso> recursos = new ArrayList<Recurso>();
-		for (Integer recursoId : recursosIds) {
-			Recurso recurso = Main.getSalaDAO().getRecurso(recursoId);
-			recursos.add(recurso);
-		}
-		return recursos;
-	}
 	
 }
