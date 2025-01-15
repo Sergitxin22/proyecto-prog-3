@@ -23,6 +23,12 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
       	logger = Main.getLogger();
 //        pruebas();
     }
+    
+    public ReservaSalaPrivadaDAO(Connection conexionBD, Logger logger) {
+       	this.conexionBD = conexionBD;
+      	this.logger = logger;
+        pruebas();
+    }
 	
 	@Override
 	public boolean addReservaSalaPrivada(ReservaSalaPrivadaDTO reservaSalaPrivada) {

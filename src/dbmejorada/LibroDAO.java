@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,6 +25,13 @@ public class LibroDAO implements LibroDAOInterface{
 	public LibroDAO() {
 		this.conexionBD = Main.getConexionBD();
 		this.logger = Main.getLogger();
+		
+	}
+	
+	public LibroDAO(Connection conexionBD, Logger logger) {
+		this.conexionBD = conexionBD;
+		this.logger = logger;
+		
 	}
 	
 
@@ -70,7 +78,7 @@ public class LibroDAO implements LibroDAOInterface{
 	                libro.setAutor(rs.getString("autor"));
 	                libro.setNumeroDePaginas(rs.getInt("numPaginas"));
 	                libro.setSinopsis(rs.getString("sinopsis"));
-	                libro.setGenero(rs.getString("género"));
+	                libro.setGenero(rs.getString("genero"));
 	                libro.setRating(rs.getInt("rating"));
 	                libro.setFechaPublicacion(rs.getInt("fecha_publicacion"));
 	                
@@ -113,7 +121,7 @@ public class LibroDAO implements LibroDAOInterface{
 	}
 	
 	@Override
-	public void añadirReserva(long isbn, int diasDevolucion, Cliente cliente) {
+	public boolean añadirReserva(long isbn, int diasDevolucion, Cliente cliente) {
 		String insertSQL = "INSERT INTO ReservaLibro(fecha_inicio, fecha_fin, isbn, dni_cliente";
 		  PreparedStatement preparedStmt;
 			try {
@@ -125,11 +133,14 @@ public class LibroDAO implements LibroDAOInterface{
 				 		
 				preparedStmt.executeUpdate();
 				preparedStmt.close();
+				return true;
 			} catch(SQLException e) {
 				if (logger != null) {
 					logger.log(Level.SEVERE, "Error al realizar la reserva: ", e);
+					return false;
 				}
-			}	
+			}
+			return false;
 	}
 	
 	@Override
@@ -233,7 +244,7 @@ public class LibroDAO implements LibroDAOInterface{
 	            if (rs.next()) {
 	                // Obtener el número de veces que el cliente ha leído el libro
 	                int vecesLeido = rs.getInt("veces_leido");
-
+	                preparedStmt.close();
 	                // Si el libro ha sido leído al menos una vez, retornar true, de lo contrario false
 	                return vecesLeido > 0;
 	            }
@@ -244,6 +255,21 @@ public class LibroDAO implements LibroDAOInterface{
 	        }
 	    }
 	    return false;
+	}
+	
+	@Override
+	public void borrarRegistros() {
+		try {
+			Statement stmt = conexionBD.createStatement();
+			String instruccion = ("DELETE FROM Libro;");
+
+			int filas = stmt.executeUpdate(instruccion);
+			stmt.close();
+			System.out.println("Filas modificadas: " + filas);
+		} catch (SQLException e) {
+			if (logger != null)
+				logger.log(Level.SEVERE, "Error al borrar los registros: ", e);
+		}
 	}
 	
 }

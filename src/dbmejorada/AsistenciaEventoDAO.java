@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,6 +17,11 @@ public class AsistenciaEventoDAO implements AsistenciaEventoDAOInterface{
 	public AsistenciaEventoDAO() {
 		conexionBD = Main.getConexionBD();
 		logger = Main.getLogger();
+	}
+	
+	public AsistenciaEventoDAO(Connection conexionBD, Logger logger) {
+		this.conexionBD = conexionBD;
+		this.logger = logger;
 	}
 	
 	@Override
@@ -38,13 +44,17 @@ public class AsistenciaEventoDAO implements AsistenciaEventoDAOInterface{
 	}
 
 	@Override
-	public boolean isUsuarioAsistente(String dni_usuario) {
-		String sql = "SELECT dni_asistente FROM AsistenciaEvento WHERE dni_asistente = ?";
+	public boolean isUsuarioAsistente(String dni_usuario, int id_evento) {
+		String sql = "SELECT dni_asistente FROM AsistenciaEvento WHERE dni_asistente = ? AND id_evento = ?";
 		try {
 			PreparedStatement preparedStmt = conexionBD.prepareStatement(sql);
 			preparedStmt.setString(1, dni_usuario);
+			preparedStmt.setInt(2, id_evento);
 			ResultSet rs1 = preparedStmt.executeQuery();
-			return rs1.next();
+			boolean result = rs1.next();
+			preparedStmt.close();
+			return result;
+			
 		} catch (SQLException e) {
 			if (logger != null) {
 				logger.log(Level.SEVERE, "Error al recuperar un evento: ", e);
@@ -55,4 +65,18 @@ public class AsistenciaEventoDAO implements AsistenciaEventoDAOInterface{
 		return false;
 	}
 	
+	@Override
+	public void borrarRegistros() {
+		try {
+			Statement stmt = conexionBD.createStatement();
+			String instruccion = ("DELETE FROM AsistenciaEvento;");
+
+			int filas = stmt.executeUpdate(instruccion);
+			stmt.close();
+			System.out.println("Filas modificadas: " + filas);
+		} catch (SQLException e) {
+			if (logger != null)
+				logger.log(Level.SEVERE, "Error al borrar los registros: ", e);
+		}
+	}
 }

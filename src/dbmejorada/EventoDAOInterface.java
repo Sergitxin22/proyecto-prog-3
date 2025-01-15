@@ -14,4 +14,5 @@ public interface EventoDAOInterface {
 	TipoEvento getTipoEvento(int id);
 	int getTipoEventoId(TipoEvento tipoEvento);
 	boolean addTiposEvento();
+	void borrarRegistros();
 }

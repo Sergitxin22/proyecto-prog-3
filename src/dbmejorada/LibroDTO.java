@@ -1,7 +1,9 @@
 package dbmejorada;
 
+import java.util.Objects;
+
 public class LibroDTO {
-	
+
 	private long isbn;
 	private String titulo;
 	private String autor;
@@ -105,5 +107,20 @@ public class LibroDTO {
 		return "LibroDTO [isbn=" + isbn + ", titulo=" + titulo + ", autor=" + autor + ", numeroDePaginas="
 				+ numeroDePaginas + ", sinopsis=" + sinopsis + ", genero=" + genero + ", rating=" + rating
 				+ ", fechaPublicacion=" + fechaPublicacion + "]";
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LibroDTO other = (LibroDTO) obj;
+		return Objects.equals(autor, other.autor) && fechaPublicacion == other.fechaPublicacion
+				&& Objects.equals(genero, other.genero) && isbn == other.isbn
+				&& numeroDePaginas == other.numeroDePaginas && rating == other.rating
+				&& Objects.equals(sinopsis, other.sinopsis) && Objects.equals(titulo, other.titulo);
 	}
 }

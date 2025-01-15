@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +23,11 @@ public class ReviewDAO implements ReviewDAOInterface {
 	public ReviewDAO() {
 		this.conexionBD = Main.getConexionBD();
 		this.logger = Main.getLogger();
+	}
+	
+	public ReviewDAO(Connection conexionBD, Logger logger) {
+		this.conexionBD = conexionBD;
+		this.logger = logger;
 	}
 
 	@Override
@@ -120,4 +126,20 @@ public class ReviewDAO implements ReviewDAOInterface {
 		
 		return result;	
 	}
+	
+	@Override
+	public void borrarRegistros() {
+		try {
+			Statement stmt = conexionBD.createStatement();
+			String instruccion = "DELETE FROM Review;";
+			
+			int filas = stmt.executeUpdate(instruccion);
+			stmt.close();
+			System.out.println("Filas modificadas: " + filas);
+		} catch (SQLException e) {
+			if (logger != null)
+                logger.log(Level.SEVERE, "Error al borrar los registros: ", e);
+		}
+	}
+	
 }
