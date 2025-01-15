@@ -1,5 +1,6 @@
 package gui;
 
+import domain.Admin;
 import domain.Cliente;
 import domain.Seccion;
 import domain.Usuario;
@@ -86,7 +87,7 @@ public class VentanaInformacionUsuario extends JFrame {
         JPanel panelEmail = getPanel("Email", usuario.getEmail());
         JPanel panelPassword = getPanel("Contraseña", "********");
 	    
-	    JButton botonHistorial = new JButton("Ver historial de lectura");
+	    JButton botonDinamico = getBotonDinamico();
 	    JButton botonCerrarSesion = new JButton("Cerrar Sesión");
 	    botonCerrarSesion.setBackground(Color.RED);
 	    botonCerrarSesion.setForeground(Color.WHITE);
@@ -95,16 +96,8 @@ public class VentanaInformacionUsuario extends JFrame {
 		l2.add(panelNombre, gbc);
 		l2.add(panelEmail, gbc);
 		l2.add(panelPassword, gbc);
-		l2.add(botonHistorial, gbc);
+		l2.add(botonDinamico, gbc);
 		l2.add(botonCerrarSesion, gbc);
-		
-		botonHistorial.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new VentanaHistorialUsuario();
-                dispose();
-            }
-        });
 		
 		botonCerrarSesion.addActionListener(new ActionListener() {
             @Override
@@ -211,6 +204,33 @@ public class VentanaInformacionUsuario extends JFrame {
         panelContenidoCentrado.add(panelContenido);
         
         return panelContenidoCentrado;
+	}
+	
+
+	public JButton getBotonDinamico() {
+		JButton botonDinamico = new JButton();
+
+	    if (usuario instanceof Admin) {
+	    	botonDinamico.setText("Modificar usuarios");
+
+	    	botonDinamico.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                new VentanaAdministracionUsuarios().setVisible(true);
+	                dispose();
+	            }
+	        });
+	    } else {
+	    	botonDinamico.setText("Ver historial de lectura");
+	    	botonDinamico.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                new VentanaHistorialUsuario().setVisible(true);
+	                dispose();
+	            }
+	        });
+	    }
+	    return botonDinamico;
 	}
 
 	public static void main(String[] args) {
