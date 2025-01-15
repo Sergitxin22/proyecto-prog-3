@@ -220,7 +220,7 @@ public void setMainWindowProperties() {
 
 	    // Asegúrate de que pCentrpesté agregado al JFrame
 	    
-	    if(Main.getAsistenciaEventoDAO().isUsuarioAsistente(usuario.getDni())) {
+	    if(Main.getAsistenciaEventoDAO().isUsuarioAsistente(usuario.getDni(), evento.getId())) {
 	    	reservarButton.setEnabled(false);
 	    	reservarButton.setToolTipText("Ya estás asistiendo a este evento");
 	    }

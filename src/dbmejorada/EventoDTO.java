@@ -1,9 +1,7 @@
 package dbmejorada;
 
 import java.time.LocalDateTime;
-
-import domain.Sala;
-import domain.TipoEvento;
+import java.util.Objects;
 
 public class EventoDTO {
 
@@ -67,6 +65,24 @@ public class EventoDTO {
 		return fecha;
 	}
 	
+	@Override
+	public int hashCode() {
+		return Objects.hash(fecha, id, idSala, idTipoEvento, titulo);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EventoDTO other = (EventoDTO) obj;
+		return Objects.equals(fecha, other.fecha) && id == other.id && idSala == other.idSala
+				&& idTipoEvento == other.idTipoEvento && Objects.equals(titulo, other.titulo);
+	}
+
 	public void setFecha(LocalDateTime fecha) {
 		this.fecha = fecha;
 	}

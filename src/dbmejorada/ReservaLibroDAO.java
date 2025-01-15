@@ -22,10 +22,16 @@ public class ReservaLibroDAO implements ReservaLibroDAOInterface {
 		logger = Main.getLogger();
 		pruebas();
 	}
+	
+	public ReservaLibroDAO(Connection conexionBD, Logger logger) {
+		this.conexionBD = conexionBD;
+		this.logger = logger;
+		pruebas();
+	}
 
 	@Override
 	public boolean addReservaLibro(ReservaLibroDTO reservaLibro) {
-		String insertSQLReservaLibro = "INSERT INTO ReservaLibro(fecha_inicio, fecha_fin, isbn_libro, dni_cliente) VALUES (?, ?, ?, ?)";
+		String insertSQLReservaLibro = "INSERT INTO ReservaLibro(id, fecha_inicio, fecha_fin, isbn_libro, dni_cliente) VALUES (null, ?, ?, ?, ?)";
 
 		PreparedStatement preparedStmtReservaLibro;
 		try {
@@ -36,6 +42,7 @@ public class ReservaLibroDAO implements ReservaLibroDAOInterface {
 			preparedStmtReservaLibro.setString(4, reservaLibro.getDniCliente());
 
 			preparedStmtReservaLibro.executeUpdate();
+			preparedStmtReservaLibro.close();
 		} catch (SQLException e) {
 			if (logger != null)
 				logger.log(Level.SEVERE, "Error al añadir la reserva del libro: ", e);
@@ -63,10 +70,10 @@ public class ReservaLibroDAO implements ReservaLibroDAOInterface {
 					Long isbn = rs.getLong("isbn_libro");
 					String dniCliente = rs.getString("dni_cliente");
 
-					reservaLibro = new ReservaLibroDTO(id, LocalDateTime.parse(fechaInicio),
-							LocalDateTime.parse(fechaFin), isbn, dniCliente);
+					reservaLibro = new ReservaLibroDTO(id, LocalDateTime.parse(fechaInicio), LocalDateTime.parse(fechaFin), isbn, dniCliente);
 				}
 				System.out.println("Reserva libro sin fallos");
+				preparedStmt.close();
 				return reservaLibro;
 			}
 

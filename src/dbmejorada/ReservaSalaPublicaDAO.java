@@ -22,7 +22,12 @@ public class ReservaSalaPublicaDAO implements ReservaSalaPublicaDAOInterface {
        	conexionBD = Main.getConexionBD();
       	logger = Main.getLogger();
     }
-
+    
+    public ReservaSalaPublicaDAO(Connection conexionBD, Logger logger) {
+       	this.conexionBD = conexionBD;
+      	this.logger = logger;
+    }
+    
 	@Override
 	public boolean addReservaSalaPublica(ReservaSalaPublicaDTO reservaSalaPublica) {
 		String insertSQLReservaSalaPublica = "INSERT INTO ReservaSalaPublica(fecha_entrada, dni_cliente, numero_bloque) VALUES (?, ?, ?)";

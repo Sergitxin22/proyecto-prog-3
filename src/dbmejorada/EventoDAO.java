@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +24,11 @@ public class EventoDAO implements EventoDAOInterface {
 	public EventoDAO() {
 		this.conexionBD = Main.getConexionBD();
 		this.logger = Main.getLogger();
+	}
+	
+	public EventoDAO(Connection conexionBD, Logger logger) {
+		this.conexionBD = conexionBD;
+		this.logger = logger;
 	}
 
 	@Override
@@ -253,5 +259,19 @@ public class EventoDAO implements EventoDAOInterface {
 			return false;
 		}
 		return true;
+	}
+	
+	public void borrarRegistros() {
+		try {
+			Statement stmt = conexionBD.createStatement();
+			String instruccion = ("DELETE FROM Evento;");
+
+			int filas = stmt.executeUpdate(instruccion);
+			stmt.close();
+			System.out.println("Filas modificadas: " + filas);
+		} catch (SQLException e) {
+			if (logger != null)
+				logger.log(Level.SEVERE, "Error al borrar los registros: ", e);
+		}
 	}
 }

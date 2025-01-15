@@ -9,9 +9,10 @@ public interface LibroDAOInterface {
 	boolean addLibro(Libro libro);
 	LibroDTO getLibro(long isbn);
 	ArrayList<Libro> getLibros();
-	void añadirReserva(long isbn, int diasDevolucion, Cliente cliente);
+	boolean añadirReserva(long isbn, int diasDevolucion, Cliente cliente);
 	ArrayList<LibroDTO> getHistorialByCliente(String dniCliente);
 	boolean libroLeidoByDniCliente(String dniCliente, Long isbn);
 	boolean updateLibro(LibroDTO libro, long isbnAntiguo);
 	boolean deleteLibroByIsbn(long isbnLibro);
+	void borrarRegistros();
 }

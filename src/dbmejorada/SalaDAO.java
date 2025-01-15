@@ -30,6 +30,11 @@ public class SalaDAO implements SalaDAOInterface {
 		logger = Main.getLogger();	
 	}
 	
+	public SalaDAO(Connection conexionBD, Logger logger) {
+		this.conexionBD = conexionBD;
+		this.logger = logger;	
+	}
+	
 	@Override
 	public boolean addSala(Sala sala) {
 		System.out.println(sala);
@@ -46,7 +51,7 @@ public class SalaDAO implements SalaDAOInterface {
             		if (((SalaPublica) sala).getClientesPorBloque().get(bloque) != null) {
             			
             			ReservaSalaPublicaDTO reservaSalaPublicaDTO = new ReservaSalaPublicaDTO(0, LocalDateTime.now(), ((SalaPublica) sala).getClientesPorBloque().get(bloque).getDni(), bloque);
-	            		if (Main.getReservaSalaPublicaDAO().addReservaSalaPublica(reservaSalaPublicaDTO));
+	            		Main.getReservaSalaPublicaDAO().addReservaSalaPublica(reservaSalaPublicaDTO);
             		}
             	}
             } else if (sala instanceof SalaPrivada) {
