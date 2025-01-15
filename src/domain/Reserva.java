@@ -4,10 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import dbmejorada.ReservaSalaPrivadaDTO;
-import dbmejorada.SalaDTO;
-import dbmejorada.UsuarioDTO;
-import main.Main;
+
 
 public class Reserva {
 
@@ -34,20 +31,6 @@ public class Reserva {
 		this.horaEntrada = null;
 		this.horaSalida = null;
 		this.cliente = new Cliente();
-	}
-	
-	public Reserva(ReservaSalaPrivadaDTO reservaSalaPrivadaDTO) {
-		super();
-		SalaDTO salaDTO = Main.getSalaDAO().getSala(reservaSalaPrivadaDTO.getIdSala());
-		this.sala = new SalaPrivada(salaDTO);
-		this.fechaReserva = reservaSalaPrivadaDTO.getFechaReserva();
-		this.horaEntrada = reservaSalaPrivadaDTO.getfechaEntrada();
-		this.horaSalida = reservaSalaPrivadaDTO.getfechaSalida();
-		UsuarioDTO usuarioDTO = Main.getUsuarioDAO().getUsuario(reservaSalaPrivadaDTO.getDniCliente());
-		
-		if (!usuarioDTO.isAdmin()) {
-			this.cliente = new Cliente(usuarioDTO);
-		}
 	}
 
 	public Sala getSala() {

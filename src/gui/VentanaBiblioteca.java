@@ -24,12 +24,12 @@ import javax.swing.JTextField;
 
 import domain.Admin;
 import domain.Libro;
-import domain.MetodosDeOrdenamiento;
 import domain.Seccion;
 import domain.Usuario;
 import gui.components.AddPanel;
 import gui.components.Header;
 import main.Main;
+import utils.MetodosDeOrdenamiento;
 import utils.Utils;
 
 public class VentanaBiblioteca extends JFrame {
@@ -95,7 +95,7 @@ public class VentanaBiblioteca extends JFrame {
 		for (Libro libro : listaLibrosRenderizada) {
 			JPanel panelCentrarLibro = crearPanelLibroCentrado(libro);
 			subPanelContenido2.add(panelCentrarLibro);
-			if (contadorLibros >= 30) break;
+			if (contadorLibros >= 250) break;
 			contadorLibros++;
 		}
 		
@@ -108,7 +108,7 @@ public class VentanaBiblioteca extends JFrame {
 			@Override
 			 public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					System.out.println(buscador.getText());
+					
 					//recargar pagina con la lista filtrada
 					List<Libro> listaFiltrada = listaLibros.stream()
 							.filter(libro -> libro.getTitulo().toLowerCase().contains(buscador.getText().toLowerCase()))
