@@ -242,7 +242,9 @@ public class VentanaInformacionRecurso extends JFrame {
         	botonesPanel.add(botonReview);
 			botonesPanel.add(botonReservar);
 			botonReview.setEnabled(false);
+			botonReservar.setToolTipText("No puedes reservar libros sin estar registrado");
 			botonReservar.setEnabled(false);
+			botonReview.setToolTipText("No puedes hacer una review sin estar registrado");
 		}else if (usuario instanceof Admin) {
 			botonesPanel.add(botonEditar);
 		} else {
@@ -345,6 +347,7 @@ public class VentanaInformacionRecurso extends JFrame {
         if (usuario == null) {
         	panelboton.add(reservarButton);
 			reservarButton.setEnabled(false);
+			reservarButton.setToolTipText("No puedes reservar la sala si no estás registrado");
 		}else if (usuario instanceof Admin) {
 			panelboton.add(botonEditar);
 		} else {
@@ -455,6 +458,7 @@ public class VentanaInformacionRecurso extends JFrame {
         if (usuario == null) {
         	panelboton.add(reservarButton);
 			reservarButton.setEnabled(false);
+			reservarButton.setToolTipText("No puedes reservar si no estás registrado");
 		}else if (usuario instanceof Admin) {
 			panelboton.add(botonEditar);
 		} else {
