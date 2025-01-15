@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -212,29 +213,40 @@ public class VentanaCrearEditarLibro extends JFrame {
 		añadirImagenButton.setAlignmentX(CENTER_ALIGNMENT);
 		
 		añadirImagenButton.addActionListener(e -> {
-			JFileChooser fileChooser = new JFileChooser();
+		    JFileChooser fileChooser = new JFileChooser();
 
-	        FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("Imagen .jpg", "jpg");
-	        fileChooser.setFileFilter(imageFilter);
-	        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-	        
-	        int opcion = fileChooser.showOpenDialog(this);
-	        
-	        if (opcion == JFileChooser.APPROVE_OPTION) {
-	        	ficheroImagen = fileChooser.getSelectedFile();
-	        }
-	        
-	        BufferedImage bi = null;
-	        try {
-				bi = ImageIO.read(ficheroImagen);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-	        
-	        imagen = new ImageIcon(bi.getScaledInstance(128, 200, Image.SCALE_DEFAULT));
-	        foto = imagen;
-	        imageLabel.setIcon(imagen);
+		    FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("Imagen .jpg", "jpg");
+		    fileChooser.setFileFilter(imageFilter);
+		    fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+
+		    int opcion = fileChooser.showOpenDialog(this);
+
+		    if (opcion == JFileChooser.APPROVE_OPTION) {
+		        ficheroImagen = fileChooser.getSelectedFile();
+
+		        Long isbn = Long.parseLong(tfISBN.getText());
+		        Path destino = Paths.get("resources/images/books/", isbn + ".jpg");
+		        try {
+		            Files.copy(ficheroImagen.toPath(), destino, StandardCopyOption.REPLACE_EXISTING);
+		        } catch (IOException e1) {
+		           e1.printStackTrace();
+		        }
+
+		        BufferedImage bi = null;
+		        try {
+		            bi = ImageIO.read(ficheroImagen);
+		        } catch (IOException e1) {
+		            e1.printStackTrace();
+		        }
+
+		        if (bi != null) {
+		            imagen = new ImageIcon(bi.getScaledInstance(128, 200, Image.SCALE_DEFAULT));
+		            foto = imagen;
+		            imageLabel.setIcon(imagen);
+		        }
+		    }
 		});
+
 		
 		west.add(textImagen);
 		west.add(imageLabel);
