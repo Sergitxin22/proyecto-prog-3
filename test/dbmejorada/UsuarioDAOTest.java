@@ -27,7 +27,7 @@ import domain.LogAccion;
 import main.Main;
 
 class UsuarioDAOTest {
-	private final static String PROPERTIES_FILE = "app.properties";
+	private final static String PROPERTIES_FILE = "conf/app.properties";
 	private UsuarioDAOInterface usuarioDAO;
 
 	@BeforeEach
@@ -50,6 +50,7 @@ class UsuarioDAOTest {
             Connection conexion = DriverManager.getConnection(connection);
             Logger logger = Logger.getLogger("GestorPersistencia-" + nombreBD);
             usuarioDAO = new UsuarioDAO(conexion, logger);
+            
         } catch (ClassNotFoundException | SQLException | NullPointerException e) {
         	Main.setConexionBD(null);
             if (Main.getLogger() != null)
@@ -146,5 +147,16 @@ class UsuarioDAOTest {
 		assertNull(usuarioDAO.getUsuario("00000000A"));
 	}
 	
-	// TODO: testGetUsuarios
+	@Test
+	void testUpdateAmonestaciones() {
+		Cliente cliente = new Cliente("00000000A", "Sergio", "sergio@si.es", LocalDate.now(), "hola", new ArrayList<>(), new ArrayList<>(), 3);
+		usuarioDAO.addUsuario(cliente);
+		
+		UsuarioDTO usuarioDTO = new UsuarioDTO();
+		usuarioDTO.setDni("00000000A");
+		
+		usuarioDAO.updateAmonestaciones(usuarioDTO, 0);
+		UsuarioDTO usuarioDespues = usuarioDAO.getUsuario("00000000A");
+		assertEquals(0, usuarioDespues.getAmonestaciones());
+	}
 }
