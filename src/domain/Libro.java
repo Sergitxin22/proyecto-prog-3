@@ -8,7 +8,7 @@ import dbmejorada.LibroDTO;
 import main.Main;
 import utils.Utils;
 
-public class Libro implements Reservable {
+public class Libro {
 	// campos de la bbdd
 	private long isbn;
 	private String titulo;

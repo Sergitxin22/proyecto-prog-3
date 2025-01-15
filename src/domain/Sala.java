@@ -2,7 +2,7 @@ package domain;
 
 import java.util.Objects;
 
-public abstract class Sala implements Reservable {
+public abstract class Sala {
 	private int capacidad;
 	private int id;
 	private int piso;
