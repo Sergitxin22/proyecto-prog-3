@@ -11,7 +11,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import domain.Libro;
-import domain.MetodosDeOrdenamiento;
 
 public class Utils {
 
