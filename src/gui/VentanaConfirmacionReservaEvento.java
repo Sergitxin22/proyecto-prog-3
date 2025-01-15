@@ -2,10 +2,9 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,38 +12,33 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import BiblioTech.Cliente;
-import BiblioTech.Evento;
-//import BiblioTech.Genero;
-//import BiblioTech.LibroLectura;
-//import BiblioTech.LibroLectura;
-import BiblioTech.SalaEventos;
-import BiblioTech.Seccion;
-//import BiblioTech.SalaPrivada;
-import BiblioTech.TipoEvento;
-import BiblioTech.Usuario;
-import java.time.LocalDate;
-//import utils.Utils;
+import db.AsistenciaEventoDTO;
+import db.UsuarioDTO;
+import domain.Cliente;
+import domain.Evento;
+import domain.Seccion;
+import domain.Usuario;
+import gui.components.Header;
+import main.Main;
 
 public class VentanaConfirmacionReservaEvento extends JFrame{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1647556562163809896L;
 	private JPanel pOeste, pEste, pCentro, pSur, pHeader;
+	private Usuario usuario = Main.getUsuario();
 	
 public void setMainWindowProperties() {
 		
 		
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		
 		getContentPane().setBackground(Color.WHITE);
 		
 		pCentro = new JPanel();
@@ -69,12 +63,20 @@ public void setMainWindowProperties() {
 		
 	}
 	
-	public VentanaConfirmacionReservaEvento (Evento evento, Usuario usuario) {
+	public VentanaConfirmacionReservaEvento(Evento evento) {
+		
+		addWindowListener(new WindowAdapter() {
+		    @Override
+		    public void windowClosing(WindowEvent e) {
+		       	new VentanaInformacionRecurso(evento);
+		       	dispose();
+		       	}
+			});
 		
 		setMainWindowProperties();
-    	setTitle("BiblioTech - Confirmar reserva");
+    	setTitle("Confirmar reserva del " + evento.getTitulo());
 	    
-	    JPanel panelPrincipal = new JPanel();
+	    /*JPanel panelPrincipal = new JPanel();
 	    panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
 	    panelPrincipal.setBackground(Color.WHITE);
 	    
@@ -92,13 +94,11 @@ public void setMainWindowProperties() {
 	    
 	    JTextArea taTipoEvento = new JTextArea("Tipo del Evento: " + (evento.getTipoEvento()));
 		JTextArea taSala = new JTextArea("Sala: " + (evento.getSala().getId()));
-		JTextArea taFecha = new JTextArea("Fecha: " + (evento.getFecha()).toString());
-		JTextArea taHora = new JTextArea("Hora: " + (Integer.toString(evento.getHora())));
+		JTextArea taFecha = new JTextArea("Fecha: " + (evento.getFechaHora()).toString());
 
 		areas.add(taTipoEvento);
 		areas.add(taSala);
 		areas.add(taFecha);
-		areas.add(taHora);
 
 		for (JTextArea area : areas) {
 			area.setFont(new Font("Arial", Font.BOLD, 38));
@@ -111,7 +111,6 @@ public void setMainWindowProperties() {
         panelPrincipal.add(taTipoEvento, BorderLayout.CENTER);
 		panelPrincipal.add(taSala, BorderLayout.CENTER);
 		panelPrincipal.add(taFecha, BorderLayout.CENTER);
-		panelPrincipal.add(taHora, BorderLayout.CENTER);
 
 	    
 
@@ -120,11 +119,12 @@ public void setMainWindowProperties() {
         
         pOeste.setBorder(new EmptyBorder(0, 0, 10, 0));
 	    pOeste.add(panelPrincipal);
-	    BotonConfirmarReservar(usuario, evento);
+	    BotonConfirmarReservar(evento);
     
 		setVisible (true);
 	}
-	private void BotonConfirmarReservar(Usuario usuario, Evento evento) {
+	
+	private void BotonConfirmarReservar(Evento evento) {
     	
  	    pEste.setLayout(new BorderLayout());
  	    
@@ -146,17 +146,92 @@ public void setMainWindowProperties() {
 	        dispose();
 	        // Abrir Venatana de ConfirmacionReserva
 	        
-            new ReservaConfirmada(evento, usuario);
+            new VentanaReservaConfirmada(evento);
 		}   
  	   });
-    }
-	public static void main(String[] args) {	
-		Evento evento = new Evento(12, "Charla sobre la Comunicación", TipoEvento.CHARLA, new ArrayList<Cliente>(), new SalaEventos(100, 2, 4, new ArrayList<Cliente>(), new Evento()), LocalDate.now(), 19);
-		
-		new VentanaConfirmacionReservaEvento(evento, new Usuario() {
-			
-		});
+ 	   */
+    	JPanel panelPrincipal = new JPanel();
+    	panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
+ 	    panelPrincipal.setBackground(Color.WHITE);
+ 	    
+ 	    JLabel tituloEvento = new JLabel( evento.getTitulo(), SwingConstants.CENTER);
+ 	    tituloEvento.setFont(new Font("Arial", Font.BOLD, 40));
+ 	    tituloEvento.setAlignmentX(CENTER_ALIGNMENT);
+ 	    tituloEvento.setBackground(Color.WHITE);
+ 	    panelPrincipal.add(tituloEvento, BorderLayout.NORTH);
+ 	    
+ 	    
+ 	    List<JTextArea> areas = new ArrayList<>();
+ 		//int id, String titulo, TipoEvento tipoEvento, ArrayList<Cliente> asistentes, SalaDTO sala, LocalDateTime fechaHora
 
-		
+
+         JTextArea taTipoEvento = new JTextArea("Tipo: " + evento.getTipoEvento());
+         JTextArea taSala = new JTextArea("Numero de sala: " + Integer.toString(evento.getSala().getId()));
+         JTextArea taFecha = new JTextArea("Fecha: " + evento.getFechaHora().getDayOfMonth() + "/" + evento.getFechaHora().getMonthValue() + "/" + evento.getFechaHora().getYear());
+         JTextArea taHora = new JTextArea("Hora: " + evento.getFechaHora().getHour() + ":" + evento.getFechaHora().getMinute());
+ 		
+
+
+ 		areas.add(taTipoEvento);
+ 		areas.add(taSala);
+ 		areas.add(taFecha);
+ 		areas.add(taHora);
+ 		
+
+ 		for (JTextArea area : areas) {
+ 			area.setFont(new Font("Arial", Font.BOLD, 16));
+  	        area.setLineWrap(true); 
+     	    area.setWrapStyleWord(true); 
+         	area.setEditable(false); 
+ 		}
+
+ 		panelPrincipal.add(taTipoEvento, BorderLayout.CENTER);
+ 		panelPrincipal.add(taSala, BorderLayout.CENTER);
+ 		panelPrincipal.add(taFecha, BorderLayout.CENTER);
+ 		panelPrincipal.add(taHora, BorderLayout.CENTER);
+ 		
+ 	    pOeste.add(panelPrincipal);
+ 	    
+ 	   pCentro.setLayout(new BorderLayout());
+	    //Panel Boton
+	    JPanel panelboton = new JPanel();
+	    panelboton.setBackground(Color.WHITE);
+	    JButton reservarButton = new JButton("Confirmar reserva");
+		if (usuario == null) {
+			reservarButton.setEnabled(false);
+		}
+	    reservarButton.setFont(new Font("Arial", Font.BOLD, 20));
+	    panelboton.add(reservarButton);
+	    
+       
+       pCentro.setBorder(new EmptyBorder(160, 100, 30, 15));
+       pOeste.setBorder(new EmptyBorder(140, 15, 10, 0));
+	    pCentro.add(panelboton, BorderLayout.SOUTH);
+
+	    // Asegúrate de que pCentrpesté agregado al JFrame
+	    
+	    if(Main.getAsistenciaEventoDAO().isUsuarioAsistente(usuario.getDni(), evento.getId())) {
+	    	reservarButton.setEnabled(false);
+	    	reservarButton.setToolTipText("Ya estás asistiendo a este evento");
+	    }
+	    reservarButton.addActionListener(e -> {
+	    
+
+	    	if(evento.getAsistentes().size() < evento.getSala().getCapacidad()) {
+	    		evento.getAsistentes().add(new UsuarioDTO(usuario.getDni(), usuario.getNombre(), usuario.getEmail(), usuario.getFechaCreacion(), ((Cliente) usuario).getAmonestaciones(), false));
+	    		AsistenciaEventoDTO asistenciaEventoDTO = new AsistenciaEventoDTO(0,usuario.getDni(), evento.getId());
+	    		if(Main.getAsistenciaEventoDAO().addAsistenciaEvento(asistenciaEventoDTO)) {
+	    			JOptionPane.showMessageDialog(this, "Asitencia confirmada correctamente.",  "Asistencia confirmada", JOptionPane.INFORMATION_MESSAGE);
+	    	        dispose();
+	    	        new VentanaInformacionRecurso(evento);
+	    		}
+	    	} else {
+	    		JOptionPane.showMessageDialog(this, "No quedan asientos disponibles para este evento.", "Error", JOptionPane.ERROR_MESSAGE);
+	    	}
+	    	
+	
+	    }); 
+	    
+	    setVisible(true);
 	}
 }

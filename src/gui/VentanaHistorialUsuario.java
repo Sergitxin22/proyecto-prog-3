@@ -1,73 +1,62 @@
 package gui;
 
-import BiblioTech.Cliente;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
-import domain.ButtonCellEditor;
-import domain.ButtonCellRenderer;
-import domain.ImageCellEditor;
-import domain.ImageCellRenderer;
+import gui.components.Header;
+import gui.renderers.*;
+import main.Main;
+import domain.Cliente;
+import domain.Seccion;
+import domain.Usuario;
+
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 public class VentanaHistorialUsuario extends JFrame{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
+	private Usuario usuario = Main.getUsuario();
 
-	public VentanaHistorialUsuario(Usuario usuario) {
+	public VentanaHistorialUsuario() {
 		if (!(usuario instanceof Cliente)) {
 			return ;
 		}
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(640,480);
-		setTitle("BiblioTech - Historial");
+		setTitle("Historial de libros");
 		setLocationRelativeTo(null);
+		
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+				dispose();
+            }
+});
 		
 		//panel arriba
 		JPanel header = new Header(Seccion.BIBLIOTECA, usuario, this);
 		add(header,BorderLayout.NORTH);
 		
-		//Panel contenedor
-		String [][] tablaHistorial = new String [3013][3];
-				
-		for (int i = 0; i < 3013; i++) {
-			int numLibro = i+1;
-			String[] libro = {numLibro + ".jpg" , "Descripcion libro " + numLibro,"Review Libro " + numLibro};
-			tablaHistorial[i] = libro;
-		};
-		
-		//String[] datos = {"Libro","Descripcion","review"};
-		DefaultTableModel modeloTablaHistorial = new DefaultTableModel();
-		modeloTablaHistorial.addColumn("Libro");
-		modeloTablaHistorial.addColumn("Descripcion");
-		modeloTablaHistorial.addColumn("review");
-		
-		for (int j = 0; j < tablaHistorial.length; j++) {
-			modeloTablaHistorial.addRow(tablaHistorial[j]);
-		}
+		ModeloHistorial modeloTablaHistorial = new ModeloHistorial();
 		
 		JTable historial = new JTable(modeloTablaHistorial);
 		historial.setRowHeight(76);
 		historial.setRowSelectionAllowed(false);
 		JScrollPane scrollPane = new JScrollPane(historial);
+		historial.getTableHeader().setReorderingAllowed(false);
 		add(scrollPane);
 		
 		historial.getColumnModel().getColumn(0).setCellRenderer(new ImageCellRenderer());
 		historial.getColumnModel().getColumn(0).setCellEditor(new ImageCellEditor());
-		historial.getColumnModel().getColumn(2).setCellRenderer(new ButtonCellRenderer());
-		historial.getColumnModel().getColumn(2).setCellEditor(new ButtonCellEditor());
 		
 		setVisible(true);
 	}
 	
 	public static void main(String[] args) {
-		new VentanaHistorialUsuario(new Cliente());
+		new VentanaHistorialUsuario();
 	}
 
 }

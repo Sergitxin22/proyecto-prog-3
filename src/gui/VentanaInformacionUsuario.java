@@ -1,9 +1,9 @@
 package gui;
 
-import BiblioTech.Cliente;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
-import java.awt.BorderLayout;
+import domain.Admin;
+import domain.Usuario;
+import main.Main;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -12,10 +12,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.lang.reflect.InvocationTargetException;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,13 +24,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import db.UsuarioDTO;
 import utils.Utils;
 
 public class VentanaInformacionUsuario extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5069329725320750186L;
 	private static boolean editarNombre = false;
 	private static int contadorClicksNombre = 0;
@@ -37,15 +37,14 @@ public class VentanaInformacionUsuario extends JFrame {
 	private static int contadorClicksEmail = 0;
 	private static boolean editarPassword = false;
 	private static int contadorClicksPassword = 0;
+	
+	private Usuario usuario = Main.getUsuario();
 
-	public VentanaInformacionUsuario(Usuario usuario) {
-		setTitle("Ventana Información Usuario");
+	public VentanaInformacionUsuario(JFrame ventanaPrevia) {
+		setTitle(usuario.getNombre() + ": Información");
 		setSize(640,480);
 		setLocationRelativeTo(null);
 		
-		JPanel header = new Header(Seccion.BIBLIOTECA, usuario, this);
-		add(header, BorderLayout.NORTH);
-
 		JPanel contenido = new JPanel();
 		contenido.setLayout(new GridLayout(0, 3));
 		JPanel l1 = new JPanel();
@@ -68,11 +67,11 @@ public class VentanaInformacionUsuario extends JFrame {
 		Font fuenteTitulo = new Font("Arial", Font.PLAIN, 32);
 		titulo.setFont(fuenteTitulo);
 		
-        JPanel panelNombre = getPanel("Nombre", "Usuario");
-        JPanel panelEmail = getPanel("Email", "Email");
-        JPanel panelPassword = getPanel("Contraseña", "Contraseña");
+        JPanel panelNombre = getPanel("Nombre", usuario.getNombre());
+        JPanel panelEmail = getPanel("Email", usuario.getEmail());
+        JPanel panelPassword = getPanel("Contraseña", "********");
 	    
-	    JButton botonHistorial = new JButton("Ver historial de lectura");
+	    JButton botonDinamico = getBotonDinamico();
 	    JButton botonCerrarSesion = new JButton("Cerrar Sesión");
 	    botonCerrarSesion.setBackground(Color.RED);
 	    botonCerrarSesion.setForeground(Color.WHITE);
@@ -81,8 +80,24 @@ public class VentanaInformacionUsuario extends JFrame {
 		l2.add(panelNombre, gbc);
 		l2.add(panelEmail, gbc);
 		l2.add(panelPassword, gbc);
-		l2.add(botonHistorial, gbc);
+		l2.add(botonDinamico, gbc);
 		l2.add(botonCerrarSesion, gbc);
+		
+		botonCerrarSesion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	Main.setUsuario(null);
+            	
+            	try {
+					ventanaPrevia.getClass().getConstructor().newInstance();
+					ventanaPrevia.dispose();
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
+					e1.printStackTrace();
+				}
+                dispose();
+            }
+        });
 		
 		setVisible(true);
 	}
@@ -107,7 +122,7 @@ public class VentanaInformacionUsuario extends JFrame {
         JPanel panelInput = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JTextField input = new JTextField(placeholder, 10);
         input.setEnabled(false);
-        ImageIcon iconoEditar = Utils.loadImage("adminUser.png", 20, 20);
+        ImageIcon iconoEditar = Utils.loadImage("edit.png", 20, 20);
         JLabel iconLabel = new JLabel(iconoEditar);
         if (labelText.equalsIgnoreCase("Nombre")) {
         	iconLabel.addMouseListener(new MouseAdapter() {
@@ -119,7 +134,8 @@ public class VentanaInformacionUsuario extends JFrame {
     				input.setEnabled(editarNombre);
     				
     				if (contadorClicksNombre == 2) {
-    					System.out.println("cambiado: " + input.getText());
+    					usuario.setNombre(input.getText());
+    					Main.getUsuarioDAO().updateUsuario(usuario);
     					contadorClicksNombre = 0;
     				}
     			}        	
@@ -134,7 +150,8 @@ public class VentanaInformacionUsuario extends JFrame {
     				input.setEnabled(editarEmail);
     				
     				if (contadorClicksEmail == 2) {
-    					System.out.println("cambiado: " + input.getText());
+    					usuario.setEmail(input.getText());
+    					Main.getUsuarioDAO().updateUsuario(usuario);
     					contadorClicksEmail = 0;
     				}
     			}        	
@@ -149,7 +166,9 @@ public class VentanaInformacionUsuario extends JFrame {
     				input.setEnabled(editarPassword);
     				
     				if (contadorClicksPassword == 2) {
-    					System.out.println("cambiado: " + input.getText());
+    					usuario.setContrasena(input.getText());
+    					UsuarioDTO usuarioDTO = Main.getUsuarioDAO().getUsuario(usuario.getDni());
+    					Main.getUsuarioDAO().updatePassword(usuarioDTO, input.getText());
     					contadorClicksPassword = 0;
     				}
     			}        	
@@ -169,10 +188,35 @@ public class VentanaInformacionUsuario extends JFrame {
         
         return panelContenidoCentrado;
 	}
+	
+
+	public JButton getBotonDinamico() {
+		JButton botonDinamico = new JButton();
+
+	    if (usuario instanceof Admin) {
+	    	botonDinamico.setText("Modificar usuarios");
+
+	    	botonDinamico.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                new VentanaAdministracionUsuarios().setVisible(true);
+	                dispose();
+	            }
+	        });
+	    } else {
+	    	botonDinamico.setText("Ver historial de lectura");
+	    	botonDinamico.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                new VentanaHistorialUsuario().setVisible(true);
+	            }
+	        });
+	    }
+	    return botonDinamico;
+	}
 
 	public static void main(String[] args) {
-		VentanaInformacionUsuario viu = new VentanaInformacionUsuario(new Cliente("3232323", "Juan", "juan", LocalDateTime.now(), "a", new ArrayList<>(), new ArrayList<>(), 0));
-		System.out.println(viu.getBackground());
+		new VentanaInformacionUsuario(null);
 	}
 
 }

@@ -1,16 +1,18 @@
 package io;
 
-import BiblioTech.Cliente;
-import BiblioTech.Evento;
-import BiblioTech.Libro;
-import BiblioTech.Recurso;
-import BiblioTech.Review;
-import BiblioTech.Sala;
-import BiblioTech.SalaEventos;
-import BiblioTech.SalaPrivada;
-import BiblioTech.SalaPublica;
-import BiblioTech.TipoEvento;
-import BiblioTech.Usuario;
+import domain.Cliente;
+import domain.Evento;
+import domain.Libro;
+import domain.Recurso;
+import domain.Review;
+import domain.Sala;
+import domain.SalaEventos;
+import domain.SalaPrivada;
+import domain.SalaPublica;
+import domain.TipoEvento;
+import domain.Usuario;
+import main.Main;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
@@ -19,6 +21,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.ImageIcon;
+
+import db.LibroDTO;
+import db.UsuarioDTO;
 import utils.Utils;
 
 public class InputUtils {
@@ -29,8 +34,13 @@ public class InputUtils {
 		try {
 			Scanner sc = new Scanner(f);
 			
+			if (sc.hasNextLine()) {
+	            sc.nextLine(); // Esta línea se usa para saltarse la primera línea (encabezados)
+	        }
+			
 			int contador = 0;
-			while (sc.hasNextLine() && contador<35) {
+			while (sc.hasNextLine() && contador<250) {
+				
 				String linea = sc.nextLine();
 				String[] datos = linea.split(";");
 				
@@ -91,7 +101,7 @@ public class InputUtils {
 				
 					
 				if (fields[3].equals("PUBLICA")) {
-					sala = new SalaPublica(capacidad, id, piso, new ArrayList<>());
+					sala = new SalaPublica(capacidad, id, piso);
 				} 
 
 				if (fields[3].equals("PRIVADA")) {
@@ -114,11 +124,11 @@ public class InputUtils {
 						}
 					}
 
-					sala = new SalaPrivada(capacidad, id, piso, new ArrayList<>(), recursos);
+					sala = new SalaPrivada(capacidad, id, piso, recursos, new ArrayList<>());
 				}
 
 				if (fields[3].equals("EVENTOS")) {
-					sala = new SalaEventos(capacidad, id, piso, new ArrayList<>(), new Evento());
+					sala = new SalaEventos(capacidad, id, piso);
 				}
 				
 				result.add(sala);
@@ -133,7 +143,7 @@ public class InputUtils {
 		return result;
 	}
 
-	public static ArrayList<Evento> cargarEventos(ArrayList<SalaEventos> salasEventos) {
+	public static ArrayList<Evento> cargarEventos() {
 		ArrayList<Evento> result = new ArrayList<>();
 
 		File file = new File("resources/data/eventos.csv");
@@ -149,9 +159,12 @@ public class InputUtils {
 				int idEvento = Integer.parseInt(fields[0]);
 				String tipoString = fields[1];
 				String titulo = fields[2];
-				LocalDate fecha = LocalDate.parse(fields[3], DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+				
 				int hora = Integer.parseInt(fields[4]);
 				int idSala = Integer.parseInt(fields[5]);
+				
+				String horaFormateada = fields[3] + "T" + hora + ":00:00";
+				LocalDateTime fecha = LocalDateTime.parse(horaFormateada, DateTimeFormatter.ofPattern("dd-MM-yyyy'T'HH:mm:ss"));
 
 				TipoEvento tipoEvento = null;
 				switch (tipoString) {
@@ -171,15 +184,8 @@ public class InputUtils {
 						tipoEvento = TipoEvento.TALLER;
 						break;
 				}
-
-				SalaEventos salaEvento = null;
-				for (SalaEventos sala : salasEventos) {
-					if (sala.getId() == idSala) {
-						salaEvento = sala;
-						break;
-					}
-				}
-				evento = new Evento(idEvento, titulo, tipoEvento, new ArrayList<>(), salaEvento, fecha, hora);
+				
+				evento = new Evento(idEvento, titulo, tipoEvento, new ArrayList<>(), new SalaEventos(Main.getSalaDAO().getSala(idSala)), fecha);
 
 				result.add(evento);
 				
@@ -192,10 +198,13 @@ public class InputUtils {
 
 		return result;
 	}
-	public static void cargarReviews(ArrayList<Libro> libros, ArrayList<Usuario> usuarios) {
-        File file = new File("resources/data/reviews.csv");
+	public static ArrayList<Review> cargarReviews(ArrayList<Libro> libros, ArrayList<Usuario> usuarios) {
+        ArrayList<Review> result = new ArrayList<Review>();
+		
+		File file = new File("resources/data/reviews.csv");
         
         try (Scanner scanner = new Scanner(file)) {
+        	scanner.nextLine();
             while (scanner.hasNextLine()) {
                 String linea = scanner.nextLine();
                 String[] datos = linea.split(";");
@@ -214,10 +223,29 @@ public class InputUtils {
                         
                         if (usuario != null && usuario instanceof Cliente) {
                            
-                            Review review = new Review(libro, (Cliente) usuario, comentario, rating);
+                        	UsuarioDTO usuarioDTO = new UsuarioDTO();
+                        	
+                        	usuarioDTO.setAdmin(false);
+                        	usuarioDTO.setAmonestaciones(((Cliente) usuario).getAmonestaciones());
+                        	usuarioDTO.setDni(((Cliente) usuario).getDni());
+                        	usuarioDTO.setNombre(((Cliente) usuario).getNombre());
+                        	
+                        	LibroDTO libroDTO = new LibroDTO();
+                        	libroDTO.setAutor(libro.getAutor());
+                        	libroDTO.setFechaPublicacion(libro.getFechaPublicacion());
+                        	libroDTO.setGenero(libro.getGenero());
+                        	libroDTO.setIsbn(libro.getIsbn());
+                        	libroDTO.setNumeroDePaginas(libro.getNumeroDePaginas());
+                        	libroDTO.setRating(libro.getRating());
+                        	libroDTO.setSinopsis(libro.getSinopsis());
+                        	libroDTO.setTitulo(libro.getTitulo());
+                        	
+                            Review review = new Review(libroDTO, usuarioDTO, comentario, rating);
                             
                             // Añadir la review al libro
                             libro.agregarReview(review);
+                            result.add(review);
+                            
                         } else {
                             System.err.println("Usuario no encontrado o no es un cliente para DNI: " + dni);
                         }
@@ -233,6 +261,8 @@ public class InputUtils {
         } catch (FileNotFoundException e) {
             System.err.println("ERROR: Archivo de reviews no encontrado");
         }
+        
+        return result;
     }
 
     // Método para buscar un libro por su ISBN
@@ -257,11 +287,12 @@ public class InputUtils {
 	
     public static ArrayList<Usuario> cargarUsuarios() {
         ArrayList<Usuario> result = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         
         File file = new File("resources/data/usuarios.csv");
         try {
             Scanner scanner = new Scanner(file);
+            scanner.nextLine();
             while (scanner.hasNextLine()) {
                 String linea = scanner.nextLine();
                 String[] datos = linea.split(";");
@@ -270,7 +301,7 @@ public class InputUtils {
                     String dni = datos[0];
                     String nombre = datos[1];
                     String email = datos[2];
-                    LocalDateTime fechaCreacion = LocalDateTime.parse(datos[3], formatter);
+                    LocalDate fechaCreacion = LocalDate.parse(datos[3], formatter);
                     String contrasena = datos[4];
                     
                     //Inicializo con valor por defecto

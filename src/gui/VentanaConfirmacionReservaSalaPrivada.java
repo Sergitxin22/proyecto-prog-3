@@ -1,29 +1,68 @@
 package gui;
 
-import BiblioTech.Cliente;
-import BiblioTech.SalaPrivada;
-import BiblioTech.Usuario;
+import domain.SalaPrivada;
+import domain.Usuario;
+import main.Main;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.text.ParseException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.MaskFormatter;
+
+import db.ReservaSalaPrivadaDTO;
+
 
 public class VentanaConfirmacionReservaSalaPrivada extends JFrame{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
-
-	public VentanaConfirmacionReservaSalaPrivada(SalaPrivada sala, Usuario usuario) {
-		setTitle("Reserva de Sala :" + sala.getId());
+	private Usuario usuario = Main.getUsuario();
+	private JFormattedTextField tfFecha;
+	private JFormattedTextField tfHoraEntrada;
+	private JFormattedTextField tfHoraSalida;
+	public VentanaConfirmacionReservaSalaPrivada(SalaPrivada sala) {
+		
+	addWindowListener(new WindowAdapter() {
+	    @Override
+	    public void windowClosing(WindowEvent e) {
+	       	new VentanaInformacionRecurso(sala);
+	       	dispose();
+	       	}
+		});
+		
+		MaskFormatter fechaMask;
+		try {
+			fechaMask = new MaskFormatter("####-##-##");
+			fechaMask.setPlaceholderCharacter('_');
+			tfFecha = new JFormattedTextField(fechaMask);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		
+		MaskFormatter horaMask;
+		try {
+			horaMask = new MaskFormatter("##:##");
+			horaMask.setPlaceholderCharacter('_');
+			tfHoraEntrada = new JFormattedTextField(horaMask);
+			tfHoraSalida = new JFormattedTextField(horaMask);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		
+		setTitle("Reserva de Sala " + sala.getId());
 		setSize(600, 600);
 		setLocationRelativeTo(null);
 
@@ -41,7 +80,7 @@ public class VentanaConfirmacionReservaSalaPrivada extends JFrame{
 		JLabel fechaLabel = new JLabel("Fecha:");
 		fechaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		JPanel tfFechaPanel = new JPanel();
-		JTextField tfFecha = new JTextField();
+		
 		tfFecha.setColumns(15);
 		
 		tfFechaPanel.add(tfFecha);
@@ -51,7 +90,7 @@ public class VentanaConfirmacionReservaSalaPrivada extends JFrame{
 		JLabel horaEntradaLabel = new JLabel("Hora de entrada:");
 		horaEntradaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		JPanel tfHoraEntradaPanel = new JPanel();
-		JTextField tfHoraEntrada = new JTextField();
+		
 		tfHoraEntrada.setColumns(15);
 
 		tfHoraEntradaPanel.add(tfHoraEntrada);
@@ -62,7 +101,7 @@ public class VentanaConfirmacionReservaSalaPrivada extends JFrame{
 		JLabel horaSalidaLabel = new JLabel("Hora de salida:");
 		horaSalidaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		JPanel tfHoraSalidaPanel = new JPanel();
-		JTextField tfHoraSalida = new JTextField();
+		
 		tfHoraSalida.setColumns(15);
 
 		tfHoraSalidaPanel.add(tfHoraSalida);
@@ -85,12 +124,22 @@ public class VentanaConfirmacionReservaSalaPrivada extends JFrame{
 		JButton confirmarButton = new JButton("Confirmar");
 		buttonPanel.add(confirmarButton);
 		confirmarButton.addActionListener(e -> {
-//			LocalDate fecha = LocalDate.parse(tfFecha.getText()); // TODO: cambiar el formato del textfield para fechas
-//
-//			int horaEntrada = Integer.parseInt(tfHoraEntrada.getText());
-//			int horaSalida = Integer.parseInt(tfHoraSalida.getText());
-
-			// TODO: Añadir la reserva a la base de datos
+			
+			String fechaReserva = tfFecha.getText();
+			ReservaSalaPrivadaDTO reserva = new ReservaSalaPrivadaDTO(0, LocalDateTime.parse(fechaReserva + "T" + tfHoraEntrada.getText()), LocalDateTime.parse(fechaReserva + "T" + tfHoraSalida.getText()), LocalDate.now(),usuario.getDni(), sala.getId());
+			
+			if(Main.getReservaSalaPrivadaDAO().isSalaPrivadaReservable(reserva)) {
+				if(Main.getReservaSalaPrivadaDAO().addReservaSalaPrivada(reserva)) {
+					JOptionPane.showMessageDialog(this, "Reserva realizada correctamente", "Reserva realizada", JOptionPane.INFORMATION_MESSAGE);
+					new VentanaInformacionRecurso (sala);
+					dispose();
+				}else {
+					JOptionPane.showMessageDialog(this, "Error al realizar la reserva", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}else {
+				JOptionPane.showMessageDialog(this, "Esta sala se encuentra ocupada en este intervalo de horas", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+			
 		});
 
 		panelPrincipal.setBorder(new EmptyBorder(50, 0, 50, 0));
@@ -102,6 +151,6 @@ public class VentanaConfirmacionReservaSalaPrivada extends JFrame{
 	}
 
 	public static void main(String[] args) {
-		new VentanaConfirmacionReservaSalaPrivada(new SalaPrivada(5, 14, 2, new ArrayList<>(), new ArrayList<>()), new Cliente("3", "ane", "a", LocalDateTime.now(), "a", new ArrayList<>(), new ArrayList<>(), 1));
+		new VentanaConfirmacionReservaSalaPrivada(new SalaPrivada(5, 14, 2, new ArrayList<>(), new ArrayList<>()));
 	}
 }

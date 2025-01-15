@@ -1,15 +1,16 @@
 package gui;
 
-import BiblioTech.Admin;
-import BiblioTech.Cliente;
-import BiblioTech.SalaPublica;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
+import domain.Admin;
+import domain.Cliente;
+import domain.SalaPublica;
+import domain.Seccion;
+import domain.Usuario;
+import gui.components.Header;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,23 +19,26 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
+
+import db.ReservaSalaPublicaDTO;
 import main.Main;
+import utils.SalaPublicaDaemon;
 import utils.Utils;
 
 public class VentanaSalaPublica extends JFrame {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	private Usuario usuario = Main.getUsuario();
+	private SalaPublicaDaemon daemon;
 
-	public VentanaSalaPublica(Usuario usuario)  { 
+	public VentanaSalaPublica()  { 
 
         SalaPublica salaPublica = Main.getSalaPublica();
         
         setTitle("Sala Pública");
         setSize(1280, 720);
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 	    
         // Header panel
         JPanel header = new Header(Seccion.SALAS_DE_ESTUDIO, usuario, this);
@@ -68,7 +72,7 @@ public class VentanaSalaPublica extends JFrame {
 
         JButton masInformacionButton = new JButton("Más información y normas");
         masInformacionButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "- Se recuerda a las personas usuarias que no está permitido comer dentro de ninguna sala de estudio.\n- Se ruega reducir al máximo el volumen de las actividades realizadas en la sala.\n- La asignación de bloque es obligatoria para evitar malentendidos y sobrecarga.\n- A la hora de abandonar la sala, asegúrese de desasignar su bloque para que pueda ser utilizado por otra persona.\n- Procurar dejar los bloques en el mismo estado en los que se han encontrado.", "Más información y normas", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "-Recuerda que una vez te asignas un bloque, debes devolverlo en un plazo de 4 horas.\n-No devolver el bloque en el tiempo acordado supondra añadir una amonestación al usuario/a.\n-Si el usuario/a tiene 3 o más amonestaciones, se le revocará el permiso de asignación.\n- Se recuerda a las personas usuarias que no está permitido comer dentro de ninguna sala de estudio.\n- Se ruega reducir al máximo el volumen de las actividades realizadas en la sala.\n- La asignación de bloque es obligatoria para evitar malentendidos y sobrecarga.\n- A la hora de abandonar la sala, asegúrese de desasignar su bloque para que pueda ser utilizado por otra persona.\n- Procurar dejar los bloques en el mismo estado en los que se han encontrado.", "Más información y normas", JOptionPane.INFORMATION_MESSAGE);
 
         });
         boolean clienteEnSala = clienteEnSalaPublica(usuario);
@@ -78,6 +82,7 @@ public class VentanaSalaPublica extends JFrame {
     
         if (usuario == null) {
             asignarBloqueButton.setEnabled(false);
+            asignarBloqueButton.setToolTipText("No puedes asignarte un bloque sin estar registrado");
         }
         if (clienteEnSala) {
              asignarBloqueButton.setText("Desasignar bloque");
@@ -89,22 +94,48 @@ public class VentanaSalaPublica extends JFrame {
         asignarBloqueButton.addActionListener(e -> {
 
             if (clienteEnSala) {
-
-            } else {
-                int bloqueAsignado = 0;
-                for (Integer i : salaPublica.getClientesPorBloque().keySet()) {
-                    if (Main.getSalaPublica().getClientesPorBloque().get(i) == null) {
-                        bloqueAsignado = i;
-                        salaPublica.getClientesPorBloque().put(i, (Cliente) usuario);
+            	 for (Integer i : salaPublica.getClientesPorBloque().keySet()) {
+                     if (salaPublica.getClientesPorBloque().get(i) == usuario) {
+                    	 salaPublica.getClientesPorBloque().put(i, null);
+                    	 if(Main.getReservaSalaPublicaDAO().desasignarBloque(usuario.getDni())) {
+                    		 JOptionPane.showMessageDialog(this, "Bloque desasignado correctamente.", "Bloque desasignado", JOptionPane.INFORMATION_MESSAGE);
+                    		 new VentanaSalaPublica();
+                    		 Main.getThreads().get(0).interrupt();
+                    		 dispose();
+                    		 
+                    	 } else {
+                    		 JOptionPane.showMessageDialog(this, "Error al desasignar el bloque.", "Error", JOptionPane.ERROR_MESSAGE);
+                    	 }
                         break;
+                     }
+            	 }
+            } else {
+            	if (((Cliente) usuario).getAmonestaciones() >= 3) {
+            		JOptionPane.showMessageDialog(this, "Has superado el límite de amonestaciones.", "Error", JOptionPane.ERROR_MESSAGE);
+            	} else {
+            		int bloqueAsignado = 0;
+                    for (Integer i : salaPublica.getClientesPorBloque().keySet()) {
+                        if (salaPublica.getClientesPorBloque().get(i) == null) {
+                            bloqueAsignado = i;
+                            salaPublica.getClientesPorBloque().put(i, (Cliente) usuario);
+                            ReservaSalaPublicaDTO reserva = new ReservaSalaPublicaDTO(0, LocalDateTime.now(), usuario.getDni(), bloqueAsignado);
+                            Main.getReservaSalaPublicaDAO().addReservaSalaPublica(reserva);
+                            break;
+                        }
                     }
-                }
 
-                if (bloqueAsignado == 0) {
-                    JOptionPane.showMessageDialog(this, "Lo lamentamos, la sala se encuentra llena actualmente.", "Error en la asignación", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Se le ha asignado el bloque " + bloqueAsignado, "Asignación confirmada", JOptionPane.INFORMATION_MESSAGE);
-                }
+                    if (bloqueAsignado == 0) {
+                        JOptionPane.showMessageDialog(this, "Lo lamentamos, la sala se encuentra llena actualmente.", "Error en la asignación", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Se le ha asignado el bloque " + bloqueAsignado + ".\nRecibirás un recordatorio 30 minutos antes del fin del plazo de devolución.", "Asignación confirmada", JOptionPane.INFORMATION_MESSAGE);
+                        daemon = new SalaPublicaDaemon((Cliente) usuario);
+                        Main.getThreads().add(daemon.thread);
+                        new VentanaSalaPublica();
+                        dispose();
+                        
+                    }
+            	}
+                
             }
         });
 
@@ -152,7 +183,7 @@ public class VentanaSalaPublica extends JFrame {
     }
 
     public static void main(String[] args) {
-        new VentanaSalaPublica((Usuario) new Cliente("8483483", "Juah", "a", LocalDateTime.now(), "a", new ArrayList<>(), new ArrayList<>(), 2));
+        new VentanaSalaPublica();
     }
     
 }

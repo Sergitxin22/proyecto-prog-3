@@ -10,7 +10,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -23,31 +22,29 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import BiblioTech.Admin;
-import BiblioTech.Libro;
-import BiblioTech.MetodosDeOrdenamiento;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
-import io.InputUtils;
-import utils.AddPanel;
+import domain.Admin;
+import domain.Libro;
+import domain.Seccion;
+import domain.Usuario;
+import gui.components.AddPanel;
+import gui.components.Header;
+import main.Main;
+import utils.MetodosDeOrdenamiento;
+import utils.Utils;
 
 public class VentanaBiblioteca extends JFrame {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private final ArrayList<Libro> listaLibros = InputUtils.cargarLibros();
-	private Usuario usuario;
+	private final ArrayList<Libro> listaLibros = Main.getLibroDAO().getLibros();
 	private ArrayList<Libro> listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
+	private Usuario usuario = Main.getUsuario();
 	
-	public VentanaBiblioteca(Usuario user) {
+	public VentanaBiblioteca() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.usuario = user;
 		if (usuario == null) {
-			setTitle("Bibliotech - No logueado");			
+			setTitle("Biblioteca - No logueado");			
 		} else {			
-			setTitle("Bibliotech - logueado" + usuario.getClass().toString());
+			setTitle("Biblioteca - Logueado: " + usuario.getNombre());
 		}
 		
 		setSize(1280,720);
@@ -88,7 +85,7 @@ public class VentanaBiblioteca extends JFrame {
 		
 		// Añadir libro
 		if (usuario instanceof Admin) {
-			JPanel panelAddLibro = new AddPanel(Seccion.BIBLIOTECA, usuario);
+			JPanel panelAddLibro = new AddPanel(this, Seccion.BIBLIOTECA, usuario);
 	        subPanelContenido1.add(panelAddLibro, BorderLayout.WEST);
 		}		
 		
@@ -98,7 +95,7 @@ public class VentanaBiblioteca extends JFrame {
 		for (Libro libro : listaLibrosRenderizada) {
 			JPanel panelCentrarLibro = crearPanelLibroCentrado(libro);
 			subPanelContenido2.add(panelCentrarLibro);
-			if (contadorLibros >= 30) break;
+			if (contadorLibros >= 250) break;
 			contadorLibros++;
 		}
 		
@@ -111,7 +108,7 @@ public class VentanaBiblioteca extends JFrame {
 			@Override
 			 public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					System.out.println(buscador.getText());
+					
 					//recargar pagina con la lista filtrada
 					List<Libro> listaFiltrada = listaLibros.stream()
 							.filter(libro -> libro.getTitulo().toLowerCase().contains(buscador.getText().toLowerCase()))
@@ -191,33 +188,32 @@ public class VentanaBiblioteca extends JFrame {
 	private void abrirVentanaInformacionLibro(Libro libro) {
 		// TODO descomentar cuando se actualice el constructor de la ventana InformacionRecurso
 		//InformacionRecurso ventanaInformacionLibro = new InformacionRecurso(libro, this);
-		InformacionRecurso ventanaInformacionLibro = new InformacionRecurso(libro, usuario);
+		VentanaInformacionRecurso ventanaInformacionLibro = new VentanaInformacionRecurso(libro);
 		ventanaInformacionLibro.setVisible(true);
 		this.setVisible(false);
 	}
 
 	private void ordenarLibros(MetodosDeOrdenamiento item, JPanel subPanelContenido2) {
-		switch (item) {
-		case TITULO:
-			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getTitulo().compareTo(o2.getTitulo()));
-			break;
-		case AUTOR:
-			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getAutor().compareTo(o2.getAutor()));
-			break;
-		case FECHA:
-			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getFechaPublicacion() - o2.getFechaPublicacion());
-			break;
-		default:
-			listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
-			break;
-		}
+//		switch (item) {
+//		case TITULO:
+//			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getTitulo().compareTo(o2.getTitulo()));
+//			break;
+//		case AUTOR:
+//			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getAutor().compareTo(o2.getAutor()));
+//			break;
+//		case FECHA:
+//			Collections.sort(listaLibrosRenderizada, (o1, o2) -> o1.getFechaPublicacion() - o2.getFechaPublicacion());
+//			break;
+//		default:
+//			listaLibrosRenderizada = new ArrayList<Libro>(listaLibros);
+//			break;
+//		}
+		listaLibrosRenderizada = Utils.sortArrayMetodoDeOrdenamiento(listaLibrosRenderizada, item, listaLibrosRenderizada.size());
 		recargarPanelContenido(subPanelContenido2);
 	}
 	
 	public static void main(String[] args) {
-		new VentanaBiblioteca(null);
-//		VentanaBiblioteca ventana2 = new VentanaBiblioteca(new Cliente());
-//		VentanaBiblioteca ventana3 = new VentanaBiblioteca(new Admin());
+		new VentanaBiblioteca();
 	}
 
 }

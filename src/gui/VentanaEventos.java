@@ -1,16 +1,16 @@
 package gui;
 
-import BiblioTech.Admin;
-import BiblioTech.Evento;
-import BiblioTech.Sala;
-import BiblioTech.SalaEventos;
-import BiblioTech.Seccion;
-import BiblioTech.Usuario;
-import io.InputUtils;
+import domain.Admin;
+import domain.Evento;
+import domain.Seccion;
+import domain.Usuario;
+import gui.components.AddPanel;
+import gui.components.Header;
+import main.Main;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,39 +19,27 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import utils.AddPanel;
 
 // BASADO EN EL CÓDIGO DE VentanaBiblioteca
 
-public class VentanaEventos extends JFrame { // TODO: Falta la funcionalidad de añadir evento
+public class VentanaEventos extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
 	private List<Evento> eventos;
+	private Usuario usuario = Main.getUsuario();
 
+	public VentanaEventos() {
 
-	public VentanaEventos(Usuario usuario) {
-
-		ArrayList<SalaEventos> salasEventos = new ArrayList<>();
-
-		for (Sala sala : InputUtils.cargarSalas()) {
-			if (sala instanceof SalaEventos) {
-				salasEventos.add((SalaEventos) sala);
-			}
-		}
-		eventos = InputUtils.cargarEventos(salasEventos);
+		eventos = Main.getEventoDAO().getEventos();
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
 		
 		if (usuario == null) {
-			setTitle("Bibliotech - No logueado");			
+			setTitle("Eventos - No logueado");			
 		} else {			
-			setTitle("Bibliotech - logueado" + usuario.getClass().toString());
+			setTitle("Eventos - Logueado: " + usuario.getNombre());
 		}
 		
 		// Header
@@ -65,7 +53,7 @@ public class VentanaEventos extends JFrame { // TODO: Falta la funcionalidad de 
 	
 		// Añadir evento (solo para Admins)
 		if (usuario instanceof Admin) {
-			JPanel panelAddLibro = new AddPanel(Seccion.EVENTOS, usuario);
+			JPanel panelAddLibro = new AddPanel(this, Seccion.EVENTOS, usuario);
 	        subPanelContenido1.add(panelAddLibro, BorderLayout.WEST);
 		}		
 		
@@ -86,7 +74,7 @@ public class VentanaEventos extends JFrame { // TODO: Falta la funcionalidad de 
 			JButton jButton = new JButton();
 			final int j = i;
 			jButton.addActionListener(e -> {
-				new InformacionRecurso(eventos.get(j), usuario);
+				new VentanaInformacionRecurso(eventos.get(j));
 				dispose();
 			});
 
@@ -105,7 +93,7 @@ public class VentanaEventos extends JFrame { // TODO: Falta la funcionalidad de 
 	}
 
 	public static void main(String[] args) {
-		new VentanaEventos(new Admin());
+		new VentanaEventos();
 	}
 }
 
