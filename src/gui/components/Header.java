@@ -43,7 +43,7 @@ public class Header extends JPanel {
 
         // Icono de la sección        
         String nombreIconoSeccion = obtenerNombreImagenSeccion(seccion);
-        System.out.println(nombreIconoSeccion);
+       
         
         ImageIcon iconoSeccion = tieneImagen ? Utils.loadImage(nombreIconoSeccion,48,48) : new ImageIcon();
         JLabel iconLabel = new JLabel(iconoSeccion);
@@ -52,7 +52,7 @@ public class Header extends JPanel {
         iconLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("Ícono clickeado");  
+                  
                 navegarHacia(seccion, ventana, usuario);
             }
         });
@@ -64,7 +64,7 @@ public class Header extends JPanel {
         textLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("Texto clickeado");
+               
                 VentanaPortada ventanaPortada = new VentanaPortada();
                 ventanaPortada.setVisible(true);
                 // Aquí puedes agregar la lógica que necesites

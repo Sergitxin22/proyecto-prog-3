@@ -24,7 +24,7 @@ public class SalaPublicaDaemon extends JFrame {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                        	System.out.println(tiempoRestante);
+                        	
                         }
                     });
 
@@ -37,12 +37,12 @@ public class SalaPublicaDaemon extends JFrame {
 
                 JOptionPane.showMessageDialog(null, usuario.getNombre() + ", Tienes 30 minutos para devolver tu bloque.", "Recordatorio", JOptionPane.INFORMATION_MESSAGE);
                 
-                for (int i = 1800; i >= 0; i--) {
+                for (int i = 1800; i >= 0; i--) { // Media hora (cuatro horas en total)
                     final int tiempoRestante = i;
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                        	System.out.println(tiempoRestante);
+                        	
                         }
                     });
 
