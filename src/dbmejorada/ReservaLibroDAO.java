@@ -20,7 +20,7 @@ public class ReservaLibroDAO implements ReservaLibroDAOInterface {
 	public ReservaLibroDAO() {
 		conexionBD = Main.getConexionBD();
 		logger = Main.getLogger();
-		pruebas();
+//		pruebas();
 	}
 
 	@Override
