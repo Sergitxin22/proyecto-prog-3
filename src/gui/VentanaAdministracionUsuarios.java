@@ -97,6 +97,10 @@ public class VentanaAdministracionUsuarios extends JFrame {
 					JOptionPane.showMessageDialog(null, "Este usuario es un administrador", "Error", JOptionPane.ERROR_MESSAGE);
 				} else {
 					String nuevoValor = (String) JOptionPane.showInputDialog(null, "Introduce el nuevo valor de amonestaciones:", "Editar amonestaciones de " + usuarioSeleccionado.getNombre(), JOptionPane.QUESTION_MESSAGE, null, null, ((Cliente) usuarioSeleccionado).getAmonestaciones());
+					if(Integer.parseInt(nuevoValor) < 0) {
+						JOptionPane.showMessageDialog(null, "Error, las amonestaciones tienen que ser positivas", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 					
 					((Cliente) usuarios.get(historial.getSelectedRow())).setAmonestaciones(Integer.parseInt(nuevoValor));
 					UsuarioDTO usuarioDTO = new UsuarioDTO();
