@@ -11,7 +11,6 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,10 +18,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
-import dbmejorada.ReservaSalaPublicaDTO;
+import db.ReservaSalaPublicaDTO;
 import main.Main;
 import utils.SalaPublicaDaemon;
 import utils.Utils;
@@ -84,6 +82,7 @@ public class VentanaSalaPublica extends JFrame {
     
         if (usuario == null) {
             asignarBloqueButton.setEnabled(false);
+            asignarBloqueButton.setToolTipText("No puedes asignarte un bloque sin estar registrado");
         }
         if (clienteEnSala) {
              asignarBloqueButton.setText("Desasignar bloque");

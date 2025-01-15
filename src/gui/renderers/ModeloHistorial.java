@@ -4,14 +4,13 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-import dbmejorada.LibroDTO;
-import domain.Libro;
+import db.LibroDTO;
 import domain.Usuario;
 import main.Main;
 
 public class ModeloHistorial extends AbstractTableModel {
 	private static final long serialVersionUID = -2132890663934147336L;
-	private static String[] cabeceras = {"Portada", "Título", "Descripcion"};
+	private static String[] cabeceras = {"Portada", "Título", "Autor"};
 	private static ArrayList<LibroDTO> historialUsuario;
 	
 	public ModeloHistorial() {
@@ -36,7 +35,7 @@ public class ModeloHistorial extends AbstractTableModel {
 		} else if (columnIndex == 1) {
 			return historialUsuario.get(rowIndex).getTitulo();
 		} else {
-			return historialUsuario.get(rowIndex).getSinopsis();
+			return historialUsuario.get(rowIndex).getAutor();
 		}
 	}
 

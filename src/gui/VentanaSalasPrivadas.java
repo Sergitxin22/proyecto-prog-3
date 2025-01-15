@@ -7,7 +7,6 @@ import domain.Seccion;
 import domain.Usuario;
 import gui.components.AddPanel;
 import gui.components.Header;
-import io.InputUtils;
 import main.Main;
 
 import java.awt.BorderLayout;

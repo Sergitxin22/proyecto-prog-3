@@ -22,8 +22,8 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import dbmejorada.LibroDTO;
-import dbmejorada.UsuarioDTO;
+import db.LibroDTO;
+import db.UsuarioDTO;
 import utils.Utils;
 
 public class VentanaAñadirReview extends JFrame {

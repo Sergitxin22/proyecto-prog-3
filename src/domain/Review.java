@@ -2,8 +2,8 @@ package domain;
 
 import java.util.Objects;
 
-import dbmejorada.LibroDTO;
-import dbmejorada.UsuarioDTO;
+import db.LibroDTO;
+import db.UsuarioDTO;
 
 public class Review {
 

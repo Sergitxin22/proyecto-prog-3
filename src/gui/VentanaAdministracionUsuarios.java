@@ -14,7 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import dbmejorada.UsuarioDTO;
+import db.UsuarioDTO;
 import domain.Admin;
 import domain.Cliente;
 import domain.LogAccion;

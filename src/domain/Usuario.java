@@ -3,7 +3,7 @@ package domain;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import dbmejorada.UsuarioDTO;
+import db.UsuarioDTO;
 
 public abstract class Usuario {
 

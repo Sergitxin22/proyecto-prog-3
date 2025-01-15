@@ -1,6 +1,6 @@
 package domain;
 
-import dbmejorada.SalaDTO;
+import db.SalaDTO;
 
 public class SalaEventos extends Sala {
 

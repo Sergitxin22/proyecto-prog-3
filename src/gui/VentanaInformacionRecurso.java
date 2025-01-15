@@ -4,10 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -24,27 +21,19 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import dbmejorada.SalaDTO;
-import dbmejorada.UsuarioDAO;
-import dbmejorada.UsuarioDTO;
+import db.UsuarioDTO;
 import domain.Admin;
-import domain.Cliente;
 import domain.Evento;
 import domain.Libro;
 import domain.Recurso;
-import domain.Reserva;
 import domain.Review;
 import domain.Sala;
-import domain.SalaEventos;
 import domain.SalaPrivada;
 import domain.Seccion;
-import domain.TipoEvento;
 import domain.Usuario;
 import gui.components.Header;
 import main.Main;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import utils.Utils;
@@ -52,7 +41,6 @@ import utils.Utils;
 public class VentanaInformacionRecurso extends JFrame {
 	
 	private JFrame vInformacionRecurso;
-	private Evento evento;
 	private static final long serialVersionUID = 1647556562163809896L;
 	private JPanel pOeste, pEste, pSur, pCentro, pHeader;
 	private Usuario usuario = Main.getUsuario();
@@ -143,7 +131,7 @@ public class VentanaInformacionRecurso extends JFrame {
 		areas.add(taAutor);
 		areas.add(taGenero);
 		areas.add(taNumeroPaginas);
-		areas.add(taRating); // TODO: ?
+		areas.add(taRating);
 		areas.add(taSinopsis);
 
 		for (JTextArea ta : areas) {
@@ -604,17 +592,7 @@ public class VentanaInformacionRecurso extends JFrame {
 		recursos.add(Recurso.PIZARRA);
 		recursos.add(Recurso.PROYECTOR);
 		
-		Sala sala = new SalaPrivada(100, 987, 2, recursos, new ArrayList<Reserva> ());
-		
-		
-		
-		
-		
-		//new VentanaInformacionRecurso(sala);
 		new VentanaInformacionRecurso(libro);
-		//new InformacionRecurso(sala, new Cliente());
-		//new VentanaInformacionRecurso(libro);
-		
 	}
 
 }

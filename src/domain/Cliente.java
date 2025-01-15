@@ -3,7 +3,7 @@ package domain;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import dbmejorada.UsuarioDTO;
+import db.UsuarioDTO;
 import main.Main;
 
 public class Cliente extends Usuario {
@@ -29,8 +29,7 @@ public class Cliente extends Usuario {
 	
 	public Cliente(UsuarioDTO usuarioDTO) {
 		super(usuarioDTO);
-		this.historial = null;
-//		this.historial = Main.getLibroDAO().getHistorialByDniCliente(usuarioDTO.getDni()); // TODO: falta implementar
+		this.historial = new ArrayList<>();
 		this.listaReviews = Main.getReviewDAO().getReviewsByUsuarioDni(usuarioDTO.getDni());
 		this.amonestaciones = usuarioDTO.getAmonestaciones();
 	}

@@ -1,13 +1,9 @@
 package gui;
 
 import domain.Admin;
-import domain.Cliente;
-import domain.Seccion;
 import domain.Usuario;
-import gui.components.Header;
 import main.Main;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -21,8 +17,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,20 +25,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import dbmejorada.UsuarioDTO;
+import db.UsuarioDTO;
 import utils.Utils;
 
 public class VentanaInformacionUsuario extends JFrame {
-
-	
-	/*
-	 *  TODO: en esta ventana falta:
-	 *  - Cambiar el icono de modificar a uno que pegue más (una herramienta, lo que sea). Ahora mismo está el del admin, el alien
-	 *  - En los textfields, en vez del placeholder que salgan los datos del usuario (el usuario, el email...)
-	 *  - Para cambiar la contraseña crear un popup que te pida la contraseña anterior y la nueva
-	 *  - Añadir la lógica para modificar en la base de datos los datos del usuario una vez que los modificas
-	 *  - Añadir funcionalidad al botón de cerrar sesion
-	 */
 
 	private static final long serialVersionUID = 5069329725320750186L;
 	private static boolean editarNombre = false;
@@ -109,7 +93,6 @@ public class VentanaInformacionUsuario extends JFrame {
 					ventanaPrevia.dispose();
 				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
                 dispose();
@@ -226,7 +209,6 @@ public class VentanaInformacionUsuario extends JFrame {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
 	                new VentanaHistorialUsuario().setVisible(true);
-	                dispose();
 	            }
 	        });
 	    }
@@ -234,7 +216,7 @@ public class VentanaInformacionUsuario extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		VentanaInformacionUsuario viu = new VentanaInformacionUsuario(null);
+		new VentanaInformacionUsuario(null);
 	}
 
 }

@@ -23,7 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
-import dbmejorada.ReservaSalaPrivadaDTO;
+import db.ReservaSalaPrivadaDTO;
 
 
 public class VentanaConfirmacionReservaSalaPrivada extends JFrame{
