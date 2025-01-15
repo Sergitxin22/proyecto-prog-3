@@ -21,7 +21,7 @@ public class ReservaSalaPrivadaDAO implements ReservaSalaPrivadaDAOInterface {
     public ReservaSalaPrivadaDAO() {
        	conexionBD = Main.getConexionBD();
       	logger = Main.getLogger();
-        pruebas();
+//        pruebas();
     }
 	
 	@Override
