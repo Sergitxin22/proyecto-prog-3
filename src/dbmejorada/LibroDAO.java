@@ -129,17 +129,14 @@ public class LibroDAO implements LibroDAOInterface{
 				if (logger != null) {
 					logger.log(Level.SEVERE, "Error al realizar la reserva: ", e);
 				}
-			}
-
-		
-			
+			}	
 	}
 	
 	@Override
 	public ArrayList<LibroDTO>getHistorialByCliente(String dniCliente){
 		ArrayList<LibroDTO> historialCliente = new ArrayList<LibroDTO>();
 		
-		String insertSQL = "SELECT * FROM ReservaLibro WHERE dni_cliente=?;";
+		String insertSQL = "SELECT L.* FROM ReservaLibro R, Libro L WHERE R.isbn_libro = L.isbn AND R.dni_cliente = ?;";
         PreparedStatement preparedStmt;
 		try {
 			preparedStmt = conexionBD.prepareStatement(insertSQL);
@@ -152,7 +149,7 @@ public class LibroDAO implements LibroDAOInterface{
                 	long isbn = rs.getLong("isbn");
                 	String titulo = rs.getString ("titulo");
                 	String autor = rs.getString("autor");
-                	int numeroDePaginas = rs.getInt("numero_paginas");
+                	int numeroDePaginas = rs.getInt("numPaginas");
                 	String sinopsis = rs.getString("sinopsis");
                 	String genero = rs.getString("genero");
                 	int rating = rs.getInt("rating");
